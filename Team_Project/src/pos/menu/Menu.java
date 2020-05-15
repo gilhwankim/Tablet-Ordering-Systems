@@ -1,4 +1,4 @@
-package server.menu;
+package pos.menu;
 
 import javafx.beans.property.SimpleStringProperty;
 

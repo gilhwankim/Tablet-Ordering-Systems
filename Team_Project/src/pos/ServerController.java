@@ -1,4 +1,4 @@
-package server;
+package pos;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -23,8 +23,8 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import server.menu.Menu;
-import server.menu.MenuDAO;
+import pos.menu.Menu;
+import pos.menu.MenuDAO;
 
 public class ServerController implements Initializable{
 	

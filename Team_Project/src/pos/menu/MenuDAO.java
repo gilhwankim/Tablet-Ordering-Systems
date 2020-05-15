@@ -1,4 +1,4 @@
-package server.menu;
+package pos.menu;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -1,4 +1,4 @@
-package server;
+package tablet;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -6,17 +6,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class ServerMain extends Application{
+public class TabletMain extends Application{
 	
-	public static Stage serverStage;
+	public static Stage clientStage;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		serverStage = primaryStage;
-		Parent parent = FXMLLoader.load(getClass().getResource("server.fxml"));
+		clientStage = primaryStage;
+		Parent parent = FXMLLoader.load(getClass().getResource("tablet.fxml"));
 		Scene scene = new Scene(parent);
 		primaryStage.setScene(scene);
-		primaryStage.setTitle("POS");
+		primaryStage.setTitle("Table");
 		primaryStage.toFront();
 		primaryStage.centerOnScreen();
 		primaryStage.show();

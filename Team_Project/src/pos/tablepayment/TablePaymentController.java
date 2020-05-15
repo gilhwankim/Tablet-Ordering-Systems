@@ -1,4 +1,4 @@
-package server.tablepayment;
+package pos.tablepayment;
 
 import java.net.URL;
 import java.util.ResourceBundle;

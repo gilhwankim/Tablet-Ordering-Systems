@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<BorderPane fx:id="borderPane" prefHeight="760.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="server.ServerController">
+<BorderPane fx:id="borderPane" prefHeight="760.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pos.ServerController">
    <right>
       <JFXTabPane fx:id="tab" prefHeight="400.0" prefWidth="80.0" side="RIGHT" BorderPane.alignment="CENTER">
          <tabs>

@@ -1,4 +1,4 @@
-package client;
+package tablet;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -25,9 +25,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import server.menu.Menu;
+import pos.menu.Menu;
 
-public class ClientController implements Initializable{
+public class TabletController implements Initializable{
 	
 	@FXML Button btn;
 	@FXML ChoiceBox<String> cb;
@@ -44,7 +44,7 @@ public class ClientController implements Initializable{
 	private StringTokenizer st1;
 	private StringTokenizer st2;
 	
-	private Stage tableStage = ClientMain.clientStage;
+	private Stage tableStage = TabletMain.clientStage;
 	
 	//table.fxml
 	private Button plusBtn;

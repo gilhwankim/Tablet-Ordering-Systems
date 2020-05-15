@@ -1,4 +1,4 @@
-package server.menu;
+package pos.menu;
 
 import java.net.URL;
 import java.util.List;

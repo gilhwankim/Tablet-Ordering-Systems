@@ -1,4 +1,4 @@
-package client;
+package pos;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -6,17 +6,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class ClientMain extends Application{
+public class ServerMain extends Application{
 	
-	public static Stage clientStage;
+	public static Stage serverStage;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		clientStage = primaryStage;
-		Parent parent = FXMLLoader.load(getClass().getResource("client.fxml"));
+		serverStage = primaryStage;
+		Parent parent = FXMLLoader.load(getClass().getResource("server.fxml"));
 		Scene scene = new Scene(parent);
 		primaryStage.setScene(scene);
-		primaryStage.setTitle("Table");
+		primaryStage.setTitle("POS");
 		primaryStage.toFront();
 		primaryStage.centerOnScreen();
 		primaryStage.show();
