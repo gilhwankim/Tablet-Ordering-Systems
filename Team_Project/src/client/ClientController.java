@@ -151,7 +151,7 @@ public class ClientController implements Initializable{
 			}
 			node.setOnMouseClicked(e -> {
 				if(e.getClickCount() == 2) {
-					System.out.println("메뉴이름 : " + labelName.getText() + "메뉴가격 : " + labelPrice.getText());
+				    System.out.println("메뉴이름 : " + labelName.getText() + "메뉴가격 : " + labelPrice.getText());			
 				}
 			});
 		}catch (Exception e) {
