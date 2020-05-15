@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.collections.*?>
+
+<AnchorPane prefHeight="380.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sqlNote.RootController">
+   <children>
+      <Label layoutX="61.0" layoutY="40.0" text="제목">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtTitle" layoutX="99.0" layoutY="38.0" prefHeight="23.0" prefWidth="374.0" />
+      <Label layoutX="31.0" layoutY="74.0" text="비밀번호">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <PasswordField fx:id="txtPassword" layoutX="99.0" layoutY="72.0" prefHeight="23.0" prefWidth="141.0" />
+      <Label layoutX="61.0" layoutY="104.0" text="공개">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="comboPublic" layoutX="99.0" layoutY="102.0" prefHeight="23.0" prefWidth="141.0" promptText="선택">
+      	<items>
+      		<!--
+   			  FXCollections가 속한 패키지는 javafx.collections이다. 추가적으로 import해주자. 
+   			  콤보박스에 리스트 내용은 SceneBuilder에서 추가해 주는 기능이 따로 없으므로 FXML에서 
+   			  직접 작성토록 한다.
+    		-->
+      		<FXCollections fx:factory="observableArrayList">
+      			<String fx:value="공개" />
+      			<String fx:value="비공개" />
+      		</FXCollections>
+      	</items>      
+      </ComboBox>
+      
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="259.0" layoutY="76.0" prefHeight="19.0" prefWidth="75.0" text="작성자">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="61.0" layoutY="143.0" text="내용">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <TextArea fx:id="txtContent" layoutX="59.0" layoutY="162.0" prefHeight="154.0" prefWidth="412.0" />
+      <Separator layoutX="61.0" layoutY="329.0" prefHeight="3.0" prefWidth="412.0" />
+      <Button layoutX="223.0" layoutY="343.0" onAction="#handleBtnRegAction" prefHeight="23.0" prefWidth="60.0" text="저장" />
+      <Button layoutX="322.0" layoutY="343.0" onAction="#handleBtnClear" prefHeight="23.0" prefWidth="60.0" text="초기화" />
+      <Button layoutX="61.0" layoutY="343.0" onAction="#handleBtnSelect" prefHeight="23.0" prefWidth="60.0" text="조회" />
+      <TextField fx:id="textField" layoutX="125.0" layoutY="343.0" prefHeight="23.0" prefWidth="75.0" promptText="조회번호입력">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="writerName" layoutX="334.0" layoutY="72.0" />
+   </children>
+</AnchorPane>

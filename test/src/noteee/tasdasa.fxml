@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="noteee.TaController">
+   <children>
+      <TableView fx:id="Tablevieww" layoutX="150.0" layoutY="126.0" prefHeight="348.0" prefWidth="300.0">
+        <columns>
+          <TableColumn fx:id="name" prefWidth="150.0" text="이름" />
+          <TableColumn fx:id="quantity" prefWidth="150.0" text="수량" />
+        </columns>
+      </TableView>
+      <Button fx:id="add" onAction="#adddd" layoutX="337.0" layoutY="506.0" mnemonicParsing="false" text="Button" />
+   </children>
+</AnchorPane>
