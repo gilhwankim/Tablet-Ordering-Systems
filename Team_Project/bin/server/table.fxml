@@ -10,15 +10,15 @@
    <children>
       <TableView id="tableView" prefHeight="68.0" prefWidth="160.0" VBox.vgrow="ALWAYS">
          <columns>
-            <TableColumn fx:id="TableNum" editable="false" prefWidth="233.0" resizable="false" text="1" />
-            <TableColumn fx:id="OrderQuantity" editable="false" prefWidth="53.0" resizable="false" />
+            <TableColumn fx:id="TableNum" editable="false" prefWidth="240.0" resizable="false" sortable="false" text="테이블 번호" />
+            <TableColumn fx:id="OrderQuantity" editable="false" prefWidth="45.0" resizable="false" />
          </columns>
       </TableView>
       <HBox>
          <children>
             <HBox alignment="TOP_RIGHT" HBox.hgrow="ALWAYS">
                <children>
-                  <Label id="labelPrice" fx:id="TotalPrice" prefHeight="18.0" prefWidth="99.0" text="가격">
+                  <Label id="labelPrice" alignment="CENTER" prefHeight="18.0" prefWidth="112.0" text="가격">
                      <font>
                         <Font size="14.0" />
                      </font>
