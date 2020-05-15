@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<BorderPane fx:id="borderPane" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="server.ServerController">
+<BorderPane fx:id="borderPane" prefHeight="760.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="server.ServerController">
    <right>
-      <JFXTabPane fx:id="tab" prefHeight="400.0" prefWidth="40.0" side="RIGHT" BorderPane.alignment="CENTER">
+      <JFXTabPane fx:id="tab" prefHeight="400.0" prefWidth="80.0" side="RIGHT" BorderPane.alignment="CENTER">
          <tabs>
             <Tab text="Home">
               <content>
@@ -39,7 +39,7 @@
       </JFXTabPane>
    </right>
    <center>
-      <GridPane fx:id="home" alignment="CENTER" hgap="10.0" prefWidth="560.0" vgap="10.0" BorderPane.alignment="CENTER">
+      <GridPane fx:id="home" alignment="CENTER" hgap="10.0" prefHeight="720.0" prefWidth="880.0" vgap="10.0" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -53,7 +53,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <BorderPane.margin>
-            <Insets bottom="10.0" left="50.0" right="10.0" top="10.0" />
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </BorderPane.margin>
          <children>
             <VBox alignment="BOTTOM_CENTER">
@@ -80,6 +80,29 @@
                </children>
             </VBox>
             <VBox alignment="BOTTOM_CENTER" GridPane.columnIndex="2">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0" />
+                  <HBox>
+                     <children>
+                        <Label id="labelName" text="테이블">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <HBox alignment="TOP_RIGHT" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label id="labelPrice" text="가격">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox alignment="BOTTOM_CENTER">
                <children>
                   <VBox prefHeight="200.0" prefWidth="100.0" />
                   <HBox>
