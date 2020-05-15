@@ -14,6 +14,7 @@ public class Noteeeee extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("¿¬½À");
 		primaryStage.show();
+		System.out.println("Â¥ÀÜ!@");
 	}
 
 	
