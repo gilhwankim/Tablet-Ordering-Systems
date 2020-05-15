@@ -23,154 +23,221 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import pos.menu.Menu;
 
 public class TabletController implements Initializable{
-	
-	@FXML Button btn;
-	@FXML ChoiceBox<String> cb;
-	
-	private ObservableList<String> ol = FXCollections.observableArrayList();
-	
-	private Socket socket;
-	private InputStream is;
-	private OutputStream os;
-	private DataInputStream dis;
-	private DataOutputStream dos;
-	
-	private List<Menu> menuList = new ArrayList<>();
-	private StringTokenizer st1;
-	private StringTokenizer st2;
-	
-	private Stage tableStage = TabletMain.clientStage;
-	
-	//table.fxml
-	private Button plusBtn;
-	private ListView<HBox> lvSalad;
-	private ObservableList<HBox> saladOl = FXCollections.observableArrayList();
-	private ListView<HBox> lvPasta;
-	private ObservableList<HBox> PastaOl = FXCollections.observableArrayList();
-	
-	
-	
-	
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		ol.addAll("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15");
-		cb.setItems(ol);
-		
-		
-		btn.setOnAction( e -> {
-			String tableNo = cb.getSelectionModel().getSelectedItem();
-			if(tableNo != null) {
-				startClient(tableNo);
-			}
-		});
-	}
-	
-	@SuppressWarnings("unchecked")
-	private void startClient(String tableNo) {
-		try {
-			socket = new Socket();
-			socket.connect(new InetSocketAddress("localhost", 8888));
-			
-			is = socket.getInputStream();
-			dis = new DataInputStream(is);
-			os = socket.getOutputStream();
-			dos = new DataOutputStream(os);
-			//접속하고 테이블 번호를 서버에 전송
-			dos.writeUTF(tableNo);
-			
-			//내이름과 같은 테이블이 있는지 서버에 체크 (성공하면 connOk, 실패시 connFail)
-			String message = dis.readUTF();
-			//false가 나오면 리턴시켜 다시 자리정하게한다.
-			if(!connCheck(message)) {
-				return;
-			}
-			
-			//메뉴를 서버로부터 받는다.
-			String menu = dis.readUTF();
-			//메뉴를 받아오는데에 성공했을 때
-			if(menu != null) {
-				st1 = new StringTokenizer(menu, "@@");
-				while(st1.hasMoreTokens()) {
-					String tmp = st1.nextToken();
-					st2 = new StringTokenizer(tmp, "$$");
-					menuList.add(new Menu(st2.nextToken(), st2.nextToken(), st2.nextToken()));
-				}
-				
-				//자리 정하는게 끝나면 메뉴창을 연다.
-				Parent parent = FXMLLoader.load(getClass().getResource("table.fxml"));
-				Scene scene = new Scene(parent);
-				this.tableStage.setScene(scene);
-				lvSalad = (ListView<HBox>)parent.lookup("#lvSalad");
-				lvPasta = (ListView<HBox>)parent.lookup("#lvPasta");
-				//메뉴들을 각 메뉴판에 담기
-				for(Menu m : menuList) {
-					if(m.getNo().equals("파스타")) {
-						PastaOl = replaceMenu(PastaOl, m);
-					}else if(m.getNo().equals("샐러드")) {
-						saladOl = replaceMenu(saladOl, m);
-					}
-					//리스트뷰에 observablelist 연동
-					lvSalad.setItems(saladOl);
-					lvPasta.setItems(PastaOl);
-				}
-				
-			}else {
-				throw new Exception(); 
-			}
-		}catch (Exception e) {
-			System.out.println("메뉴 정보를 받아오지 못함.");
-			e.printStackTrace();
-		}
-	}
-	
-	//메뉴판에 메뉴를 넣는 메서드
-	private ObservableList<HBox> replaceMenu(ObservableList<HBox> ol, Menu m){
-		ObservableList<HBox> tempOl = ol;
-		try {
-			Parent node = FXMLLoader.load(getClass().getResource("GridRow.fxml"));
-			Label labelName = (Label)node.lookup("#labelName");
-			Label labelPrice = (Label)node.lookup("#labelPrice");
-			labelName.setText(m.getName());
-			labelPrice.setText(m.getPrice());
-			if(tempOl.size() == 0) {
-				HBox hbox = new HBox();
-				hbox.setSpacing(10);
-				hbox.getChildren().add(node);
-				tempOl.add(hbox);
-			}else if(tempOl.get(tempOl.size()-1).getChildren().size() % 3 == 0 ) {
-				HBox hbox = new HBox();
-				hbox.setSpacing(10);
-				hbox.getChildren().add(node);
-				tempOl.add(hbox);
-			}else {
-				tempOl.get(tempOl.size()-1).getChildren().add(node);
-			}
-			node.setOnMouseClicked(e -> {
-				if(e.getClickCount() == 2) {
-				    System.out.println("메뉴이름 : " + labelName.getText() + "메뉴가격 : " + labelPrice.getText());			
-				}
-			});
-		}catch (Exception e) {
-		}
-		return tempOl;
-	}
-	
-	//접속 체크
-	private boolean connCheck(String message) {
-		StringTokenizer st = new StringTokenizer(message, "/");
-		String protocol = st.nextToken();
-//		String msg = st.nextToken();
-		System.out.println("프로토콜" + protocol);
-		if(protocol.equals("connOk")) {
-			return true;
-		}else if(protocol.equals("connFail")) {
-			return false;
-		}
-		return false;
-	}
+
+   private Stage clientStage = TabletMain.clientStage;
+   Stage stage;
+   
+   //처음 자리정하는 창
+   private Button btn;
+   private ChoiceBox<String> cb;
+   private ObservableList<String> ol = FXCollections.observableArrayList();
+   
+   //서버연결에 필요한 멤버
+   private Socket socket;
+   private InputStream is;
+   private OutputStream os;
+   private DataInputStream dis;
+   private DataOutputStream dos;
+   
+   private List<Menu> menuList = new ArrayList<>();
+   private StringTokenizer st1;
+   private StringTokenizer st2;
+   
+   
+   //table.fxml
+   private @FXML ListView<HBox> lvSalad;
+   private ObservableList<HBox> saladOl = FXCollections.observableArrayList();
+   private @FXML ListView<HBox> lvPasta;
+   private ObservableList<HBox> PastaOl = FXCollections.observableArrayList();
+   private @FXML TableView<OrderMenu> orderTable;
+   private ObservableList<OrderMenu> orderTableOl = FXCollections.observableArrayList();
+   
+   @Override
+   public void initialize(URL location, ResourceBundle resources) {
+      tableSet();
+      orderTable.setItems(orderTableOl);
+   }
+   
+   //처음 올라오는 자리정하는 창
+   @SuppressWarnings("unchecked")
+   private void tableSet() {
+      Parent settableNo = null;
+      try {
+         settableNo = FXMLLoader.load(getClass().getResource("selectTablenum.fxml")); 
+      } catch (Exception e) {
+      }
+      btn = (Button)settableNo.lookup("#btn");
+      cb = (ChoiceBox<String>)settableNo.lookup("#cb");
+      ol.addAll("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15");
+      cb.setItems(ol);
+      
+      Scene scene = new Scene(settableNo);
+      stage = new Stage();
+      stage.setScene(scene);
+      stage.show();
+      
+      btn.setOnAction( e -> {
+         String tableNo = cb.getSelectionModel().getSelectedItem();
+         if(tableNo != null) {
+            startClient(tableNo);
+         }
+      });
+   }
+   
+   private void startClient(String tableNo) {
+      try {
+         socket = new Socket();
+         socket.connect(new InetSocketAddress("localhost", 8888));
+         
+         is = socket.getInputStream();
+         dis = new DataInputStream(is);
+         os = socket.getOutputStream();
+         dos = new DataOutputStream(os);
+         //접속하고 테이블 번호를 서버에 전송
+         dos.writeUTF(tableNo);
+         
+         //내이름과 같은 테이블이 있는지 서버에 체크 (성공하면 connOk, 실패시 connFail)
+         String message = dis.readUTF();
+         //false가 나오면 리턴시켜 다시 자리정하게한다.
+         if(!connCheck(message)) {
+            return;
+         }
+         stage.close();
+         clientStage.show();
+         
+         //메뉴를 서버로부터 받는다.
+         String menu = dis.readUTF();
+         //메뉴를 받아오는데에 성공했을 때
+         if(menu != null) {
+            st1 = new StringTokenizer(menu, "@@");
+            while(st1.hasMoreTokens()) {
+               String tmp = st1.nextToken();
+               st2 = new StringTokenizer(tmp, "$$");
+               menuList.add(new Menu(st2.nextToken(), st2.nextToken(), st2.nextToken()));
+            }
+            //메뉴들을 각 메뉴판에 담기
+            for(Menu m : menuList) {
+               if(m.getNo().equals("파스타")) {
+                  PastaOl = replaceMenu(PastaOl, m);
+               }else if(m.getNo().equals("샐러드")) {
+                  saladOl = replaceMenu(saladOl, m);
+               }
+               //리스트뷰에 observablelist 연동
+            }
+            lvSalad.setItems(saladOl);
+            lvPasta.setItems(PastaOl);
+            
+            orderTableSetting();
+            
+         }else {
+            throw new Exception(); 
+         }
+      }catch (Exception e) {
+         System.out.println("메뉴 정보를 받아오지 못함.");
+         e.printStackTrace();
+      }
+   }
+   
+   //메뉴판에 메뉴를 넣는 메서드
+      private ObservableList<HBox> replaceMenu(ObservableList<HBox> ol, Menu m){
+         ObservableList<HBox> tempOl = ol;
+         try {
+            //각 메뉴 아이템
+            Parent node = FXMLLoader.load(getClass().getResource("menuItem.fxml"));
+            Label labelName = (Label)node.lookup("#labelName");
+            Label labelPrice = (Label)node.lookup("#labelPrice");
+            labelName.setText(m.getName());
+            labelPrice.setText(m.getPrice());
+            node.setOnMouseClicked(e -> {
+               if(e.getClickCount() == 2) {
+                  System.out.println("메뉴이름 : " + labelName.getText() + "메뉴가격 : " + labelPrice.getText());
+                  addOrdertable(labelName.getText());
+               }
+            });
+            if(tempOl.size() == 0) {
+               HBox hbox = new HBox();
+               hbox.setSpacing(10);
+               hbox.getChildren().add(node);
+               tempOl.add(hbox);
+            }else if(tempOl.get(tempOl.size()-1).getChildren().size() % 3 == 0 ) {
+               HBox hbox = new HBox();
+               hbox.setSpacing(10);
+               hbox.getChildren().add(node);
+               tempOl.add(hbox);
+            }else {
+               tempOl.get(tempOl.size()-1).getChildren().add(node);
+            }
+            //마우스 더블클릭 액션
+            
+         }catch (Exception e) {
+         }
+         return tempOl;
+      }
+      //테이블뷰 초기화
+      private void orderTableSetting() {
+         TableColumn<OrderMenu, ?> a = orderTable.getColumns().get(0);
+          a.setCellValueFactory(new PropertyValueFactory<>("name"));
+          a.setText("메뉴 명");
+          
+          TableColumn<OrderMenu, ?> b = orderTable.getColumns().get(1);
+          b.setCellValueFactory(new PropertyValueFactory<>("cnt"));
+          b.setText("수량");
+          
+          TableColumn<OrderMenu, ?> c = orderTable.getColumns().get(2);
+          c.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
+          c.setText("가격");
+          
+      }
+      
+      private void addOrdertable(String name) {
+         try {
+         Menu mTmp = null;
+         for(Menu m : menuList) {
+            if(m.getName().equals(name)) {
+               mTmp = m;
+            }
+         }
+         for(OrderMenu om : orderTableOl) {
+            if(om.getName().equals(name)) {
+               System.out.println("여까지됨");
+               om.setCnt(om.getCnt() + 1);
+               om.setTotalPrice(om.getCnt() * Integer.parseInt(om.getPrice()));
+               int idx = orderTableOl.indexOf(om);
+               OrderMenu om2 = om;
+               orderTableOl.remove(om);
+               orderTableOl.add(idx, om2);
+               System.out.println("여여여까지됨");
+               return;
+            }
+         }
+         OrderMenu om = new OrderMenu(mTmp.getName(), 1, mTmp.getPrice());
+         orderTableOl.add(om);
+         }catch (Exception e) {
+            e.printStackTrace();
+         }
+         
+      }
+   
+   //접속 체크
+      private boolean connCheck(String message) {
+         StringTokenizer st = new StringTokenizer(message, "/");
+         String protocol = st.nextToken();
+//         String msg = st.nextToken();
+         System.out.println("프로토콜" + protocol);
+         if(protocol.equals("connOk")) {
+            return true;
+         }else if(protocol.equals("connFail")) {
+            return false;
+         }
+         return false;
+      }
+   
 }
