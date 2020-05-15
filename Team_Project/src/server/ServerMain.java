@@ -20,6 +20,7 @@ public class ServerMain extends Application{
 		primaryStage.toFront();
 		primaryStage.centerOnScreen();
 		primaryStage.show();
+		System.out.println("Â¥ÀÜ!!!@");
 	}
 	public static void main(String[] args) {
 		launch(args);
