@@ -149,6 +149,11 @@ public class ClientController implements Initializable{
 			}else {
 				tempOl.get(tempOl.size()-1).getChildren().add(node);
 			}
+			node.setOnMouseClicked(e -> {
+				if(e.getClickCount() == 2) {
+					System.out.println("메뉴이름 : " + labelName.getText() + "메뉴가격 : " + labelPrice.getText());
+				}
+			});
 		}catch (Exception e) {
 		}
 		return tempOl;
