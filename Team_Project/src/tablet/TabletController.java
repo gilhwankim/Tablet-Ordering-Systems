@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 
+import org.ietf.jgss.Oid;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -206,7 +208,7 @@ public class TabletController implements Initializable{
             }
          }
          for(OrderMenu om : orderTableOl) {
-            if(om.getName().equals(name)) {
+            if(om.getName().equals(mTmp.getName())) {
                System.out.println("¿©±îÁöµÊ");
                om.setCnt(om.getCnt() + 1);
                om.setTotalPrice(om.getCnt() * Integer.parseInt(om.getPrice()));
@@ -214,12 +216,14 @@ public class TabletController implements Initializable{
                OrderMenu om2 = om;
                orderTableOl.remove(om);
                orderTableOl.add(idx, om2);
+               orderTable.refresh();
                System.out.println("¿©¿©¿©±îÁöµÊ");
                return;
             }
          }
          OrderMenu om = new OrderMenu(mTmp.getName(), 1, mTmp.getPrice());
          orderTableOl.add(om);
+         orderTable.refresh();
          }catch (Exception e) {
             e.printStackTrace();
          }

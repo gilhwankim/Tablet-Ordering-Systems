@@ -19,7 +19,6 @@ public class TabletMain extends Application{
 		primaryStage.setTitle("Table");
 		primaryStage.toFront();
 		primaryStage.centerOnScreen();
-		primaryStage.show();
 	}
 	public static void main(String[] args) {
 		launch(args);
