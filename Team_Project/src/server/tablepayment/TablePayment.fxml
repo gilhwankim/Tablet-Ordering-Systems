@@ -39,7 +39,7 @@
          <children>
             <TabPane minHeight="720.0" minWidth="550.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                <Tab text="샐러드">
+                <Tab fx:id="mSalad" text="샐러드">
                   <content>
                     <AnchorPane>
                            <children>
@@ -66,7 +66,7 @@
                         </AnchorPane>
                   </content>
                 </Tab>
-                <Tab text="파스타">
+                <Tab fx:id="mPasta" text="파스타">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                   </content>
