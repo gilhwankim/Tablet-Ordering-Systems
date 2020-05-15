@@ -100,6 +100,7 @@ public class ClientController implements Initializable{
 					st2 = new StringTokenizer(tmp, "$$");
 					menuList.add(new Menu(st2.nextToken(), st2.nextToken(), st2.nextToken()));
 				}
+				
 				//자리 정하는게 끝나면 메뉴창을 연다.
 				Parent parent = FXMLLoader.load(getClass().getResource("table.fxml"));
 				Scene scene = new Scene(parent);
