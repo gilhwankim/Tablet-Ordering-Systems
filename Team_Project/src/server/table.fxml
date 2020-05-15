@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="TOP_RIGHT" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TableView id="tableView" prefHeight="68.0" prefWidth="160.0" VBox.vgrow="ALWAYS">
+         <columns>
+            <TableColumn editable="false" prefWidth="115.0" resizable="false" sortable="false" text="홀 1" />
+            <TableColumn editable="false" prefWidth="44.0" resizable="false" text="C2" />
+         </columns>
+      </TableView>
+      <HBox>
+         <children>
+            <Label id="labelName" text="테이블">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <HBox alignment="TOP_RIGHT" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label id="labelPrice" text="가격">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+   </children>
+</VBox>
