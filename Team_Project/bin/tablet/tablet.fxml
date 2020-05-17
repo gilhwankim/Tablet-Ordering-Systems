@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<BorderPane fx:controller="tablet.TabletController" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <TabPane prefHeight="500.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+         <tabs>
+            <Tab text="샐러드">
+               <content>
+                  <HBox>
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <ListView fx:id="lvSalad" VBox.vgrow="ALWAYS">
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </ListView>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </content>
+            </Tab>
+            <Tab text="파스타">
+               <content>
+                  <HBox>
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <ListView fx:id="lvPasta" VBox.vgrow="ALWAYS">
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </ListView>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+   </center>
+   <right>
+      <VBox fx:id="vbox" alignment="TOP_CENTER" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="108.0" text="주문서">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <TableView fx:id="orderTable" prefHeight="330.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="tMenuName" prefWidth="130.0" text="메뉴명" />
+                  <TableColumn fx:id="tMenuNum" prefWidth="40.0" text="수량" />
+                  <TableColumn fx:id="tMenuPrice" text="가격" />
+               </columns>
+            </TableView>
+            <HBox alignment="TOP_RIGHT" prefHeight="30.0" prefWidth="250.0" spacing="5.0">
+               <children>
+                  <Button fx:id="subtractBtn" mnemonicParsing="false" text="-" />
+                  <Button fx:id="plusBtn" mnemonicParsing="false" text="+" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="250.0" spacing="10.0">
+               <children>
+                  <Label text="합계" />
+                  <TextField fx:id="total" alignment="CENTER_RIGHT" />
+               </children>
+            </HBox>
+            <Button fx:id="orderBtn" mnemonicParsing="false" prefHeight="35.0" prefWidth="250.0" text="주문하기" />
+         </children>
+      </VBox>
+   </right>
+</BorderPane>

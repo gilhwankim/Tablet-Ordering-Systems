@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.HBox?>
+
+<HBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pos.tablepayment.TablePaymentController">
+   <children>
+      <VBox layoutX="27.0" layoutY="30.0">
+         <children>
+            <TableView minHeight="530.0" minWidth="420.0">
+              <columns>
+                <TableColumn fx:id="menuName" prefWidth="167.0" text="메뉴명" />
+                <TableColumn fx:id="menuPrice" minWidth="0.0" prefWidth="101.0" text="단가" />
+                  <TableColumn fx:id="menuNum" prefWidth="53.0" text="수량" />
+                  <TableColumn fx:id="menuTotal" prefWidth="97.0" text="금액" />
+              </columns>
+            </TableView>
+            <Label fx:id="payTotal" alignment="CENTER_RIGHT" minHeight="40.0" minWidth="420.0" text="총급액">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </Label>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="payCash" minHeight="150.0" minWidth="140.0" mnemonicParsing="false" text="현금" />
+                  <Button fx:id="payCard" minHeight="150.0" minWidth="140.0" mnemonicParsing="false" text="카드" />
+                  <Button fx:id="payOrder" minHeight="150.0" minWidth="140.0" mnemonicParsing="false" text="주문" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox>
+         <children>
+            <TabPane minHeight="720.0" minWidth="550.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab fx:id="mSalad" text="샐러드">
+                  <content>
+                    <AnchorPane>
+                           <children>
+                              <GridPane hgap="5.0" layoutX="3.0" layoutY="3.0" prefHeight="662.0" prefWidth="545.0" vgap="5.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="105.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="110.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="110.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="80.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="80.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="80.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="80.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="80.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="80.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="80.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="80.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                              </GridPane>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab fx:id="mPasta" text="파스타">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </Tab>
+                  <Tab text="스테이크">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                     </content>
+                  </Tab>
+                  <Tab text="필라프">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                     </content>
+                  </Tab>
+                  <Tab text="피자">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                     </content>
+                  </Tab>
+                  <Tab text="음료">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                     </content>
+                  </Tab>
+                  <Tab text="주류">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                     </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+      </VBox>
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</HBox>

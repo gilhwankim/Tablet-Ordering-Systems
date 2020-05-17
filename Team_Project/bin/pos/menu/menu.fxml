@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<VBox spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pos.menu.MenuController">
+   <children>
+      <TableView fx:id="table" prefHeight="400.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
+        <columns>
+          <TableColumn editable="false" maxWidth="200.0" minWidth="50.0" prefWidth="70.0" text="no" />
+          <TableColumn editable="false" maxWidth="3000.0" minWidth="100.0" prefWidth="-1.0" sortable="false" text="name" />
+            <TableColumn editable="false" maxWidth="3000.0" minWidth="70.0" prefWidth="-1.0" sortable="false" text="price" />
+        </columns>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </TableView>
+      <HBox alignment="CENTER" spacing="5.0">
+         <children>
+            <Label text="종류 :" />
+            <ChoiceBox fx:id="choiceBox" prefWidth="100.0">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin></ChoiceBox>
+            <Label text="이름 : " />
+            <TextField fx:id="tfName" prefWidth="150.0">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin></TextField>
+            <Label text="가격 : " />
+            <TextField fx:id="tfPrice" prefWidth="100.0" />
+            <Label text="원" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" spacing="30.0">
+         <children>
+            <Button fx:id="btnAdd" text="추가" />
+            <Button fx:id="btnDel" text="삭제" />
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+</VBox>
