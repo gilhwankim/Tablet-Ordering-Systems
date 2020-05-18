@@ -2,6 +2,7 @@ package tablet;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
@@ -14,8 +15,10 @@ import java.util.StringTokenizer;
 
 import org.ietf.jgss.Oid;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -61,11 +64,14 @@ public class TabletController implements Initializable{
    private ObservableList<HBox> PastaOl = FXCollections.observableArrayList();
    private @FXML TableView<OrderMenu> orderTable;
    private ObservableList<OrderMenu> orderTableOl = FXCollections.observableArrayList();
+   private @FXML Button orderBtn;
    
    @Override
    public void initialize(URL location, ResourceBundle resources) {
       tableSet();
       orderTable.setItems(orderTableOl);
+      
+      orderBtn.setOnAction(e -> orderBtnAction(e));
    }
    
    //처음 올라오는 자리정하는 창
@@ -199,6 +205,7 @@ public class TabletController implements Initializable{
           
       }
       
+      //구매 테이블에 메뉴 넣기.
       private void addOrdertable(String name) {
          try {
          Menu mTmp = null;
@@ -209,7 +216,6 @@ public class TabletController implements Initializable{
          }
          for(OrderMenu om : orderTableOl) {
             if(om.getName().equals(mTmp.getName())) {
-               System.out.println("여까지됨");
                om.setCnt(om.getCnt() + 1);
                om.setTotalPrice(om.getCnt() * Integer.parseInt(om.getPrice()));
                int idx = orderTableOl.indexOf(om);
@@ -217,7 +223,6 @@ public class TabletController implements Initializable{
                orderTableOl.remove(om);
                orderTableOl.add(idx, om2);
                orderTable.refresh();
-               System.out.println("여여여까지됨");
                return;
             }
          }
@@ -230,6 +235,29 @@ public class TabletController implements Initializable{
          
       }
    
+      //'주문하기'버튼의 액션
+      private void orderBtnAction(ActionEvent event) {
+    	  String msg = "";
+    	  for(OrderMenu m : orderTableOl) {
+    		  msg += m.getName() + "$$" + m.getCnt() + "$$" + m.getTotalPrice();
+    		  msg += "@@";
+    	  }
+    	  msg = msg.substring(0, msg.length() -2);
+    	  send_Message("주문/////" + msg);
+    	  System.out.println(msg);
+      }
+      
+      private void send_Message(String msg) {
+    	  try {
+			dos.writeUTF(msg);
+			Platform.runLater(() -> orderTableOl.clear());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	  
+      }
+      
    //접속 체크
       private boolean connCheck(String message) {
          StringTokenizer st = new StringTokenizer(message, "/");
