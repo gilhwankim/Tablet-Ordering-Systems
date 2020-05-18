@@ -71,7 +71,14 @@
             <HBox alignment="CENTER_RIGHT" prefHeight="30.0" spacing="10.0">
                <children>
                   <Label text="합계" />
-                  <TextField fx:id="total" alignment="CENTER_RIGHT" />
+                  <Label fx:id="total" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="120.0" text="Label">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Label>
                </children>
             </HBox>
             <Button fx:id="orderBtn" mnemonicParsing="false" prefHeight="35.0" prefWidth="270.0" text="주문하기" />
