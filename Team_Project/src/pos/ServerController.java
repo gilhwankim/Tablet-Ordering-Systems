@@ -8,6 +8,7 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -17,6 +18,7 @@ import java.util.concurrent.Executors;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -176,6 +178,9 @@ public class ServerController implements Initializable{
 		private DataInputStream dis;
 		private DataOutputStream dos;
 		
+		DecimalFormat df = new DecimalFormat("###,###,###");
+		private int totalPrice = 0;	//테이블의 합계 변수
+		
 		public Client(Socket socket) {
 			this.socket = socket;
 			client_Network();
@@ -261,6 +266,7 @@ public class ServerController implements Initializable{
 			String message = st.nextToken();
 			System.out.println("프로토콜 : " + protocol);
 			System.out.println("메세지 : " + message);
+			//주문 들어왔을 때
 			if(protocol.equals("주문")) {
 				st2 = new StringTokenizer(message, "@@");
 				while(st2.hasMoreTokens()) {
@@ -310,12 +316,24 @@ public class ServerController implements Initializable{
 			    b.setCellValueFactory(new PropertyValueFactory<>("cnt"));
 			    b.setText("");
 				
+			    //각 테이블에 메뉴가 들어오거나 나갈 때마다 합계 계산.
+			    orderMenu_list.addListener(new ListChangeListener<OrderMenu>() {
+			    	@Override
+			    	public void onChanged(Change<? extends OrderMenu> c) {
+			    		for(OrderMenu m : c.getList()) {
+			    			totalPrice += m.getPrice();
+			    		}
+			    		Platform.runLater( () -> labelPrice.setText(df.format("" + totalPrice)));
+			    	}
+			    });
+				
 				//칼럼과 로우 맞춰서 테이블정보 넣기
 				Platform.runLater(() -> {
 				home.getChildren().remove(tableNo-1);
 				home.add(table, column, row);
 				});
 				table_list.add(table);
+				
 				
 			} catch (Exception e) {
 				e.printStackTrace();
