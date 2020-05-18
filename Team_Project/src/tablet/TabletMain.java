@@ -16,7 +16,7 @@ public class TabletMain extends Application{
 		Parent parent = FXMLLoader.load(getClass().getResource("tablet.fxml"));
 		Scene scene = new Scene(parent);
 		primaryStage.setScene(scene);
-		primaryStage.setTitle("Table");
+		primaryStage.setTitle("Tablet");
 		primaryStage.toFront();
 		primaryStage.centerOnScreen();
 	}
