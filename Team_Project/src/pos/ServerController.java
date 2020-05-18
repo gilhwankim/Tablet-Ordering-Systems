@@ -167,6 +167,7 @@ public class ServerController implements Initializable{
 		private int tableNo;			//테이블 번호
 		private List<Menu> menu_list = new ArrayList<>();	//각 테이블이 가질 메뉴 리스트 서버와 연동된다.
 //		private List<OrderMenu> orderMenu_list = new ArrayList<>();
+		//주문한 메뉴 담고있는 리스트
 		private ObservableList<OrderMenu> orderMenu_list = FXCollections.observableArrayList();
 		private Socket socket;			//서버에서 관리하는 각 테이블의 소켓
 		
@@ -212,6 +213,7 @@ public class ServerController implements Initializable{
 			//접속되면 메뉴 정보를 전송
 			String menu = "";
 			for(Menu m : dao.selectAll()) {
+				//$$는 카테고리/이름/가격 컬럼 구분자 , @@는 행 구분
 				menu += m.getNo() + "$$" + m.getName() + "$$" + m.getPrice();
 				menu += "@@";
 				//서버에서 관리하는 테이블의 메뉴리스트에도 넣어준다.

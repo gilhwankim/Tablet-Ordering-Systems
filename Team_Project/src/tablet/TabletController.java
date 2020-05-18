@@ -240,6 +240,7 @@ public class TabletController implements Initializable{
       private void orderBtnAction(ActionEvent event) {
     	  String msg = "";
     	  for(OrderMenu m : orderTableOl) {
+    		  //$$는 카테고리/이름/가격 컬럼 구분자 , @@는 행 구분
     		  msg += m.getName() + "$$" + m.getCnt() + "$$" + m.getTotalPrice();
     		  msg += "@@";
     	  }
@@ -250,6 +251,7 @@ public class TabletController implements Initializable{
       
       private void send_Message(String msg) {
     	  try {
+    		  //서버로 전송
 			dos.writeUTF(msg);
 			Platform.runLater(() -> orderTableOl.clear());
 			
