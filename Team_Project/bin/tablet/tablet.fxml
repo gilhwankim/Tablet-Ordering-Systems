@@ -8,24 +8,23 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<BorderPane fx:controller="tablet.TabletController" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="760.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tablet.TabletController">
    <center>
-      <TabPane prefHeight="500.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+      <TabPane tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
          <tabs>
             <Tab text="샐러드">
                <content>
                   <HBox>
                      <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                        <VBox HBox.hgrow="ALWAYS">
                            <children>
-                              <ListView fx:id="lvSalad" VBox.vgrow="ALWAYS">
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </ListView>
+                              <ListView fx:id="lvSalad" VBox.vgrow="ALWAYS" />
                            </children>
                         </VBox>
                      </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
                   </HBox>
                </content>
             </Tab>
@@ -33,16 +32,15 @@
                <content>
                   <HBox>
                      <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                        <VBox HBox.hgrow="ALWAYS">
                            <children>
-                              <ListView fx:id="lvPasta" VBox.vgrow="ALWAYS">
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </ListView>
+                              <ListView fx:id="lvPasta" VBox.vgrow="ALWAYS" />
                            </children>
                         </VBox>
                      </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
                   </HBox>
                </content>
             </Tab>
@@ -50,34 +48,37 @@
       </TabPane>
    </center>
    <right>
-      <VBox fx:id="vbox" alignment="TOP_CENTER" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="vbox" alignment="TOP_CENTER" prefWidth="280.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="108.0" text="주문서">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <TableView fx:id="orderTable" prefHeight="330.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+            <TableView fx:id="orderTable" VBox.vgrow="ALWAYS">
                <columns>
-                  <TableColumn fx:id="tMenuName" prefWidth="130.0" text="메뉴명" />
-                  <TableColumn fx:id="tMenuNum" prefWidth="40.0" text="수량" />
-                  <TableColumn fx:id="tMenuPrice" text="가격" />
+                  <TableColumn fx:id="tMenuName" prefWidth="149.0" text="메뉴명" />
+                  <TableColumn fx:id="tMenuNum" prefWidth="39.0" text="수량" />
+                  <TableColumn fx:id="tMenuPrice" prefWidth="81.0" text="가격" />
                </columns>
             </TableView>
-            <HBox alignment="TOP_RIGHT" prefHeight="30.0" prefWidth="250.0" spacing="5.0">
+            <HBox alignment="TOP_RIGHT" prefHeight="30.0" spacing="5.0">
                <children>
                   <Button fx:id="subtractBtn" mnemonicParsing="false" text="-" />
                   <Button fx:id="plusBtn" mnemonicParsing="false" text="+" />
                </children>
             </HBox>
-            <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="250.0" spacing="10.0">
+            <HBox alignment="CENTER_RIGHT" prefHeight="30.0" spacing="10.0">
                <children>
                   <Label text="합계" />
                   <TextField fx:id="total" alignment="CENTER_RIGHT" />
                </children>
             </HBox>
-            <Button fx:id="orderBtn" mnemonicParsing="false" prefHeight="35.0" prefWidth="250.0" text="주문하기" />
+            <Button fx:id="orderBtn" mnemonicParsing="false" prefHeight="35.0" prefWidth="270.0" text="주문하기" />
          </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
       </VBox>
    </right>
 </BorderPane>

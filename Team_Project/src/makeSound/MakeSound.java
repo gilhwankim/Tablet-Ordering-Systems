@@ -23,7 +23,7 @@ public class MakeSound extends Thread{
 			}
 		System.out.println("È¿°úÀ½ Á¤Áö");
 		}
-	//?ï¿½ï¿½ê³¼ìŒ ì¤‘ï¿½? ?ï¿½ï¿½?ï¿½ï¿½ ë©”ì„œ?ï¿½ï¿½
+	//À½¿ø Á¤Áö½ÃÅ³ ¸Ş¼­µå
 	public void soundStop(Boolean stop) {
 		this.stop = stop;
 	}
