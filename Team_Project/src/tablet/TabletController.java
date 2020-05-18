@@ -70,6 +70,7 @@ public class TabletController implements Initializable{
    public void initialize(URL location, ResourceBundle resources) {
       tableSet();
       orderTable.setItems(orderTableOl);
+      orderTable.setPlaceholder(new Label(""));
       
       orderBtn.setOnAction(e -> orderBtnAction(e));
    }
@@ -255,7 +256,7 @@ public class TabletController implements Initializable{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-    	  
+
       }
       
    //접속 체크
