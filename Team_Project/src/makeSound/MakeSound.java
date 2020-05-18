@@ -12,7 +12,7 @@ public class MakeSound extends Thread{
 	public void run() { //start() 호출로 실행
 		while(!stop) { 
 			try {
-				FileInputStream	fis = new FileInputStream("notice.mp3"); //음원 파일 경로
+				FileInputStream	fis = new FileInputStream("src\\makeSound\\notice.mp3"); //음원 파일 경로
 				Player player = new Player(fis);
 				player.play(); //플레이어 실행
 				Thread.sleep(2000); //정지 안시키면 2초마다 음원 재생  
