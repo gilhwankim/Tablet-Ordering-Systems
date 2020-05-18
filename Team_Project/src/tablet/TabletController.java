@@ -17,6 +17,7 @@ import org.ietf.jgss.Oid;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -65,12 +66,24 @@ public class TabletController implements Initializable{
    private @FXML TableView<OrderMenu> orderTable;
    private ObservableList<OrderMenu> orderTableOl = FXCollections.observableArrayList();
    private @FXML Button orderBtn;
+   private @FXML Label total;
    
    @Override
    public void initialize(URL location, ResourceBundle resources) {
       tableSet();
       orderTable.setItems(orderTableOl);
       orderTable.setPlaceholder(new Label(""));
+      
+      orderTableOl.addListener(new ListChangeListener<OrderMenu>() {
+    	  @Override
+    	public void onChanged(Change<? extends OrderMenu> c) {
+    		  int totalPrice = 0;
+    		  for(OrderMenu m : c.getList()) {
+    			  totalPrice += m.getTotalPrice();
+    		  }
+    		  total.setText(totalPrice + "¿ø");
+    	}
+      });
       
       orderBtn.setOnAction(e -> orderBtnAction(e));
    }
