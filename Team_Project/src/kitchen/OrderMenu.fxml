@@ -10,7 +10,7 @@
    <children>
       <Label layoutX="9.0" layoutY="2.0" prefHeight="27.0" prefWidth="73.0" text="테이블 번호: " />
       <Label fx:id="tableNum" layoutX="84.0" layoutY="9.0" text="0" />
-      <TableView layoutY="28.0" prefHeight="163.0" prefWidth="175.0">
+      <TableView fx:id="kitchenTableview" layoutY="28.0" prefHeight="163.0" prefWidth="175.0">
         <columns>
           <TableColumn fx:id="orderMenuList" prefWidth="129.0" text="메뉴" />
           <TableColumn fx:id="orderMenuQuantity" prefWidth="47.0" text="수량" />

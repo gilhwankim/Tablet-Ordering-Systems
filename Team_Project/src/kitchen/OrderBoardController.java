@@ -1,59 +1,86 @@
 package kitchen;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.StringTokenizer;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import pos.menu.Menu;
 
 public class OrderBoardController implements Initializable {
 	
-	
+	   //서버연결에 필요한 멤버
+	   private Socket socket;
+	   private InputStream is;
+	   private OutputStream os;
+	   private DataInputStream dis;
+	   private DataOutputStream dos;
+	   
+	   @FXML TableView<OrderBoardMenu> kitchenTableview;  //OrderMenu.fxml 테이블 뷰
+	   @FXML Label tableNum; //테이블 번호 라벨 
+	   @FXML TableColumn<OrderBoardMenu, String> orderMenuList; //테이블 메뉴 컬럼
+	   @FXML TableColumn<OrderBoardMenu, Integer> orderMenuQuantity; //테이블 수량 컬럼
+	   
+	   private ObservableList<OrderBoardMenu> tableViewOl = FXCollections.observableArrayList();
+	   
+	   
+	   
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
-		
+		System.out.println("start 앞");
+		startClient();
+		System.out.println("start 뒤");
+	}
+	
+	public OrderBoardController() {
 		
 	}
 	
+	  private void startClient() {
+	      try {
+	         socket = new Socket();
+	         socket.connect(new InetSocketAddress("localhost", 8888));
+	         
+	         is = socket.getInputStream();
+	         dis = new DataInputStream(is);
+	         os = socket.getOutputStream();
+	         dos = new DataOutputStream(os);
+	         
+	         dos.writeUTF("주방");
+	         System.out.println("연결성공!");
+	         
+	         Thread thread = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					while(true) {
+						try {
+							String message = dis.readUTF();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}	
+					}
+					
+				}
+			});
+	      
+	   }catch (Exception e) {
+		   e.printStackTrace();
+	   }
+	  }
 	
-//    private ObservableList<HBox> replaceMenu(ObservableList<HBox> ol, Menu m){
-//        ObservableList<HBox> tempOl = ol;
-//        try {
-//           //각 메뉴 아이템
-//           Parent node = FXMLLoader.load(getClass().getResource("menuItem.fxml"));
-//           Label labelName = (Label)node.lookup("#labelName");
-//           Label labelPrice = (Label)node.lookup("#labelPrice");
-//           labelName.setText(m.getName());
-//           labelPrice.setText(m.getPrice());
-//           node.setOnMouseClicked(e -> {
-//              if(e.getClickCount() == 2) {
-//                 System.out.println("메뉴이름 : " + labelName.getText() + "메뉴가격 : " + labelPrice.getText());
-//                 addOrdertable(labelName.getText());
-//              }
-//           });
-//           if(tempOl.size() == 0) {
-//              HBox hbox = new HBox();
-//              hbox.setSpacing(10);
-//              hbox.getChildren().add(node);
-//              tempOl.add(hbox);
-//           }else if(tempOl.get(tempOl.size()-1).getChildren().size() % 3 == 0 ) {
-//              HBox hbox = new HBox();
-//              hbox.setSpacing(10);
-//              hbox.getChildren().add(node);
-//              tempOl.add(hbox);
-//           }else {
-//              tempOl.get(tempOl.size()-1).getChildren().add(node);
-//           }
-//           //마우스 더블클릭 액션
-//           
-//        }catch (Exception e) {
-//        }
-//        return tempOl;
-//     }
 }

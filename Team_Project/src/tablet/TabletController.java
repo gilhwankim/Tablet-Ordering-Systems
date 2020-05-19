@@ -8,7 +8,6 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -67,12 +66,7 @@ public class TabletController implements Initializable{
    private @FXML TableView<OrderMenu> orderTable;
    private ObservableList<OrderMenu> orderTableOl = FXCollections.observableArrayList();
    private @FXML Button orderBtn;
-   private @FXML Button subtractBtn;
-   private @FXML Button plusBtn;
-   
    private @FXML Label total;
-   
-   DecimalFormat df = new DecimalFormat("###,###,###");
    
    @Override
    public void initialize(URL location, ResourceBundle resources) {
@@ -87,13 +81,11 @@ public class TabletController implements Initializable{
     		  for(OrderMenu m : c.getList()) {
     			  totalPrice += m.getTotalPrice();
     		  }
-    		  total.setText(df.format(totalPrice) + "원");
+    		  total.setText(totalPrice + "원");
     	}
       });
       
       orderBtn.setOnAction(e -> orderBtnAction(e));
-      subtractBtn.setOnAction(e -> subtractBtnAction(e));
-      plusBtn.setOnAction(e -> plusBtnAction(e));
    }
    
    //처음 올라오는 자리정하는 창
@@ -136,6 +128,8 @@ public class TabletController implements Initializable{
          
          //내이름과 같은 테이블이 있는지 서버에 체크 (성공하면 connOk, 실패시 connFail)
          String message = dis.readUTF();
+ 
+         
          //false가 나오면 리턴시켜 다시 자리정하게한다.
          if(!connCheck(message)) {
             return;
@@ -187,8 +181,10 @@ public class TabletController implements Initializable{
             labelName.setText(m.getName());
             labelPrice.setText(m.getPrice());
             node.setOnMouseClicked(e -> {
-              System.out.println("메뉴이름 : " + labelName.getText() + "메뉴가격 : " + labelPrice.getText());
-              addOrdertable(labelName.getText());
+               if(e.getClickCount() == 2) {
+                  System.out.println("메뉴이름 : " + labelName.getText() + "메뉴가격 : " + labelPrice.getText());
+                  addOrdertable(labelName.getText());
+               }
             });
             if(tempOl.size() == 0) {
                HBox hbox = new HBox();
@@ -257,7 +253,9 @@ public class TabletController implements Initializable{
    
       //'주문하기'버튼의 액션
       private void orderBtnAction(ActionEvent event) {
+    	  try {
     	  String msg = "";
+    	  System.out.println();
     	  for(OrderMenu m : orderTableOl) {
     		  //$$는 카테고리/이름/가격 컬럼 구분자 , @@는 행 구분
     		  msg += m.getName() + "$$" + m.getCnt() + "$$" + m.getTotalPrice();
@@ -266,37 +264,9 @@ public class TabletController implements Initializable{
     	  msg = msg.substring(0, msg.length() -2);
     	  send_Message("주문/////" + msg);
     	  System.out.println(msg);
-      }
-      //'-'버튼의 액션
-      private void subtractBtnAction(ActionEvent event) {
-    	  String name = orderTable.getSelectionModel().getSelectedItem().getName();
-    	  System.out.println(name);
-    	  if(!name.equals(null)) {
-    		  for(OrderMenu m : orderTableOl) {
-    			  if(m.getName().equals(name)) {
-    				  if(m.getCnt() == 1) {
-    					  orderTableOl.remove(m);
-    				  }else {
-    					  m.setCnt(m.getCnt() - 1);
-    				  }
-    				  
-    			  }
-    		  }
-    	  }
-    	  orderTable.refresh();
-      }
-      //'+'버튼의 액션
-      private void plusBtnAction(ActionEvent event) {
-    	  String name = orderTable.getSelectionModel().getSelectedItem().getName();
-    	  System.out.println(name);
-    	  if(!name.equals(null)) {
-    		  for(OrderMenu m : orderTableOl) {
-    			  if(m.getName().equals(name)) {
-    				  m.setCnt(m.getCnt() + 1);
-    			  }
-    		  }
-    	  }
-    	  orderTable.refresh();
+    	  }catch (Exception e) {
+    		  return;
+		}
       }
       
       private void send_Message(String msg) {

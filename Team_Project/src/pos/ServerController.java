@@ -8,7 +8,6 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -17,8 +16,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javafx.application.Platform;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,8 +33,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import kitchen.OrderBoardMenu;
 import pos.menu.Menu;
 import pos.menu.MenuDAO;
 
@@ -115,7 +115,7 @@ public class ServerController implements Initializable{
 						try {
 							socket = serverSocket.accept();
 							Client client = new Client(socket);
-							client.start();
+							
 							
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -131,10 +131,10 @@ public class ServerController implements Initializable{
 	}
 	private void stopServer() {
 		try {
-			if(serverSocket != null && serverSocket.isClosed()) {
+			if(serverSocket != null && !serverSocket.isClosed()) {
 				serverSocket.close();
 			}
-			if(threadPool != null && threadPool.isShutdown()) {
+			if(threadPool != null && !threadPool.isShutdown()) {
 				threadPool.shutdown();
 			}
 			for(Client c : client_list) {
@@ -178,9 +178,6 @@ public class ServerController implements Initializable{
 		private DataInputStream dis;
 		private DataOutputStream dos;
 		
-		DecimalFormat df = new DecimalFormat("###,###,###");
-		private int totalPrice = 0;	//테이블의 합계 변수
-		
 		public Client(Socket socket) {
 			this.socket = socket;
 			client_Network();
@@ -196,6 +193,12 @@ public class ServerController implements Initializable{
 			//처음 들어올 때 테이블 넘버를 받는다.
 			String tmp = dis.readUTF();
 			
+			if(tmp.equals("주방")) {
+				System.out.println("주방 맞다");
+				
+				return;
+			}
+			this.start();
 			if(tmp != null) {
 				tableNo = Integer.parseInt(tmp);
 				//이미 접속해있는 테이블인지 확인.(번호 중복안되게)
@@ -236,7 +239,6 @@ public class ServerController implements Initializable{
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 		}
 		
 		//테이블로 부터 주문이나 정보를 기다린다.
@@ -261,16 +263,24 @@ public class ServerController implements Initializable{
 		}
 		
 		private void msgProcess(String msg) {
+			//@@@@주문이 오면 테이블 번호, 주문내역을 받아 넘겨준다.
+			OrderBoardMenu OBM = new OrderBoardMenu(tableNo, msg);
+
 			st = new StringTokenizer(msg, "///");
 			String protocol = st.nextToken();
 			String message = st.nextToken();
 			System.out.println("프로토콜 : " + protocol);
 			System.out.println("메세지 : " + message);
-			//주문 들어왔을 때
 			if(protocol.equals("주문")) {
 				st2 = new StringTokenizer(message, "@@");
 				while(st2.hasMoreTokens()) {
-					st = new StringTokenizer(st2.nextToken(), "$$");
+					
+					String menu = st2.nextToken();
+					//주방으로 보낼 메서드
+					
+					
+					
+					st = new StringTokenizer(menu, "$$");
 					String name = st.nextToken();
 					int cnt = Integer.parseInt(st.nextToken());
 					int price = Integer.parseInt(st.nextToken());
@@ -292,7 +302,6 @@ public class ServerController implements Initializable{
 				}
 				
 			}
-			
 		}
 		
 		@SuppressWarnings("unchecked")
@@ -316,17 +325,6 @@ public class ServerController implements Initializable{
 			    b.setCellValueFactory(new PropertyValueFactory<>("cnt"));
 			    b.setText("");
 				
-			    //각 테이블에 메뉴가 들어오거나 나갈 때마다 합계 계산.
-			    orderMenu_list.addListener(new ListChangeListener<OrderMenu>() {
-			    	@Override
-			    	public void onChanged(Change<? extends OrderMenu> c) {
-			    		for(OrderMenu m : c.getList()) {
-			    			totalPrice += m.getPrice();
-			    		}
-			    		Platform.runLater( () -> labelPrice.setText(df.format("" + totalPrice)));
-			    	}
-			    });
-				
 				//칼럼과 로우 맞춰서 테이블정보 넣기
 				Platform.runLater(() -> {
 				home.getChildren().remove(tableNo-1);
@@ -334,12 +332,15 @@ public class ServerController implements Initializable{
 				});
 				table_list.add(table);
 				
-				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		
+		//테이블 번호, 주문내역전송
+		private void sendOrderInfo() {
+			
+		}
 		
 	}
 }
