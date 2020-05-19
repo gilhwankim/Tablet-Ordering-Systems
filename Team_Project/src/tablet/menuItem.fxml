@@ -7,14 +7,14 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="225.0" prefWidth="220.0" spacing="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="210.0" prefWidth="220.0" spacing="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fx:id="menuImg" fitHeight="150.0" fitWidth="210.0" pickOnBounds="true">
+      <ImageView fx:id="menuImg" fitHeight="140.0" fitWidth="210.0" pickOnBounds="true">
          <image>
             <Image url="@../images/pasta.jpg" />
          </image>
       </ImageView>
-      <Label id="labelName" prefHeight="40.0" prefWidth="200.0" text="메뉴명">
+      <Label id="labelName" prefHeight="35.0" prefWidth="200.0" text="메뉴명">
          <font>
             <Font size="20.0" />
          </font>
@@ -22,7 +22,7 @@
             <Insets left="5.0" right="5.0" />
          </VBox.margin>
       </Label>
-      <Label id="labelPrice" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="35.0" prefWidth="200.0" text="가격">
+      <Label id="labelPrice" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="30.0" prefWidth="200.0" text="가격">
          <VBox.margin>
             <Insets left="5.0" right="5.0" />
          </VBox.margin>
