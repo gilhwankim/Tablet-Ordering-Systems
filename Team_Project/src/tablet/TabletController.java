@@ -31,6 +31,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import pos.menu.Menu;
@@ -214,8 +216,14 @@ public class TabletController implements Initializable{
             Parent node = FXMLLoader.load(getClass().getResource("menuItem.fxml"));
             Label labelName = (Label)node.lookup("#labelName");
             Label labelPrice = (Label)node.lookup("#labelPrice");
+            //menuItem.fxml에서 imageView 찾아옴
+            ImageView imageMenu = (ImageView)node.lookup("#menuImg");
+            //메뉴이름과 같은 이미지를 띄워줌
+            imageMenu.setImage(new Image(getClass().getResource(
+        				"/images/" + m.getName() + ".jpg").toString()));                 
             labelName.setText(m.getName());
-            labelPrice.setText(m.getPrice());
+            labelPrice.setText(m.getPrice());            
+            
             node.setOnMouseClicked(e -> {
                if(e.getClickCount() == 2) {
                   System.out.println("메뉴이름 : " + labelName.getText() + "메뉴가격 : " + labelPrice.getText());
