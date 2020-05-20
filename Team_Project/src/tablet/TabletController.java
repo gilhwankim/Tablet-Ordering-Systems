@@ -1,5 +1,6 @@
 package tablet;
 
+import java.awt.event.WindowAdapter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -101,6 +102,8 @@ public class TabletController implements Initializable{
       });
       
       orderBtn.setOnAction(e -> orderBtnAction(e));
+      
+      
    }
    
    //처음 올라오는 자리정하는 창
@@ -161,9 +164,7 @@ public class TabletController implements Initializable{
                String tmp = st1.nextToken();
                st2 = new StringTokenizer(tmp, "$$");
                
-               //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@수정필요
-               
-               menuList.add(new Menu(0,st2.nextToken(), st2.nextToken(), st2.nextToken()));
+               menuList.add(new Menu(Integer.parseInt(st2.nextToken()),st2.nextToken(), st2.nextToken(), st2.nextToken()));
             }
             //메뉴들을 각 메뉴판에 담기
             for(Menu m : menuList) {

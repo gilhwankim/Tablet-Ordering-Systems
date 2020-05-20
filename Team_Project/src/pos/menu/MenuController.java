@@ -94,8 +94,6 @@ public class MenuController implements Initializable{
 		price = tfPrice.getText();
 		if(!category.equals(null) && !name.equals("") && !price.equals("")) {
 			
-			//@@@@@@@@@@@@@@@@@@@@@@@@수정 필요
-			
 			Menu menu = new Menu(num,category, name, price);
 			dao.insert(menu);
 			tfNum.clear();

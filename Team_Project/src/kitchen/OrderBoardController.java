@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -47,6 +48,7 @@ public class OrderBoardController implements Initializable {
 		startClient();
 		System.out.println("start 뒤");
 		temp();
+		
 	}
 	
 	public OrderBoardController() {
@@ -90,6 +92,7 @@ public class OrderBoardController implements Initializable {
 	 							System.out.println("주방에서 받은 메뉴"+menu);
 	 						}
 	 					} catch (IOException e) {
+	 						System.exit(0);
 	 						e.printStackTrace();
 	 					}	
 	 				}

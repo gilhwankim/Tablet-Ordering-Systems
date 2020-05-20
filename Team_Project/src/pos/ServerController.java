@@ -224,8 +224,8 @@ public class ServerController implements Initializable{
 			//접속되면 메뉴 정보를 전송
 			String menu = "";
 			for(Menu m : dao.selectAll()) {
-				//$$는 카테고리/이름/가격 컬럼 구분자 , @@는 행 구분
-				menu += m.getCategory() + "$$" + m.getName() + "$$" + m.getPrice();
+				//$$는 메뉴번호/카테고리/이름/가격 컬럼 구분자 , @@는 행 구분
+				menu += m.getMenuNum()+"$$"+ m.getCategory() + "$$" + m.getName() + "$$" + m.getPrice();
 				menu += "@@";
 				//서버에서 관리하는 테이블의 메뉴리스트에도 넣어준다.
 				menu_list.add(m);
