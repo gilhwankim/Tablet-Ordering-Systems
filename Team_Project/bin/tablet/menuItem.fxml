@@ -9,9 +9,9 @@
 
 <VBox prefHeight="210.0" prefWidth="220.0" spacing="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fx:id="menuImg" fitHeight="140.0" fitWidth="210.0" pickOnBounds="true">
+      <ImageView id="menuImg" fitHeight="140.0" fitWidth="210.0" pickOnBounds="true">
          <image>
-            <Image url="@../images/pasta.jpg" />
+            <Image url="/images/pasta2.jpg" />
          </image>
       </ImageView>
       <Label id="labelName" prefHeight="35.0" prefWidth="200.0" text="메뉴명">
