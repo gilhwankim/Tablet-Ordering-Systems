@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane prefHeight="720.0" prefWidth="880.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pos.management.ReceiptController">
+   <top>
+      <Label prefHeight="30.0" text="영수증 관리" BorderPane.alignment="CENTER">
+         <font>
+            <Font size="20.0" />
+         </font>
+         <BorderPane.margin>
+            <Insets bottom="20.0" />
+         </BorderPane.margin></Label>
+   </top>
+   <left>
+      <TableView prefWidth="500.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn prefWidth="100.0" text="거래일자" />
+          <TableColumn prefWidth="200.0" text="결제금액" />
+            <TableColumn prefWidth="200.0" text="결제방법" />
+        </columns>
+      </TableView>
+   </left>
+   <right>
+      <VBox prefWidth="380.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+         <children>
+            <BorderPane prefHeight="30.0">
+               <left>
+                  <Label text="거래일자" BorderPane.alignment="CENTER" />
+               </left>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+               <right>
+                  <Label text="2020-05-20" BorderPane.alignment="CENTER" />
+               </right>
+            </BorderPane>
+            <TableView prefHeight="560.0">
+              <columns>
+                <TableColumn prefWidth="160.0" text="메뉴명" />
+                <TableColumn text="단가" />
+                  <TableColumn prefWidth="40.0" text="수량" />
+                  <TableColumn prefWidth="90.0" text="금액" />
+              </columns>
+            </TableView>
+            <Separator prefWidth="200.0" />
+            <BorderPane prefHeight="30.0">
+               <left>
+                  <Label text="총 결제금액" BorderPane.alignment="CENTER" />
+               </left>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+               <right>
+                  <Label text="100,000" BorderPane.alignment="CENTER" />
+               </right>
+            </BorderPane>
+         </children>
+      </VBox>
+   </right>
+</BorderPane>
