@@ -2,6 +2,7 @@ package pos;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
@@ -192,7 +193,8 @@ public class ServerController implements Initializable{
 			
 			//처음 들어올 때 테이블 넘버를 받는다.
 			String tmp = dis.readUTF();
-			
+			//주방 연결 확인
+			System.out.println("tmp: "+tmp);
 			if(tmp.equals("주방")) {
 				System.out.println("주방 맞다");
 				
@@ -264,21 +266,20 @@ public class ServerController implements Initializable{
 		
 		private void msgProcess(String msg) {
 			//@@@@주문이 오면 테이블 번호, 주문내역을 받아 넘겨준다.
-			OrderBoardMenu OBM = new OrderBoardMenu(tableNo, msg);
-
 			st = new StringTokenizer(msg, "///");
 			String protocol = st.nextToken();
+			//주문 내역
 			String message = st.nextToken();
 			System.out.println("프로토콜 : " + protocol);
 			System.out.println("메세지 : " + message);
 			if(protocol.equals("주문")) {
+				//
 				st2 = new StringTokenizer(message, "@@");
 				while(st2.hasMoreTokens()) {
 					
 					String menu = st2.nextToken();
-					//주방으로 보낼 메서드
-					
-					
+					//주방으로 메뉴 전송
+					sendOrderInfo(menu);
 					
 					st = new StringTokenizer(menu, "$$");
 					String name = st.nextToken();
@@ -338,8 +339,14 @@ public class ServerController implements Initializable{
 		}
 		
 		//테이블 번호, 주문내역전송
-		private void sendOrderInfo() {
-			
+		private void sendOrderInfo(String menu) {
+			//주방으로 메뉴 보냄
+			try {
+				dos.writeUTF("주방///"+menu);
+				System.out.println("주방으로 보내는 메뉴: 주방///" + menu);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
 	}
