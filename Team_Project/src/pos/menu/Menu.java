@@ -22,36 +22,36 @@ public class Menu {
 		this.price = new SimpleStringProperty(price);
 	}
 
-	public SimpleIntegerProperty getMenuNum() {
-		return menuNum;
+	public int getMenuNum() {
+		return menuNum.get();
 	}
 
-	public void setMenuNum(SimpleIntegerProperty menuNum) {
-		this.menuNum = menuNum;
+	public void setMenuNum(int menuNum) {
+		this.menuNum.set(menuNum);
 	}
 
-	public SimpleStringProperty getCategory() {
-		return category;
+	public String getCategory() {
+		return category.get();
 	}
 
-	public void setCategory(SimpleStringProperty category) {
-		this.category = category;
+	public void setCategory(String category) {
+		this.category.set(category);
 	}
 
-	public SimpleStringProperty getName() {
-		return name;
+	public String getName() {
+		return name.get();
 	}
 
-	public void setName(SimpleStringProperty name) {
-		this.name = name;
+	public void setName(String name) {
+		this.name.set(name);
 	}
 
-	public SimpleStringProperty getPrice() {
-		return price;
+	public String getPrice() {
+		return price.get();
 	}
 
-	public void setPrice(SimpleStringProperty price) {
-		this.price = price;
+	public void setPrice(String price) {
+		this.price.set(price);
 	}
 	
 

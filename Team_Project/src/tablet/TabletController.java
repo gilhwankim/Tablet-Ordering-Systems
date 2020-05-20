@@ -143,13 +143,15 @@ public class TabletController implements Initializable{
             while(st1.hasMoreTokens()) {
                String tmp = st1.nextToken();
                st2 = new StringTokenizer(tmp, "$$");
-               menuList.add(new Menu(st2.nextToken(), st2.nextToken(), st2.nextToken()));
+               
+               //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@수정필요
+               menuList.add(new Menu(0,st2.nextToken(), st2.nextToken(), st2.nextToken()));
             }
             //메뉴들을 각 메뉴판에 담기
             for(Menu m : menuList) {
-               if(m.getNo().equals("파스타")) {
+               if(m.getCategory().equals("파스타")) {
                   PastaOl = replaceMenu(PastaOl, m);
-               }else if(m.getNo().equals("샐러드")) {
+               }else if(m.getCategory().equals("샐러드")) {
                   saladOl = replaceMenu(saladOl, m);
                }
                //리스트뷰에 observablelist 연동

@@ -39,9 +39,10 @@ public class MenuDAO {
 	       PreparedStatement pstmt = null;
 	        try {
 	            pstmt = conn.prepareStatement(sql);
-	            pstmt.setString(1, menu.getNo());  
-	            pstmt.setString(2, menu.getName()); 
-	            pstmt.setString(3, menu.getPrice());
+	            pstmt.setInt(1, menu.getMenuNum());  
+	            pstmt.setString(2, menu.getCategory());  
+	            pstmt.setString(3, menu.getName()); 
+	            pstmt.setString(4, menu.getPrice());
 	            pstmt.executeUpdate();
 	            System.out.println("데이터 삽입 성공!");
 	        } catch (Exception e) {            
@@ -85,7 +86,7 @@ public class MenuDAO {
 	            ResultSet rs = pstmt.executeQuery();
 	 
 	            while (rs.next()) {   //가져올게 있느냐?
-	            	Menu m = new Menu(rs.getString(1), rs.getString(2), rs.getString(3));
+	            	Menu m = new Menu(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4));
 	                list.add(m);   //List<Student>에다가 추가함.
 	            } 
 	        } catch (SQLException e) {
