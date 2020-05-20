@@ -230,7 +230,7 @@ public class ServerController implements Initializable{
 				//서버에서 관리하는 테이블의 메뉴리스트에도 넣어준다.
 				menu_list.add(m);
 			}
-			
+			System.out.println(menu);
 			menu = menu.substring(0, menu.length()-2);
 //			파스타$$알리오 올리오$$15000원@@
 //			테이블에 메뉴 전송

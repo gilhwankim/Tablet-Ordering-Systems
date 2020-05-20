@@ -56,11 +56,28 @@ public class TabletController implements Initializable{
    private StringTokenizer st2;
    
    
-   //table.fxml
+   //table.fxml 카테고리 탭
    private @FXML ListView<HBox> lvSalad;
    private ObservableList<HBox> saladOl = FXCollections.observableArrayList();
    private @FXML ListView<HBox> lvPasta;
    private ObservableList<HBox> PastaOl = FXCollections.observableArrayList();
+   private @FXML ListView<HBox> lvSteak;
+   private ObservableList<HBox> SteakOl = FXCollections.observableArrayList();
+   private @FXML ListView<HBox> lvpilaf;
+   private ObservableList<HBox> PilafOl = FXCollections.observableArrayList();
+   private @FXML ListView<HBox> lvPizza;
+   private ObservableList<HBox> PizzaOl = FXCollections.observableArrayList();
+   private @FXML ListView<HBox> lvDrink;
+   private ObservableList<HBox> DrinkOl = FXCollections.observableArrayList();
+   private @FXML ListView<HBox> lvAlcohol;
+   private ObservableList<HBox> AlcoholOl = FXCollections.observableArrayList();
+   private @FXML ListView<HBox> lvetc;
+   private ObservableList<HBox> EtcOl = FXCollections.observableArrayList();
+   
+   
+   
+   
+   
    private @FXML TableView<OrderMenu> orderTable;
    private ObservableList<OrderMenu> orderTableOl = FXCollections.observableArrayList();
    private @FXML Button orderBtn;
@@ -145,6 +162,7 @@ public class TabletController implements Initializable{
                st2 = new StringTokenizer(tmp, "$$");
                
                //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@수정필요
+               
                menuList.add(new Menu(0,st2.nextToken(), st2.nextToken(), st2.nextToken()));
             }
             //메뉴들을 각 메뉴판에 담기
@@ -153,12 +171,29 @@ public class TabletController implements Initializable{
                   PastaOl = replaceMenu(PastaOl, m);
                }else if(m.getCategory().equals("샐러드")) {
                   saladOl = replaceMenu(saladOl, m);
+               }else if(m.getCategory().equals("스테이크")) {
+            	  SteakOl = replaceMenu(SteakOl, m);
+               }else if(m.getCategory().equals("필라프")) {
+            	  PilafOl = replaceMenu(PilafOl,m);
+               }else if(m.getCategory().equals("피자")) {
+            	  PizzaOl = replaceMenu(PizzaOl,m);
+               }else if(m.getCategory().equals("음료")) {
+            	  DrinkOl = replaceMenu(DrinkOl,m);
+               }else if(m.getCategory().equals("주류")) {
+            	  AlcoholOl = replaceMenu(AlcoholOl,m);
+               }else if(m.getCategory().equals("기타")) {
+            	  EtcOl = replaceMenu(EtcOl,m);
                }
                //리스트뷰에 observablelist 연동
             }
             lvSalad.setItems(saladOl);
             lvPasta.setItems(PastaOl);
-            
+            lvSteak.setItems(SteakOl);
+            lvpilaf.setItems(PilafOl);
+            lvPizza.setItems(PizzaOl);
+            lvDrink.setItems(DrinkOl);
+            lvAlcohol.setItems(AlcoholOl);
+            lvetc.setItems(EtcOl);
             orderTableSetting();
             
          }else {

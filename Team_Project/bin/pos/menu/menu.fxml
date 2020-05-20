@@ -21,6 +21,8 @@
       </TableView>
       <HBox alignment="CENTER" spacing="5.0">
          <children>
+            <Label text="번호:" />
+            <TextField fx:id="tfNum" prefWidth="150.0" />
             <Label text="종류 :" />
             <ChoiceBox fx:id="choiceBox" prefWidth="100.0">
                <HBox.margin>

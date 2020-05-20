@@ -20,6 +20,7 @@ public class MenuController implements Initializable{
 
 	@FXML ChoiceBox<String> choiceBox;
 	@FXML TableView<Menu> table;
+	@FXML TextField tfNum;
 	@FXML TextField tfName;
 	@FXML TextField tfPrice;
 	@FXML Button btnAdd;
@@ -29,7 +30,8 @@ public class MenuController implements Initializable{
 	private ObservableList<String> col = FXCollections.observableArrayList();	//choiceBox에 연동될 리스트
 	private MenuDAO dao = MenuDAO.getinstance();	//DB
 	
-	private String no;
+	private int num;
+	private String category;
 	private String name;
 	private String price;
 	
@@ -38,21 +40,25 @@ public class MenuController implements Initializable{
 		updateTable();
 		table.setItems(menuList);
 		//테이블 칼럼과 매핑
-		TableColumn<Menu, ?> toNo = table.getColumns().get(0);
-		toNo.setCellValueFactory(new PropertyValueFactory<>("no"));
-		toNo.setStyle("-fx-aliment : CENTER");
+		TableColumn<Menu, ?> toNum = table.getColumns().get(0);
+		toNum.setCellValueFactory(new PropertyValueFactory<>("menuNum"));
+		toNum.setStyle("-fx-aliment : CENTER");
 		
-		TableColumn<Menu, ?> toName = table.getColumns().get(1);
+		TableColumn<Menu, ?> toCategory = table.getColumns().get(1);
+		toCategory.setCellValueFactory(new PropertyValueFactory<>("category"));
+		toCategory.setStyle("-fx-aliment : CENTER");
+		
+		TableColumn<Menu, ?> toName = table.getColumns().get(2);
 		toName.setCellValueFactory(new PropertyValueFactory<>("name"));
 		toName.setStyle("-fx-aliment : CENTER");
 		
-		TableColumn<Menu, ?> toPrice = table.getColumns().get(2);
+		TableColumn<Menu, ?> toPrice = table.getColumns().get(3);
 		toPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
 		toPrice.setStyle("-fx-aliment : CENTER");
 		
 		//choiceBox에 아이템 추가.
 		choiceBox.setItems(col);
-		col.addAll("파스타", "스테이크","필라프","피자","샐러드", "음료", "술","기타");
+		col.addAll("파스타", "스테이크","필라프","피자","샐러드", "음료", "주류","기타");
 		//첫번째 아이템 선택
 		choiceBox.getSelectionModel().selectFirst();
 		
@@ -79,15 +85,20 @@ public class MenuController implements Initializable{
 	private void btnAddAction(ActionEvent event) {
 		//추가 버튼을 눌렀을 때 텍스트필드의 정보로
 		//메뉴 객체를 만들어 DB에 insert
-		no = choiceBox.getSelectionModel().getSelectedItem();
+		if(tfNum.getText().equals("")||tfName.getText().equals("")||tfPrice.getText().equals("")) {
+			return;
+		}
+		num = Integer.parseInt(tfNum.getText());
+		category = choiceBox.getSelectionModel().getSelectedItem();
 		name = tfName.getText();
 		price = tfPrice.getText();
-		if(!no.equals(null) && !name.equals("") && !price.equals("")) {
+		if(!category.equals(null) && !name.equals("") && !price.equals("")) {
 			
 			//@@@@@@@@@@@@@@@@@@@@@@@@수정 필요
 			
-			Menu menu = new Menu(0,no, name, price);
+			Menu menu = new Menu(num,category, name, price);
 			dao.insert(menu);
+			tfNum.clear();
 			tfName.clear();
 			tfPrice.clear();
 			updateTable();
@@ -95,6 +106,10 @@ public class MenuController implements Initializable{
 	}
 	
 	private void btnDelAction(ActionEvent event) {
+		table.getItems().remove(table.getSelectionModel().getSelectedItem());
+		if(table.getSelectionModel().getSelectedItem()==null) {
+			return;
+		}
 		String name = table.getSelectionModel().getSelectedItem().getName();
 		dao.delete(name);
 		updateTable();
