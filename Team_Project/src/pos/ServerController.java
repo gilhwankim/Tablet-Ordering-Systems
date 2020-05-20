@@ -42,6 +42,7 @@ import pos.menu.MenuDAO;
 public class ServerController implements Initializable{
 	
 	Stage serverStage = ServerMain.serverStage;
+	Client kitchen; //주방 클라이언트
 	
 	//POS FXML 멤버
 	private @FXML TabPane tab;
@@ -197,7 +198,7 @@ public class ServerController implements Initializable{
 			System.out.println("tmp: "+tmp);
 			if(tmp.equals("주방")) {
 				System.out.println("주방 맞다");
-				
+				kitchen = this;
 				return;
 			}
 			this.start();
@@ -342,7 +343,7 @@ public class ServerController implements Initializable{
 		private void sendOrderInfo(String menu) {
 			//주방으로 메뉴 보냄
 			try {
-				dos.writeUTF("주방///"+menu);
+				kitchen.dos.writeUTF("주방///"+menu);
 				System.out.println("주방으로 보내는 메뉴: 주방///" + menu);
 			} catch (IOException e) {
 				e.printStackTrace();

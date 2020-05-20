@@ -52,7 +52,7 @@ public class MenuController implements Initializable{
 		
 		//choiceBox에 아이템 추가.
 		choiceBox.setItems(col);
-		col.addAll("파스타", "샐러드", "음료", "술");
+		col.addAll("파스타", "스테이크","필라프","피자","샐러드", "음료", "술","기타");
 		//첫번째 아이템 선택
 		choiceBox.getSelectionModel().selectFirst();
 		

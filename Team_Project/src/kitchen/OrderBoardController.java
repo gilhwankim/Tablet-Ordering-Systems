@@ -98,5 +98,4 @@ public class OrderBoardController implements Initializable {
 	 		});
 		  thread.start();
 	  }
-	
 }

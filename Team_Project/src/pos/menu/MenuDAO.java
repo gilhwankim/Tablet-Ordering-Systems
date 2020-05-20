@@ -35,7 +35,7 @@ public class MenuDAO {
 	    }
 	
 	  public void insert(Menu menu) {
-	       String sql = "insert into menutbl values(?,?,?);";
+	       String sql = "insert into menutbl values(?,?,?,?);";
 	       PreparedStatement pstmt = null;
 	        try {
 	            pstmt = conn.prepareStatement(sql);
