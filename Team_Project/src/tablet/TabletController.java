@@ -218,9 +218,14 @@ public class TabletController implements Initializable{
             Label labelPrice = (Label)node.lookup("#labelPrice");
             //menuItem.fxml에서 imageView 찾아옴
             ImageView imageMenu = (ImageView)node.lookup("#menuImg");
+            
+            try { //이미지 없을시 디폴트 이미지 띄움
             //메뉴이름과 같은 이미지를 띄워줌
             imageMenu.setImage(new Image(getClass().getResource(
-        				"/images/" + m.getName() + ".jpg").toString()));                 
+        				"/images/" + m.getName() + ".jpg").toString()));
+            }catch (Exception e) {
+			}
+            
             labelName.setText(m.getName());
             labelPrice.setText(m.getPrice());            
             
