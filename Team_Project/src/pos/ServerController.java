@@ -343,7 +343,7 @@ public class ServerController implements Initializable{
 		private void sendOrderInfo(String menu) {
 			//주방으로 메뉴 보냄
 			try {
-				kitchen.dos.writeUTF("주방///"+menu);
+				kitchen.dos.writeUTF("주방///"+tableNo+"$$"+menu);
 				System.out.println("주방으로 보내는 메뉴: 주방///" + menu);
 			} catch (IOException e) {
 				e.printStackTrace();

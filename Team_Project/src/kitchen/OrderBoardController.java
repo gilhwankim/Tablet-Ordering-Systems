@@ -11,7 +11,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,7 +20,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import pos.menu.Menu;
 
 public class OrderBoardController implements Initializable {
 	
@@ -32,6 +30,7 @@ public class OrderBoardController implements Initializable {
 	   private DataInputStream dis;
 	   private DataOutputStream dos;
 	   StringTokenizer st;
+	   StringTokenizer st2;
 	   
 	   @FXML TableView<OrderBoardMenu> kitchenTableview;  //OrderMenu.fxml 테이블 뷰
 	   @FXML Label tableNum; //테이블 번호 라벨 
@@ -48,7 +47,6 @@ public class OrderBoardController implements Initializable {
 		startClient();
 		System.out.println("start 뒤");
 		temp();
-		
 	}
 	
 	public OrderBoardController() {
@@ -90,6 +88,19 @@ public class OrderBoardController implements Initializable {
 	 						String menu = st.nextToken();
 	 						if(kitchen.equals("주방")) {
 	 							System.out.println("주방에서 받은 메뉴"+menu);
+	 							st2 = new StringTokenizer(menu,"$$");
+	 							String tableNum = st2.nextToken();
+	 							String menuName = st2.nextToken();
+	 							String menuCnt = st2.nextToken();
+	 							String menuPrice = st2.nextToken();
+	 							
+	 							System.out.println("테이블 번호: " + tableNum);
+	 							System.out.println("메뉴 이름: " + menuName);
+	 							System.out.println("메뉴 수량: " + menuCnt);
+	 							System.out.println("메뉴 가격: " + menuPrice);
+	 							
+	 							//오더보드에 메뉴내역 추가
+	 							
 	 						}
 	 					} catch (IOException e) {
 	 						System.exit(0);

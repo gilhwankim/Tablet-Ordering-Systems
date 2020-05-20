@@ -104,12 +104,12 @@ public class MenuController implements Initializable{
 	}
 	
 	private void btnDelAction(ActionEvent event) {
-		table.getItems().remove(table.getSelectionModel().getSelectedItem());
 		if(table.getSelectionModel().getSelectedItem()==null) {
 			return;
 		}
 		String name = table.getSelectionModel().getSelectedItem().getName();
 		dao.delete(name);
+		table.getItems().remove(table.getSelectionModel().getSelectedItem());
 		updateTable();
 	}
 }
