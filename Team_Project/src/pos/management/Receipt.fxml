@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane prefHeight="720.0" prefWidth="880.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pos.management.ReceiptController">
+<BorderPane prefHeight="740.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pos.management.ReceiptController">
    <top>
       <Label prefHeight="30.0" text="영수증 관리" BorderPane.alignment="CENTER">
          <font>
@@ -66,4 +66,7 @@
          </children>
       </VBox>
    </right>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
 </BorderPane>
