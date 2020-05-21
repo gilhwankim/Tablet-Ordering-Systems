@@ -77,11 +77,7 @@ public class TabletController implements Initializable{
    private ObservableList<HBox> AlcoholOl = FXCollections.observableArrayList();
    private @FXML ListView<HBox> lvetc;
    private ObservableList<HBox> EtcOl = FXCollections.observableArrayList();
-   
-   
-   
-   
-   
+      
    private @FXML TableView<OrderMenu> orderTable;
    private ObservableList<OrderMenu> orderTableOl = FXCollections.observableArrayList();
    private @FXML Button orderBtn;
@@ -351,12 +347,13 @@ public class TabletController implements Initializable{
       private void callBill(ActionEvent event) {    	   
           Stage dialog = new Stage(StageStyle.UNDECORATED);	  		
 	  		dialog.initModality(Modality.WINDOW_MODAL); //dialog를 모달(소유자 윈도우 사용불가)로 설정
-	  		dialog.initOwner(clientStage);	  		
+	  		dialog.initOwner(clientStage);  		
 	  		
 	  		Parent tableBill;
 			try {
 				tableBill = FXMLLoader.load(getClass().getResource("tableBill.fxml"));
-				Button billExitBtn = (Button)tableBill.lookup("#exit");
+				Button billExitBtn = (Button)tableBill.lookup("#exit");		
+				
 				//tableBill의 X표시 누르면 창닫힘
 				billExitBtn.setOnMouseClicked(e -> dialog.close());
 				

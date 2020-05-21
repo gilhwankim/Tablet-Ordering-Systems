@@ -16,14 +16,14 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Button fx:id="exit" layoutX="432.0" layoutY="-1.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" text="X" />
+            <Button id="exit" layoutX="432.0" layoutY="-1.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" text="X" />
          </children>
       </AnchorPane>
-      <TableView prefHeight="270.0" prefWidth="460.0">
+      <TableView id="billTable" prefHeight="270.0" prefWidth="460.0">
         <columns>
-          <TableColumn fx:id="menu" prefWidth="272.0" text="메뉴" />
-          <TableColumn fx:id="num" prefWidth="69.0" text="수량" />
-            <TableColumn fx:id="price" prefWidth="120.0" text="가격" />
+          <TableColumn id="menu" prefWidth="272.0" text="메뉴" />
+          <TableColumn id="num" prefWidth="69.0" text="수량" />
+            <TableColumn id="price" prefWidth="120.0" text="가격" />
         </columns>
       </TableView>
       <Separator prefWidth="200.0" />
