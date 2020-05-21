@@ -1,6 +1,5 @@
 package tablet;
 
-import java.awt.event.WindowAdapter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -34,7 +33,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import pos.menu.Menu;
 
 public class TabletController implements Initializable{
@@ -85,12 +86,15 @@ public class TabletController implements Initializable{
    private ObservableList<OrderMenu> orderTableOl = FXCollections.observableArrayList();
    private @FXML Button orderBtn;
    private @FXML Label total;
+   private @FXML Button billBtn; //계산서 호출 버튼
    
    @Override
    public void initialize(URL location, ResourceBundle resources) {
       tableSet();
       orderTable.setItems(orderTableOl);
       orderTable.setPlaceholder(new Label(""));
+      
+      billBtn.setOnAction((event)-> callBill(event)); //계산서 버튼 메서드
       
       orderTableOl.addListener(new ListChangeListener<OrderMenu>() {
     	  @Override
@@ -343,6 +347,25 @@ public class TabletController implements Initializable{
          }
          return false;
       }
+      //테이블별 계산서 부르는 메서드
+      private void callBill(ActionEvent event) {    	   
+          Stage dialog = new Stage(StageStyle.UNDECORATED);	  		
+	  		dialog.initModality(Modality.WINDOW_MODAL); //dialog를 모달(소유자 윈도우 사용불가)로 설정
+	  		dialog.initOwner(clientStage);	  		
+	  		
+	  		Parent tableBill;
+			try {
+				tableBill = FXMLLoader.load(getClass().getResource("tableBill.fxml"));
+				Button billExitBtn = (Button)tableBill.lookup("#exit");
+				//tableBill의 X표시 누르면 창닫힘
+				billExitBtn.setOnMouseClicked(e -> dialog.close());
+				
+				Scene scene = new Scene(tableBill);				
+		  		dialog.setScene(scene);
+		  		dialog.setResizable(false);  //사용자가 크기를 조절하지 못하게 함
+		  		dialog.show();	    
+			} catch (IOException e) { e.printStackTrace(); }		
+      }    
       
    
 }
