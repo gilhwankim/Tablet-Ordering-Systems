@@ -164,7 +164,7 @@ public class OrderBoardController implements Initializable {
 			               HBox hbox = new HBox();
 			               hbox.setSpacing(10);
 			               hbox.getChildren().add(node);
-			               tempOl.add(hbox);
+			               Platform.runLater(()-> tempOl.add(hbox));
 			            }else {
 			            	Platform.runLater(()->tempOl.get(tempOl.size()-1).getChildren().add(node));
 			            }
