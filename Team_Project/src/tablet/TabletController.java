@@ -148,7 +148,6 @@ public class TabletController implements Initializable{
          
          //내이름과 같은 테이블이 있는지 서버에 체크 (성공하면 connOk, 실패시 connFail)
          String message = dis.readUTF();
- 
          
          //false가 나오면 리턴시켜 다시 자리정하게한다.
          if(!connCheck(message)) {
@@ -162,12 +161,18 @@ public class TabletController implements Initializable{
          //메뉴를 받아오는데에 성공했을 때
          if(menu != null) {
             st1 = new StringTokenizer(menu, "@@");
+            System.out.println("서버에서 전체 받아온 메뉴" + menu);
             while(st1.hasMoreTokens()) {
                String tmp = st1.nextToken();
                st2 = new StringTokenizer(tmp, "$$");
                
                menuList.add(new Menu(Integer.parseInt(st2.nextToken()),st2.nextToken(), st2.nextToken(), st2.nextToken()));
-            }
+              
+               }
+            
+         for(Menu m : menuList) {
+      	   System.out.println("메뉴리스트 확인:"+m.getMenuNum()+","+m.getCategory()+","+m.getName()+","+m.getPrice()+",");
+         }
             //메뉴들을 각 메뉴판에 담기
             for(Menu m : menuList) {
                if(m.getCategory().equals("파스타")) {
@@ -218,14 +223,9 @@ public class TabletController implements Initializable{
             Label labelPrice = (Label)node.lookup("#labelPrice");
             //menuItem.fxml에서 imageView 찾아옴
             ImageView imageMenu = (ImageView)node.lookup("#menuImg");
-            
-            try { //이미지 없을시 디폴트 이미지 띄움
             //메뉴이름과 같은 이미지를 띄워줌
             imageMenu.setImage(new Image(getClass().getResource(
-        				"/images/" + m.getName() + ".jpg").toString()));
-            }catch (Exception e) {
-			}
-            
+        				"/images/" + m.getName() + ".jpg").toString()));                 
             labelName.setText(m.getName());
             labelPrice.setText(m.getPrice());            
             

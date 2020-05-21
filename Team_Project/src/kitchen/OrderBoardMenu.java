@@ -1,31 +1,51 @@
 package kitchen;
 
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class OrderBoardMenu {
 	
-	private SimpleIntegerProperty tableNum;
-	private SimpleStringProperty order;
+	private SimpleStringProperty menuName;
+	private SimpleStringProperty menuCnt;
+	//메뉴와 수량 
 	
-	public OrderBoardMenu(int tableNum, String order ) {
-		this.tableNum = new SimpleIntegerProperty(tableNum);
-		this.order = new SimpleStringProperty(order);
+	public OrderBoardMenu(String menuName, String menuCnt) {
+		super();
+		this.menuName = new SimpleStringProperty(menuName);
+		this.menuCnt = new SimpleStringProperty(menuCnt);
+	}
+	
+	public String getMenuName() {
+		return menuName.get();
 	}
 
-	public SimpleIntegerProperty getTableNum() {
-		return tableNum;
+	public void setMenuName(String menuName) {
+		this.menuName.set(menuName);;
+	}
+	public String getMenuCnt() {
+		return menuCnt.get();
+	}
+	public void setMenuCnt(String menuCnt) {
+		this.menuCnt.set(menuCnt);;
 	}
 
-	public void setTableNum(SimpleIntegerProperty tableNum) {
-		this.tableNum = tableNum;
-	}
 
-	public SimpleStringProperty getOrder() {
-		return order;
-	}
+	
+	
+	
+//	public String getMenuName() {
+//		return menuName.get();
+//	}
+//
+//	public void setMenuName(String menuName) {
+//		this.menuName.set(menuName);
+//	}
+//
+//	public int getMenuCnt() {
+//		return menuCnt.get();
+//	}
+//
+//	public void setMenuCnt(int menuCnt) {
+//		this.menuCnt.set(menuCnt);
+//	}
 
-	public void setOrder(SimpleStringProperty order) {
-		this.order = order;
-	}
 }

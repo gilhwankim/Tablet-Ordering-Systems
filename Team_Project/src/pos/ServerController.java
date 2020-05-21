@@ -54,9 +54,6 @@ public class ServerController implements Initializable{
 	private Label labelPrice;
 	
 	private Parent addMenu;			//메뉴 관리 화면
-	private Parent receipt; //영수증 화면
-	private Parent salesStatus; //판매현황 화면
-	
 	private MenuDAO dao;
 	
 //	private InetAddress ip;				//IP
@@ -73,8 +70,6 @@ public class ServerController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources){
 		try {
 			addMenu = FXMLLoader.load(getClass().getResource("menu/menu.fxml"));
-			receipt = FXMLLoader.load(getClass().getResource("management/Receipt.fxml"));
-			salesStatus = FXMLLoader.load(getClass().getResource("management/SalesStatus.fxml"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -87,11 +82,7 @@ public class ServerController implements Initializable{
 				borderPane.setCenter(addMenu);
 			}else if(tab.equals("Home")) {
 				borderPane.setCenter(home);
-			}else if(tab.equals("Receipt")) {
-				borderPane.setCenter(receipt);
-			}else if(tab.equals("SalesStatus")) {
-				borderPane.setCenter(salesStatus);
-			}				
+			}
 		});
 		
 		//서버 시작
@@ -106,7 +97,7 @@ public class ServerController implements Initializable{
 		dao = MenuDAO.getinstance();
 		try {
 //			ip = InetAddress.getLocalHost();	//현재 컴퓨터 아이피 받아오기
-			threadPool = Executors.newFixedThreadPool(10);
+			threadPool = Executors.newFixedThreadPool(20);
 			if(serverSocket == null) {
 				serverSocket = new ServerSocket();
 //				serverSocket.bind(new InetSocketAddress(ip.getHostAddress(), 5555));
@@ -216,15 +207,17 @@ public class ServerController implements Initializable{
 				//이미 접속해있는 테이블인지 확인.(번호 중복안되게)
 				if(client_list.size() == 0) {
 					dos.writeUTF("connOk/");
-				}else {
+					System.out.println("처음 테이블 연결 확인 제발connOk ");
+				}else if(client_list.size() != 0) {
 					for(Client c : client_list) {
 						if(c.tableNo == tableNo) {
 							dos.writeUTF("connFail/");
+							System.out.println("중복 테이블 연결 확인 제발connFail ");
 							return;
-						}else {
-							dos.writeUTF("connOk/");
 						}
 					}
+					System.out.println("마지막 확인 제발");
+					dos.writeUTF("connOk/");
 				}
 				System.out.println(tableNo + "접속");
 			}
@@ -285,11 +278,12 @@ public class ServerController implements Initializable{
 			if(protocol.equals("주문")) {
 				//
 				st2 = new StringTokenizer(message, "@@");
+				sendOrderInfo(message);
 				while(st2.hasMoreTokens()) {
 					
 					String menu = st2.nextToken();
 					//주방으로 메뉴 전송
-					sendOrderInfo(menu);
+					
 					
 					st = new StringTokenizer(menu, "$$");
 					String name = st.nextToken();
@@ -352,8 +346,8 @@ public class ServerController implements Initializable{
 		private void sendOrderInfo(String menu) {
 			//주방으로 메뉴 보냄
 			try {
-				kitchen.dos.writeUTF("주방///"+tableNo+"$$"+menu);
-				System.out.println("주방으로 보내는 메뉴: 주방///" + menu);
+				kitchen.dos.writeUTF(tableNo+"///"+menu);
+				System.out.println("주방으로 보내는 메뉴: " + menu);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

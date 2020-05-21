@@ -11,7 +11,7 @@
    <children>
       <ImageView id="menuImg" fitHeight="140.0" fitWidth="210.0" pickOnBounds="true">
          <image>
-            <Image url="/images/noImage.jpg" />
+            <Image url="/images/pasta2.jpg" />
          </image>
       </ImageView>
       <Label id="labelName" prefHeight="35.0" prefWidth="200.0" text="메뉴명">
