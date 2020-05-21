@@ -32,7 +32,7 @@
             <Label text="총 주문금액" BorderPane.alignment="CENTER" />
          </left>
          <right>
-            <Label fx:id="totalPrice" alignment="CENTER_RIGHT" text="100,000" BorderPane.alignment="CENTER">
+            <Label id="totalPrice" alignment="CENTER_RIGHT" text="100,000" BorderPane.alignment="CENTER">
                <font>
                   <Font size="18.0" />
                </font>
