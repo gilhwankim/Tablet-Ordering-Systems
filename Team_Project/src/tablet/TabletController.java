@@ -8,10 +8,12 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
+import java.util.stream.Stream;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -80,9 +82,14 @@ public class TabletController implements Initializable{
       
    private @FXML TableView<OrderMenu> orderTable;
    private ObservableList<OrderMenu> orderTableOl = FXCollections.observableArrayList();
+   //테이블에서 주문한 전체 리스트
+   private ObservableList<OrderMenu> orderTableTotal = FXCollections.observableArrayList();
    private @FXML Button orderBtn;
    private @FXML Label total;
    private @FXML Button billBtn; //계산서 호출 버튼
+   
+   
+   
    
    @Override
    public void initialize(URL location, ResourceBundle resources) {
@@ -306,7 +313,8 @@ public class TabletController implements Initializable{
     	  String msg = "";
     	  System.out.println();
     	  for(OrderMenu m : orderTableOl) {
-    		  //$$는 카테고리/이름/가격 컬럼 구분자 , @@는 행 구분
+    		  orderTableTotal.add(m);//계산서에 현재까지 주문하는 메뉴를 다 입력
+    		  //$$는 카테고리/이름/가격 컬럼 구분자 , @@는 행 구분    		  
     		  msg += m.getName() + "$$" + m.getCnt() + "$$" + m.getTotalPrice();
     		  msg += "@@";
     	  }
@@ -352,7 +360,30 @@ public class TabletController implements Initializable{
 	  		Parent tableBill;
 			try {
 				tableBill = FXMLLoader.load(getClass().getResource("tableBill.fxml"));
-				Button billExitBtn = (Button)tableBill.lookup("#exit");		
+				Button billExitBtn = (Button)tableBill.lookup("#exit");
+				Label totalPrice = (Label)tableBill.lookup("#totalPrice");
+				
+				@SuppressWarnings("unchecked")
+				TableView<OrderMenu> billTable = (TableView<OrderMenu>) tableBill.lookup("#billTable");
+				
+				TableColumn<OrderMenu, ?> att1 = billTable.getColumns().get(0);
+				att1.setCellValueFactory(new PropertyValueFactory<>("name"));
+				att1.setText("메뉴");		          
+		          TableColumn<OrderMenu, ?> att2 = billTable.getColumns().get(1);
+		          att2.setCellValueFactory(new PropertyValueFactory<>("cnt"));
+		          att2.setText("수량");		          
+		          TableColumn<OrderMenu, ?> att3 = billTable.getColumns().get(2);
+		          att3.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
+		          att3.setText("가격");
+		          billTable.setItems(orderTableTotal); //테이블뷰에 세팅	
+		          
+		          int totalResult = 0;
+		          DecimalFormat df = new DecimalFormat("###,###"); //단위마다 쉼표
+		          for(OrderMenu om : orderTableTotal) {
+		        	  totalResult += Integer.parseInt(om.getPrice()); //시킨 메뉴 가격을 더함
+		          }
+		          totalPrice.setText(df.format((totalResult))); //현재까지 주문한 가격 출력        
+		          
 				
 				//tableBill의 X표시 누르면 창닫힘
 				billExitBtn.setOnMouseClicked(e -> dialog.close());
