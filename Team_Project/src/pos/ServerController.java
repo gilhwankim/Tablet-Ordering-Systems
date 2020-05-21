@@ -54,6 +54,9 @@ public class ServerController implements Initializable{
 	private Label labelPrice;
 	
 	private Parent addMenu;			//메뉴 관리 화면
+	private Parent receipt; //영수증 화면
+	private Parent salesStatus; //판매현황 화면
+	
 	private MenuDAO dao;
 	
 //	private InetAddress ip;				//IP
@@ -70,6 +73,8 @@ public class ServerController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources){
 		try {
 			addMenu = FXMLLoader.load(getClass().getResource("menu/menu.fxml"));
+			receipt = FXMLLoader.load(getClass().getResource("management/Receipt.fxml"));
+			salesStatus = FXMLLoader.load(getClass().getResource("management/SalesStatus.fxml"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -82,7 +87,11 @@ public class ServerController implements Initializable{
 				borderPane.setCenter(addMenu);
 			}else if(tab.equals("Home")) {
 				borderPane.setCenter(home);
-			}
+			}else if(tab.equals("Receipt")) {
+				borderPane.setCenter(receipt);
+			}else if(tab.equals("SalesStatus")) {
+				borderPane.setCenter(salesStatus);
+			}				
 		});
 		
 		//서버 시작
