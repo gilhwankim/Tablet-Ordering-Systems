@@ -324,6 +324,21 @@ public class TabletController implements Initializable{
          }catch (Exception e) {
             return;
       }
+    	  try {
+    	  String msg = "";
+    	  System.out.println();
+    	  for(OrderMenu m : orderTableOl) {
+    		  orderTableTotal.add(m);//계산서에 현재까지 주문하는 메뉴를 다 입력
+    		  //$$는 카테고리/이름/가격 컬럼 구분자 , @@는 행 구분    		  
+    		  msg += m.getName() + "$$" + m.getCnt() + "$$" + m.getTotalPrice();
+    		  msg += "@@";
+    	  }
+    	  msg = msg.substring(0, msg.length() -2);
+    	  send_Message("주문/////" + msg);
+    	  System.out.println(msg);
+    	  }catch (Exception e) {
+    		  return;
+		}
       }
       
       private void send_Message(String msg) {
@@ -393,7 +408,6 @@ public class TabletController implements Initializable{
               dialog.setResizable(false);  //사용자가 크기를 조절하지 못하게 함
               dialog.show();       
          } catch (IOException e) { e.printStackTrace(); }      
-      }    
-      
+      }
    
 }
