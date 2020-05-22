@@ -376,7 +376,7 @@ public class TabletController implements Initializable{
 		          int totalResult = 0;
 		          DecimalFormat df = new DecimalFormat("###,###"); //단위마다 쉼표
 		          for(OrderMenu om : orderTableTotal) {
-		        	  totalResult += Integer.parseInt(om.getPrice()); //시킨 메뉴 가격을 더함
+		        	  totalResult += om.getTotalPrice(); //시킨 메뉴 가격을 더함
 		          }
 		          totalPrice.setText(df.format((totalResult))); //현재까지 주문한 가격 출력        
 		          
