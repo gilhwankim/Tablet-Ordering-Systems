@@ -204,11 +204,11 @@ public class OrderBoardController implements Initializable {
 	      private void orderTableSettingg(String tableNumber) {
 	          TableColumn<OrderBoardMenu, ?> a = kitchenTableview.getColumns().get(0);
 	           a.setCellValueFactory(new PropertyValueFactory<>("menuName"));
-	           a.setText("테이블 번호 : " + tableNumber);
+	           a.setText("테이블 번호 : ");
 	           
 	           TableColumn<OrderBoardMenu, ?> b = kitchenTableview.getColumns().get(1);
 	           b.setCellValueFactory(new PropertyValueFactory<>("menuCnt"));
-	           b.setText("");
+	           b.setText(tableNumber);
 	      }
 	      
 	      //완료버튼 눌렀을 때 테이블 삭제
@@ -240,7 +240,7 @@ public class OrderBoardController implements Initializable {
 	               hbox.setSpacing(10);
 	               hbox.getChildren().add(node);
 	               tableViewOl.add(hbox);
-	            }else if(tableViewOl.get(tableViewOl.size()-1).getChildren().size() % 5 == 0 ) {
+	            }else if(tableViewOl.get(tableViewOl.size()-1).getChildren().size() % 4 == 0 ) {
 	               HBox hbox = new HBox();
 	               hbox.setSpacing(10);
 	               hbox.getChildren().add(node);
