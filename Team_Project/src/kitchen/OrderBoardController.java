@@ -150,8 +150,6 @@ public class OrderBoardController implements Initializable {
  							menuList.clear();
  							
 	 					} catch (IOException e) {
-	 						//¼­¹ö ´ÝÈ÷¸é Connection reset ¸ØÃß°í Á¾·á
-	 						System.exit(0);
 	 						e.printStackTrace();
 	 					}	
 	 				}
