@@ -10,6 +10,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
@@ -89,9 +90,9 @@ public class TabletController implements Initializable{
    
    @Override
    public void initialize(URL location, ResourceBundle resources) {
-	   //종료버튼
-	  clientStage.setOnCloseRequest(e -> stopClient());
-	   
+      //종료버튼
+     clientStage.setOnCloseRequest(e -> stopClient());
+      
       tableSet();
       orderTable.setItems(orderTableOl);
       orderTable.setPlaceholder(new Label(""));
@@ -220,23 +221,23 @@ public class TabletController implements Initializable{
    }
    
    private void stopClient() {
-	      try {
-	         dos.writeUTF("종료///태블릿");
-	         dos.flush();
-	         if(!socket.isClosed()) {
-	              socket.close();
-	            }
-	         is.close();
-	            dis.close();
-	            os.close();
-	            dos.close();
-	            
-	            System.out.println("태블릿 종료.");
-	            System.exit(0);
-	           }catch (Exception e) {
-	              System.exit(0);
-	           }
-	   }
+         try {
+            dos.writeUTF("종료///태블릿");
+            dos.flush();
+            if(!socket.isClosed()) {
+                 socket.close();
+               }
+            is.close();
+               dis.close();
+               os.close();
+               dos.close();
+               
+               System.out.println("태블릿 종료.");
+               System.exit(0);
+              }catch (Exception e) {
+                 System.exit(0);
+              }
+      }
    
    //메뉴판에 메뉴를 넣는 메서드
       private ObservableList<HBox> replaceMenu(ObservableList<HBox> ol, Menu m){
@@ -330,8 +331,10 @@ public class TabletController implements Initializable{
          try {
          String msg = "";
          System.out.println();
+         
          for(OrderMenu m : orderTableOl) {
-            orderTableTotal.add(m);//계산서에 현재까지 주문하는 메뉴를 다 입력
+            addTableBill(m);
+            System.out.println(m.getName());
             //$$는 카테고리/이름/가격 컬럼 구분자 , @@는 행 구분
             msg += m.getName() + "$$" + m.getCnt() + "$$" + m.getTotalPrice();
             msg += "@@";
@@ -340,8 +343,25 @@ public class TabletController implements Initializable{
          send_Message("주문/////" + msg);
          System.out.println(msg);
          }catch (Exception e) {
+            e.printStackTrace();
             return;
       }
+      }
+      
+      private void addTableBill(OrderMenu m) {
+         if(orderTableTotal.size() == 0) {
+            orderTableTotal.add(m);//계산서에 현재까지 주문하는 메뉴를 다 입력
+         }else {
+            for(OrderMenu om : orderTableTotal) {
+               if(om.getName().equals(m.getName())) {
+                  om.setCnt(om.getCnt() + m.getCnt());
+                  om.setTotalPrice(om.getTotalPrice() + m.getTotalPrice());
+                  return;
+               }
+               orderTableTotal.add(m);
+               return;
+            }
+         }
       }
       
       private void send_Message(String msg) {

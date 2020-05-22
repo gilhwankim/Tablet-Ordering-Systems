@@ -285,15 +285,12 @@ public class ServerController implements Initializable{
          System.out.println("메세지 : " + message);
          //주문일 때
          if(protocol.equals("주문")) {
-            //
             st2 = new StringTokenizer(message, "@@");
             sendOrderInfo(message);
+            boolean flag = false;
             while(st2.hasMoreTokens()) {
-               
                String menu = st2.nextToken();
                //주방으로 메뉴 전송
-               
-               
                st = new StringTokenizer(menu, "$$");
                String name = st.nextToken();
                int cnt = Integer.parseInt(st.nextToken());
@@ -306,13 +303,22 @@ public class ServerController implements Initializable{
                         m.setPrice(m.getPrice() + price);
                         tableView.setItems(orderMenu_list);
                         tableView.refresh();
-                        return;
+                        System.out.println("같은게 있을때" + m.getName());
+                        flag = true;
+                        break;
                      }
                   }
                }
-               orderMenu_list.add(new OrderMenu(name, cnt, price));
-               tableView.setItems(orderMenu_list);
-               tableView.refresh();
+               //같은 주문이 없을 때
+               if(flag == false) {
+                  OrderMenu om = new OrderMenu(name, cnt, price);
+                  orderMenu_list.add(om);
+                  tableView.setItems(orderMenu_list);
+                  tableView.refresh();
+                  System.out.println(om.getName());
+               }else {
+                  flag = false;
+               }
             }
             
          }else if(protocol.equals("종료")) {
