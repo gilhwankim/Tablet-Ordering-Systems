@@ -54,6 +54,8 @@ public class ServerController implements Initializable{
    private Label labelPrice;
    
    private Parent addMenu;         //메뉴 관리 화면
+   private Parent receipt; //영수증 화면
+   private Parent salesStatus; //판매현황 화면
    private MenuDAO dao;
    
 //   private InetAddress ip;            //IP
@@ -73,6 +75,8 @@ public class ServerController implements Initializable{
    public void initialize(URL location, ResourceBundle resources){
       try {
          addMenu = FXMLLoader.load(getClass().getResource("menu/menu.fxml"));
+         receipt = FXMLLoader.load(getClass().getResource("management/Receipt.fxml"));
+         salesStatus = FXMLLoader.load(getClass().getResource("management/SalesStatus.fxml"));
       } catch (Exception e) {
          e.printStackTrace();
       }
@@ -85,7 +89,11 @@ public class ServerController implements Initializable{
             borderPane.setCenter(addMenu);
          }else if(tab.equals("Home")) {
             borderPane.setCenter(home);
-         }
+         }else if(tab.equals("Receipt")) {
+             borderPane.setCenter(receipt);
+         }else if(tab.equals("SalesStatus")) {
+            borderPane.setCenter(salesStatus);
+         }   
       });
       
       //서버 시작
@@ -176,7 +184,6 @@ public class ServerController implements Initializable{
    }
    
    class Client extends Thread{
-      
       private int tableNo;         //테이블 번호
       private List<Menu> menu_list = new ArrayList<>();   //각 테이블이 가질 메뉴 리스트 서버와 연동된다.
 //      private List<OrderMenu> orderMenu_list = new ArrayList<>();
@@ -188,7 +195,7 @@ public class ServerController implements Initializable{
       private OutputStream os;
       private DataInputStream dis;
       private DataOutputStream dos;
-      
+
       public Client(Socket socket) {
          this.socket = socket;
          client_Network();
@@ -385,7 +392,6 @@ public class ServerController implements Initializable{
             home.add(table, column, row);
             });
             table_list.add(table);
-        
             
          } catch (Exception e) {
             e.printStackTrace();
