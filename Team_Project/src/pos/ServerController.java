@@ -343,7 +343,7 @@ public class ServerController implements Initializable{
                      System.out.println(this.tableNo + "Áö¿ò");
                      home.getChildren().add(this.tableNo-1, emptyTableInfo(this.tableNo));
                      });
-                     
+                     table_list.remove(p);
                      return;
                   }
                }
@@ -379,6 +379,7 @@ public class ServerController implements Initializable{
             home.add(table, column, row);
             });
             table_list.add(table);
+        
             
          } catch (Exception e) {
             e.printStackTrace();
