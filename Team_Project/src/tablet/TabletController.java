@@ -89,6 +89,9 @@ public class TabletController implements Initializable{
    
    @Override
    public void initialize(URL location, ResourceBundle resources) {
+	   //종료버튼
+	  clientStage.setOnCloseRequest(e -> stopClient());
+	   
       tableSet();
       orderTable.setItems(orderTableOl);
       orderTable.setPlaceholder(new Label(""));
@@ -96,14 +99,14 @@ public class TabletController implements Initializable{
       billBtn.setOnAction((event)-> callBill(event)); //계산서 버튼 메서드
       
       orderTableOl.addListener(new ListChangeListener<OrderMenu>() {
-    	  @Override
-    	public void onChanged(Change<? extends OrderMenu> c) {
-    		  int totalPrice = 0;
-    		  for(OrderMenu m : c.getList()) {
-    			  totalPrice += m.getTotalPrice();
-    		  }
-    		  total.setText(totalPrice + "원");
-    	}
+         @Override
+       public void onChanged(Change<? extends OrderMenu> c) {
+            int totalPrice = 0;
+            for(OrderMenu m : c.getList()) {
+               totalPrice += m.getTotalPrice();
+            }
+            total.setText(totalPrice + "원");
+       }
       });
       
       orderBtn.setOnAction(e -> orderBtnAction(e));
@@ -174,7 +177,7 @@ public class TabletController implements Initializable{
                }
             
          for(Menu m : menuList) {
-      	   System.out.println("메뉴리스트 확인:"+m.getMenuNum()+","+m.getCategory()+","+m.getName()+","+m.getPrice()+",");
+            System.out.println("메뉴리스트 확인:"+m.getMenuNum()+","+m.getCategory()+","+m.getName()+","+m.getPrice()+",");
          }
             //메뉴들을 각 메뉴판에 담기
             for(Menu m : menuList) {
@@ -183,17 +186,17 @@ public class TabletController implements Initializable{
                }else if(m.getCategory().equals("샐러드")) {
                   saladOl = replaceMenu(saladOl, m);
                }else if(m.getCategory().equals("스테이크")) {
-            	  SteakOl = replaceMenu(SteakOl, m);
+                 SteakOl = replaceMenu(SteakOl, m);
                }else if(m.getCategory().equals("필라프")) {
-            	  PilafOl = replaceMenu(PilafOl,m);
+                 PilafOl = replaceMenu(PilafOl,m);
                }else if(m.getCategory().equals("피자")) {
-            	  PizzaOl = replaceMenu(PizzaOl,m);
+                 PizzaOl = replaceMenu(PizzaOl,m);
                }else if(m.getCategory().equals("음료")) {
-            	  DrinkOl = replaceMenu(DrinkOl,m);
+                 DrinkOl = replaceMenu(DrinkOl,m);
                }else if(m.getCategory().equals("주류")) {
-            	  AlcoholOl = replaceMenu(AlcoholOl,m);
+                 AlcoholOl = replaceMenu(AlcoholOl,m);
                }else if(m.getCategory().equals("기타")) {
-            	  EtcOl = replaceMenu(EtcOl,m);
+                 EtcOl = replaceMenu(EtcOl,m);
                }
                //리스트뷰에 observablelist 연동
             }
@@ -216,6 +219,25 @@ public class TabletController implements Initializable{
       }
    }
    
+   private void stopClient() {
+	      try {
+	         dos.writeUTF("종료///태블릿");
+	         dos.flush();
+	         if(!socket.isClosed()) {
+	              socket.close();
+	            }
+	         is.close();
+	            dis.close();
+	            os.close();
+	            dos.close();
+	            
+	            System.out.println("태블릿 종료.");
+	            System.exit(0);
+	           }catch (Exception e) {
+	              System.exit(0);
+	           }
+	   }
+   
    //메뉴판에 메뉴를 넣는 메서드
       private ObservableList<HBox> replaceMenu(ObservableList<HBox> ol, Menu m){
          ObservableList<HBox> tempOl = ol;
@@ -228,7 +250,7 @@ public class TabletController implements Initializable{
             ImageView imageMenu = (ImageView)node.lookup("#menuImg");
             //메뉴이름과 같은 이미지를 띄워줌
             imageMenu.setImage(new Image(getClass().getResource(
-        				"/images/" + m.getName() + ".jpg").toString()));                 
+                    "/images/" + m.getName() + ".jpg").toString()));                 
             labelName.setText(m.getName());
             labelPrice.setText(m.getPrice());            
             
@@ -305,32 +327,32 @@ public class TabletController implements Initializable{
    
       //'주문하기'버튼의 액션
       private void orderBtnAction(ActionEvent event) {
-    	  try {
-    	  String msg = "";
-    	  System.out.println();
-    	  for(OrderMenu m : orderTableOl) {
-    		  orderTableTotal.add(m);//계산서에 현재까지 주문하는 메뉴를 다 입력
-    		  //$$는 카테고리/이름/가격 컬럼 구분자 , @@는 행 구분
-    		  msg += m.getName() + "$$" + m.getCnt() + "$$" + m.getTotalPrice();
-    		  msg += "@@";
-    	  }
-    	  msg = msg.substring(0, msg.length() -2);
-    	  send_Message("주문/////" + msg);
-    	  System.out.println(msg);
-    	  }catch (Exception e) {
-    		  return;
-		}
+         try {
+         String msg = "";
+         System.out.println();
+         for(OrderMenu m : orderTableOl) {
+            orderTableTotal.add(m);//계산서에 현재까지 주문하는 메뉴를 다 입력
+            //$$는 카테고리/이름/가격 컬럼 구분자 , @@는 행 구분
+            msg += m.getName() + "$$" + m.getCnt() + "$$" + m.getTotalPrice();
+            msg += "@@";
+         }
+         msg = msg.substring(0, msg.length() -2);
+         send_Message("주문/////" + msg);
+         System.out.println(msg);
+         }catch (Exception e) {
+            return;
+      }
       }
       
       private void send_Message(String msg) {
-    	  try {
-    		  //서버로 전송
-			dos.writeUTF(msg);
-			Platform.runLater(() -> orderTableOl.clear());
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+         try {
+            //서버로 전송
+         dos.writeUTF(msg);
+         Platform.runLater(() -> orderTableOl.clear());
+         
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
 
       }
       
@@ -348,51 +370,51 @@ public class TabletController implements Initializable{
          return false;
       }
       //테이블별 계산서 부르는 메서드
-      private void callBill(ActionEvent event) {    	   
-       	  Stage dialog = new Stage(StageStyle.UNDECORATED);	  		
-    	  		dialog.initModality(Modality.WINDOW_MODAL); //dialog를 모달(소유자 윈도우 사용불가)로 설정
-    	  		dialog.initOwner(clientStage);  		
-    	  		
-    	  		Parent tableBill;
-    			try {
-    				tableBill = FXMLLoader.load(getClass().getResource("tableBill.fxml"));
-    				Button billExitBtn = (Button)tableBill.lookup("#exit");
-    				Label totalPrice = (Label)tableBill.lookup("#totalPrice");
-    				
-    				@SuppressWarnings("unchecked")
-    				TableView<OrderMenu> billTable = (TableView<OrderMenu>) tableBill.lookup("#billTable");
-    				
-    				TableColumn<OrderMenu, ?> att1 = billTable.getColumns().get(0);
-    				att1.setCellValueFactory(new PropertyValueFactory<>("name"));
-    				att1.setText("메뉴");		          
-    		          TableColumn<OrderMenu, ?> att2 = billTable.getColumns().get(1);
-    		          att2.setCellValueFactory(new PropertyValueFactory<>("cnt"));
-    		          att2.setText("수량");		          
-    		          TableColumn<OrderMenu, ?> att3 = billTable.getColumns().get(2);
-    		          att3.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
-    		          att3.setText("가격");
-    		          
-    		          if(orderTableTotal.size()==0){ //하나도 주문 안했으면 아무것도 안적힘
-    		        	  billTable.setPlaceholder(new Label(""));
-    		        	  totalPrice.setText("");
-    		          }else { //주문을 했다면 계산서 나옴
-    		        	  billTable.setItems(orderTableTotal); //테이블뷰에 세팅	
-    			          
-    			          int totalResult = 0;
-    			          DecimalFormat df = new DecimalFormat("###,###"); //단위마다 쉼표
-    			          for(OrderMenu om : orderTableTotal) {
-    			        	  totalResult += om.getTotalPrice(); //시킨 메뉴 가격을 더함
-    			          }
-    			          totalPrice.setText(df.format((totalResult))); //현재까지 주문한 가격 출력		        	  
-    		          }
-    				//tableBill의 X표시 누르면 창닫힘
-    				billExitBtn.setOnMouseClicked(e -> dialog.close());
-    				
-    				Scene scene = new Scene(tableBill);				
-    		  		dialog.setScene(scene);
-    		  		dialog.setResizable(false);  //사용자가 크기를 조절하지 못하게 함
-    		  		dialog.show();	    
-    			} catch (IOException e) { e.printStackTrace(); }		
+      private void callBill(ActionEvent event) {          
+            Stage dialog = new Stage(StageStyle.UNDECORATED);           
+               dialog.initModality(Modality.WINDOW_MODAL); //dialog를 모달(소유자 윈도우 사용불가)로 설정
+               dialog.initOwner(clientStage);        
+               
+               Parent tableBill;
+             try {
+                tableBill = FXMLLoader.load(getClass().getResource("tableBill.fxml"));
+                Button billExitBtn = (Button)tableBill.lookup("#exit");
+                Label totalPrice = (Label)tableBill.lookup("#totalPrice");
+                
+                @SuppressWarnings("unchecked")
+                TableView<OrderMenu> billTable = (TableView<OrderMenu>) tableBill.lookup("#billTable");
+                
+                TableColumn<OrderMenu, ?> att1 = billTable.getColumns().get(0);
+                att1.setCellValueFactory(new PropertyValueFactory<>("name"));
+                att1.setText("메뉴");                
+                    TableColumn<OrderMenu, ?> att2 = billTable.getColumns().get(1);
+                    att2.setCellValueFactory(new PropertyValueFactory<>("cnt"));
+                    att2.setText("수량");                
+                    TableColumn<OrderMenu, ?> att3 = billTable.getColumns().get(2);
+                    att3.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
+                    att3.setText("가격");
+                    
+                    if(orderTableTotal.size()==0){ //하나도 주문 안했으면 아무것도 안적힘
+                       billTable.setPlaceholder(new Label(""));
+                       totalPrice.setText("");
+                    }else { //주문을 했다면 계산서 나옴
+                       billTable.setItems(orderTableTotal); //테이블뷰에 세팅   
+                       
+                       int totalResult = 0;
+                       DecimalFormat df = new DecimalFormat("###,###"); //단위마다 쉼표
+                       for(OrderMenu om : orderTableTotal) {
+                          totalResult += om.getTotalPrice(); //시킨 메뉴 가격을 더함
+                       }
+                       totalPrice.setText(df.format((totalResult))); //현재까지 주문한 가격 출력                   
+                    }
+                //tableBill의 X표시 누르면 창닫힘
+                billExitBtn.setOnMouseClicked(e -> dialog.close());
+                
+                Scene scene = new Scene(tableBill);            
+                  dialog.setScene(scene);
+                  dialog.setResizable(false);  //사용자가 크기를 조절하지 못하게 함
+                  dialog.show();       
+             } catch (IOException e) { e.printStackTrace(); }      
         }         
    
 }

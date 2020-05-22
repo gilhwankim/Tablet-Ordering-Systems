@@ -20,11 +20,9 @@ public class KitchenMain extends Application{
 		primaryStage.toFront();
 		primaryStage.centerOnScreen();
 		primaryStage.show();
-		
 	}
 	public static void main(String[] args) {
 		launch(args);
 		
 	}
-
 }

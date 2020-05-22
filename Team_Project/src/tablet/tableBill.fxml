@@ -16,7 +16,7 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Button id="exit" layoutX="432.0" layoutY="-1.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" text="X" />
+            <Button id="exit" layoutX="432.0" layoutY="-1.0" prefHeight="30.0" prefWidth="30.0" text="X" />
          </children>
       </AnchorPane>
       <TableView id="billTable" prefHeight="270.0" prefWidth="460.0">
