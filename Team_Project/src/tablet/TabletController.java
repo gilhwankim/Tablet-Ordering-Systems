@@ -85,7 +85,7 @@ public class TabletController implements Initializable{
  //테이블에서 주문한 전체 리스트
    private ObservableList<OrderMenu> orderTableTotal = FXCollections.observableArrayList();
    private @FXML Button orderBtn;
-   private @FXML Label total;
+   private @FXML Label total; private @FXML Label tableNo; //태플릿에 테이블번호 표시 라벨
    private @FXML Button billBtn; //계산서 호출 버튼
    
    @Override
@@ -135,6 +135,11 @@ public class TabletController implements Initializable{
       
       btn.setOnAction( e -> {
          String tableNo = cb.getSelectionModel().getSelectedItem();
+         if(Integer.parseInt(tableNo)<10) { //테이블 번호 10이하면 0 + 테이블 번호
+            this.tableNo.setText("0" + tableNo);             
+         }else {
+            this.tableNo.setText(tableNo); //10이상은 그대로 출력
+         }         
          if(tableNo != null) {
             startClient(tableNo);
          }
@@ -425,7 +430,7 @@ public class TabletController implements Initializable{
                        for(OrderMenu om : orderTableTotal) {
                           totalResult += om.getTotalPrice(); //시킨 메뉴 가격을 더함
                        }
-                       totalPrice.setText(df.format((totalResult))); //현재까지 주문한 가격 출력                   
+                       totalPrice.setText(df.format((totalResult) + "원")); //현재까지 주문한 가격 출력                   
                     }
                 //tableBill의 X표시 누르면 창닫힘
                 billExitBtn.setOnMouseClicked(e -> dialog.close());

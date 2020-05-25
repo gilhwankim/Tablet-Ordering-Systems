@@ -1,7 +1,7 @@
 package pos.management;
 
 public class PaymentInfo {
-   private String date;
+    private String date;
     private String allMenu;
     private String totalPrice;
     private String cardNum;
