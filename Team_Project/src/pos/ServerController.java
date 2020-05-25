@@ -32,12 +32,14 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import pos.menu.Menu;
 import pos.menu.MenuDAO;
+import pos.tablepayment.TablePaymentController;
 
 public class ServerController implements Initializable{
    
@@ -64,16 +66,24 @@ public class ServerController implements Initializable{
    private Socket socket;
    private List<Client> client_list = new ArrayList<>();
    private List<Parent> table_list = new ArrayList<>();
+   private List<Menu> menu_list;
    
-   StringTokenizer st;
-   StringTokenizer st2;
+   private StringTokenizer st;
+   private StringTokenizer st2;
    
-   Date time;
-   SimpleDateFormat format = new SimpleDateFormat( "hh시mm분ss초");
+   private Date time;
+   private SimpleDateFormat format = new SimpleDateFormat( "hh시mm분ss초");
+   private TablePaymentController tp;
    
    @Override
    public void initialize(URL location, ResourceBundle resources){
       try {
+         //처음에 시작할 때 DB에서 서버로 메뉴를 받아온다.
+        dao = MenuDAO.getinstance();
+        menu_list = dao.selectAll();
+        
+        tp = new TablePaymentController(menu_list);
+        
          addMenu = FXMLLoader.load(getClass().getResource("menu/menu.fxml"));
          receipt = FXMLLoader.load(getClass().getResource("management/Receipt.fxml"));
          salesStatus = FXMLLoader.load(getClass().getResource("management/SalesStatus.fxml"));
@@ -105,7 +115,6 @@ public class ServerController implements Initializable{
    }
    
    private void startServer() {
-      dao = MenuDAO.getinstance();
       try {
 //         ip = InetAddress.getLocalHost();   //현재 컴퓨터 아이피 받아오기
          threadPool = Executors.newFixedThreadPool(20);
@@ -185,7 +194,7 @@ public class ServerController implements Initializable{
    
    class Client extends Thread{
       private int tableNo;         //테이블 번호
-      private List<Menu> menu_list = new ArrayList<>();   //각 테이블이 가질 메뉴 리스트 서버와 연동된다.
+//      private List<Menu> menu_list = new ArrayList<>();   //각 테이블이 가질 메뉴 리스트 서버와 연동된다.
 //      private List<OrderMenu> orderMenu_list = new ArrayList<>();
       //주문한 메뉴 담고있는 리스트
       private ObservableList<OrderMenu> orderMenu_list = FXCollections.observableArrayList();
@@ -241,12 +250,10 @@ public class ServerController implements Initializable{
          makeTableInfo(tableNo);
          //접속되면 메뉴 정보를 전송
          String menu = "";
-         for(Menu m : dao.selectAll()) {
+         for(Menu m : menu_list) {
             //$$는 메뉴번호/카테고리/이름/가격 컬럼 구분자 , @@는 행 구분
             menu += m.getMenuNum()+"$$"+ m.getCategory() + "$$" + m.getName() + "$$" + m.getPrice();
             menu += "@@";
-            //서버에서 관리하는 테이블의 메뉴리스트에도 넣어준다.
-            menu_list.add(m);
          }
          System.out.println(menu);
          menu = menu.substring(0, menu.length()-2);
@@ -293,7 +300,9 @@ public class ServerController implements Initializable{
          //주문일 때
          if(protocol.equals("주문")) {
             st2 = new StringTokenizer(message, "@@");
-            sendOrderInfo(message);
+            if(kitchen != null) {
+               sendOrderInfo(message);
+            }
             boolean flag = false;
             while(st2.hasMoreTokens()) {
                String menu = st2.nextToken();
@@ -326,6 +335,17 @@ public class ServerController implements Initializable{
                }else {
                   flag = false;
                }
+               //주문을 추가한 뒤 주문들을 가격을 합산
+               
+               Platform.runLater( () -> {
+                  int tp = 0;
+                   for(OrderMenu om : orderMenu_list) {
+                      tp += om.getPrice();
+                   }
+                   System.out.println(tp);
+                   labelPrice.setText(tp + "");
+               });
+               
             }
             
          }else if(protocol.equals("종료")) {
@@ -374,17 +394,26 @@ public class ServerController implements Initializable{
             int row = (tableNo-1)/columnMax;
             int column = (tableNo-1)%columnMax;
             Parent table = FXMLLoader.load(getClass().getResource("table.fxml"));
+           
+            
             table.setId("테이블" + tableNo);
             tableView = (TableView<OrderMenu>)table.lookup("#tableView");
             labelPrice = (Label)table.lookup("#labelPrice");
             
             TableColumn<OrderMenu, ?> a = tableView.getColumns().get(0);
-             a.setCellValueFactory(new PropertyValueFactory<>("name"));
-             a.setText("테이블" + tableNo);
+            a.setCellValueFactory(new PropertyValueFactory<>("name"));
+            a.setText("테이블" + tableNo);
              
-             TableColumn<OrderMenu, ?> b = tableView.getColumns().get(1);
-             b.setCellValueFactory(new PropertyValueFactory<>("cnt"));
-             b.setText("");
+            TableColumn<OrderMenu, ?> b = tableView.getColumns().get(1);
+            b.setCellValueFactory(new PropertyValueFactory<>("cnt"));
+            b.setText("");
+            
+            //테이블 마우스 왼쪽 클릭시 결제(주문)창 뜨기 
+            tableView.setOnMouseClicked(e -> {
+               if(e.getButton() == MouseButton.PRIMARY) {
+                  tp.show(orderMenu_list);
+               }
+            });
             
             //칼럼과 로우 맞춰서 테이블정보 넣기
             Platform.runLater(() -> {

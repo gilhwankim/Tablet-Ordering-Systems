@@ -231,8 +231,8 @@ public class TabletController implements Initializable{
                dis.close();
                os.close();
                dos.close();
-               
                System.out.println("ÅÂºí¸´ Á¾·á.");
+               Platform.exit();
                System.exit(0);
               }catch (Exception e) {
                  System.exit(0);
