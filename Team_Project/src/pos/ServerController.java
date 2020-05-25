@@ -21,6 +21,7 @@ import java.util.concurrent.Executors;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -52,8 +53,6 @@ public class ServerController implements Initializable{
    private @FXML GridPane home;   //테이블이 있는 화면
    
    //table.fxml 멤버
-   private TableView<OrderMenu> tableView;
-   private Label labelPrice;
    
    private Parent addMenu;         //메뉴 관리 화면
    private Parent receipt; //영수증 화면
@@ -192,12 +191,12 @@ public class ServerController implements Initializable{
       }
    }
    
-   class Client extends Thread{
+   public class Client extends Thread{
       private int tableNo;         //테이블 번호
 //      private List<Menu> menu_list = new ArrayList<>();   //각 테이블이 가질 메뉴 리스트 서버와 연동된다.
 //      private List<OrderMenu> orderMenu_list = new ArrayList<>();
       //주문한 메뉴 담고있는 리스트
-      private ObservableList<OrderMenu> orderMenu_list = FXCollections.observableArrayList();
+      public ObservableList<OrderMenu> orderMenu_list = FXCollections.observableArrayList();
       private Socket socket;         //서버에서 관리하는 각 테이블의 소켓
       
       private InputStream is;
@@ -205,6 +204,10 @@ public class ServerController implements Initializable{
       private DataInputStream dis;
       private DataOutputStream dos;
 
+      private TableView<OrderMenu> tableView;
+      private Label labelPrice;
+
+      
       public Client(Socket socket) {
          this.socket = socket;
          client_Network();
@@ -298,6 +301,7 @@ public class ServerController implements Initializable{
          System.out.println("프로토콜 : " + protocol);
          System.out.println("메세지 : " + message);
          //주문일 때
+         /////////주문
          if(protocol.equals("주문")) {
             st2 = new StringTokenizer(message, "@@");
             if(kitchen != null) {
@@ -316,7 +320,7 @@ public class ServerController implements Initializable{
                   for(OrderMenu m : orderMenu_list) {
                      if(m.getName().equals(name)) {
                         m.setCnt(m.getCnt() + cnt);
-                        m.setPrice(m.getPrice() + price);
+                        m.setPrice(price);
                         tableView.setItems(orderMenu_list);
                         tableView.refresh();
                         System.out.println("같은게 있을때" + m.getName());
@@ -335,20 +339,11 @@ public class ServerController implements Initializable{
                }else {
                   flag = false;
                }
-               //주문을 추가한 뒤 주문들을 가격을 합산
-               
-               Platform.runLater( () -> {
-                  int tp = 0;
-                   for(OrderMenu om : orderMenu_list) {
-                      tp += om.getPrice();
-                   }
-                   System.out.println(tp);
-                   labelPrice.setText(tp + "");
-               });
-               
+               priceUpdate();
             }
-            
-         }else if(protocol.equals("종료")) {
+         }/////////주문
+         //////////종료
+         else if(protocol.equals("종료")) {
             if(!this.socket.isClosed()) {
                try {
                   this.socket.close();
@@ -372,17 +367,22 @@ public class ServerController implements Initializable{
                if(p.getId() != null) {
                   if(p.getId().equals("테이블" + this.tableNo)) {
                      Platform.runLater( () -> {
-                        home.getChildren().remove(p);   
-                     System.out.println(this.tableNo + "지움");
-                     home.getChildren().add(this.tableNo-1, emptyTableInfo(this.tableNo));
+                         home.getChildren().remove(p);   
+
+                         //테이블 위치 계싼
+                        int columnMax = home.getColumnConstraints().size();
+                        int row = (tableNo-1)/columnMax;
+                        int column = (tableNo-1)%columnMax;
+                        
+                        home.add(emptyTableInfo(this.tableNo), column, row);
+                        table_list.remove(p);
                      });
-                     table_list.remove(p);
                      return;
                   }
                }
                
             }
-         }
+         }//////////종료
       }
       
       @SuppressWarnings("unchecked")
@@ -411,7 +411,7 @@ public class ServerController implements Initializable{
             //테이블 마우스 왼쪽 클릭시 결제(주문)창 뜨기 
             tableView.setOnMouseClicked(e -> {
                if(e.getButton() == MouseButton.PRIMARY) {
-                  tp.show(orderMenu_list);
+                  tp.show(this, tableView);
                }
             });
             
@@ -425,6 +425,17 @@ public class ServerController implements Initializable{
          } catch (Exception e) {
             e.printStackTrace();
          }
+      }
+      
+      public void priceUpdate() {
+         Platform.runLater( () -> {
+            int t = 0;
+            for(OrderMenu om : orderMenu_list) {
+               t += om.getTotal();
+               System.out.println(tableNo  + "에서" + t);
+            }
+            labelPrice.setText(t + "원");
+         });
       }
       
       //테이블 번호, 주문내역전송

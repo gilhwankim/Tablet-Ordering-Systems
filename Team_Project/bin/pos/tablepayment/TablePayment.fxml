@@ -70,7 +70,7 @@
                                     <StackPane alignment="BOTTOM_RIGHT" prefHeight="150.0" prefWidth="200.0">
                                        <children>
                                           <Button mnemonicParsing="false" prefHeight="80.0" prefWidth="184.0" text="즉시 퇴근" />
-                                          <Label text="5억">
+                                          <Label disable="true" text="5억">
                                              <padding>
                                                 <Insets bottom="5.0" right="5.0" />
                                              </padding>
@@ -80,7 +80,7 @@
                                     <StackPane alignment="BOTTOM_RIGHT" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1">
                                        <children>
                                           <Button mnemonicParsing="false" prefHeight="80.0" prefWidth="151.0" text="1시간 일찍 퇴근" />
-                                          <Label text="1억">
+                                          <Label disable="true" text="1억">
                                              <padding>
                                                 <Insets bottom="5.0" right="5.0" />
                                              </padding>
@@ -90,7 +90,7 @@
                                     <StackPane alignment="BOTTOM_RIGHT" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2">
                                        <children>
                                           <Button mnemonicParsing="false" prefHeight="80.0" prefWidth="202.0" text="2시간 일찍 퇴근" />
-                                          <Label text="1억5천">
+                                          <Label disable="true" text="1억5천">
                                              <padding>
                                                 <Insets bottom="5.0" right="5.0" />
                                              </padding>
@@ -100,7 +100,7 @@
                                     <StackPane alignment="BOTTOM_RIGHT" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3">
                                        <children>
                                           <Button mnemonicParsing="false" prefHeight="80.0" prefWidth="217.0" text="3시간 일찍 퇴근" />
-                                          <Label text="2억">
+                                          <Label disable="true" text="2억">
                                              <padding>
                                                 <Insets bottom="5.0" right="5.0" />
                                              </padding>
@@ -110,7 +110,7 @@
                                     <StackPane alignment="BOTTOM_RIGHT" prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="1">
                                        <children>
                                           <Button mnemonicParsing="false" prefHeight="80.0" prefWidth="188.0" text="4시간 일찍 퇴근" />
-                                          <Label text="2억 5천">
+                                          <Label disable="true" text="2억 5천">
                                              <padding>
                                                 <Insets bottom="5.0" right="5.0" />
                                              </padding>
@@ -120,7 +120,7 @@
                                     <StackPane alignment="BOTTOM_RIGHT" prefHeight="80.0" prefWidth="178.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <children>
                                           <Button mnemonicParsing="false" prefHeight="80.0" prefWidth="234.0" text="5시간 일찍 퇴근" />
-                                          <Label text="3억">
+                                          <Label disable="true" text="3억">
                                              <padding>
                                                 <Insets bottom="5.0" right="5.0" />
                                              </padding>
@@ -130,7 +130,7 @@
                                     <StackPane alignment="BOTTOM_RIGHT" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                        <children>
                                           <Button mnemonicParsing="false" prefHeight="80.0" prefWidth="136.0" text="6시간 일찍 퇴근" />
-                                          <Label text="3억5천">
+                                          <Label disable="true" text="3억5천">
                                              <padding>
                                                 <Insets bottom="5.0" right="5.0" />
                                              </padding>
@@ -140,7 +140,7 @@
                                     <StackPane alignment="BOTTOM_RIGHT" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
                                        <children>
                                           <Button mnemonicParsing="false" prefHeight="80.0" prefWidth="136.0" text="7시간 일찍 퇴근" />
-                                          <Label text="4억">
+                                          <Label disable="true" text="4억">
                                              <padding>
                                                 <Insets bottom="5.0" right="5.0" />
                                              </padding>

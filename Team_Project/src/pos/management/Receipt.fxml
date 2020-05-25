@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane prefHeight="740.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pos.management.ReceiptController">
+<BorderPane prefHeight="740.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pos.management.ReceiptController">
    <top>
       <Label prefHeight="30.0" text="영수증 관리" BorderPane.alignment="CENTER">
          <font>
@@ -18,7 +18,7 @@
          </BorderPane.margin></Label>
    </top>
    <left>
-      <TableView prefWidth="500.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="receiptTable" prefWidth="500.0" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn prefWidth="100.0" text="거래일자" />
           <TableColumn prefWidth="200.0" text="결제금액" />
