@@ -10,7 +10,6 @@ import java.net.Socket;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
@@ -85,8 +84,15 @@ public class TabletController implements Initializable{
  //테이블에서 주문한 전체 리스트
    private ObservableList<OrderMenu> orderTableTotal = FXCollections.observableArrayList();
    private @FXML Button orderBtn;
-   private @FXML Label total; private @FXML Label tableNo; //태플릿에 테이블번호 표시 라벨
+   private @FXML Label total; 
+   private @FXML Label tableNo; //태플릿에 테이블번호 표시 라벨
    private @FXML Button billBtn; //계산서 호출 버튼
+   private @FXML Button subtractBtn; // - 버튼
+   private @FXML Button plusBtn; // + 버튼
+   
+   
+   
+   
    
    @Override
    public void initialize(URL location, ResourceBundle resources) {
@@ -98,20 +104,9 @@ public class TabletController implements Initializable{
       orderTable.setPlaceholder(new Label(""));
       
       billBtn.setOnAction((event)-> callBill(event)); //계산서 버튼 메서드
-      
-      orderTableOl.addListener(new ListChangeListener<OrderMenu>() {
-         @Override
-       public void onChanged(Change<? extends OrderMenu> c) {
-            int totalPrice = 0;
-            for(OrderMenu m : c.getList()) {
-               totalPrice += m.getTotalPrice();
-            }
-            total.setText(totalPrice + "원");
-       }
-      });
-      
+      plusBtn.setOnAction( e -> plusBtnAction(e));
+      subtractBtn.setOnAction( e -> subtractBtnAction(e));
       orderBtn.setOnAction(e -> orderBtnAction(e));
-      
       
    }
    
@@ -313,18 +308,20 @@ public class TabletController implements Initializable{
          for(OrderMenu om : orderTableOl) {
             if(om.getName().equals(mTmp.getName())) {
                om.setCnt(om.getCnt() + 1);
-               om.setTotalPrice(om.getCnt() * Integer.parseInt(om.getPrice()));
+               om.setTotalPrice(Integer.parseInt(om.getPrice()));
                int idx = orderTableOl.indexOf(om);
                OrderMenu om2 = om;
                orderTableOl.remove(om);
                orderTableOl.add(idx, om2);
                orderTable.refresh();
+               priceUpdate();
                return;
             }
          }
          OrderMenu om = new OrderMenu(mTmp.getName(), 1, mTmp.getPrice());
          orderTableOl.add(om);
          orderTable.refresh();
+         priceUpdate();
          }catch (Exception e) {
             e.printStackTrace();
          }
@@ -347,10 +344,15 @@ public class TabletController implements Initializable{
          msg = msg.substring(0, msg.length() -2);
          send_Message("주문/////" + msg);
          System.out.println(msg);
+         Platform.runLater(() -> orderTableOl.clear());
+         priceUpdate();
+         
+         
          }catch (Exception e) {
             e.printStackTrace();
             return;
       }
+         
       }
       
       private void addTableBill(OrderMenu m) {
@@ -373,7 +375,6 @@ public class TabletController implements Initializable{
          try {
             //서버로 전송
          dos.writeUTF(msg);
-         Platform.runLater(() -> orderTableOl.clear());
          
       } catch (Exception e) {
          e.printStackTrace();
@@ -394,6 +395,7 @@ public class TabletController implements Initializable{
          }
          return false;
       }
+      
       //테이블별 계산서 부르는 메서드
       private void callBill(ActionEvent event) {          
             Stage dialog = new Stage(StageStyle.UNDECORATED);           
@@ -412,26 +414,39 @@ public class TabletController implements Initializable{
                 TableColumn<OrderMenu, ?> att1 = billTable.getColumns().get(0);
                 att1.setCellValueFactory(new PropertyValueFactory<>("name"));
                 att1.setText("메뉴");                
-                    TableColumn<OrderMenu, ?> att2 = billTable.getColumns().get(1);
-                    att2.setCellValueFactory(new PropertyValueFactory<>("cnt"));
-                    att2.setText("수량");                
-                    TableColumn<OrderMenu, ?> att3 = billTable.getColumns().get(2);
-                    att3.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
-                    att3.setText("가격");
-                    
-                    if(orderTableTotal.size()==0){ //하나도 주문 안했으면 아무것도 안적힘
-                       billTable.setPlaceholder(new Label(""));
-                       totalPrice.setText("");
-                    }else { //주문을 했다면 계산서 나옴
-                       billTable.setItems(orderTableTotal); //테이블뷰에 세팅   
-                       
-                       int totalResult = 0;
-                       DecimalFormat df = new DecimalFormat("###,###"); //단위마다 쉼표
-                       for(OrderMenu om : orderTableTotal) {
-                          totalResult += om.getTotalPrice(); //시킨 메뉴 가격을 더함
-                       }
-                       totalPrice.setText(df.format((totalResult) + "원")); //현재까지 주문한 가격 출력                   
-                    }
+                TableColumn<OrderMenu, ?> att2 = billTable.getColumns().get(1);
+                att2.setCellValueFactory(new PropertyValueFactory<>("cnt"));
+                att2.setText("수량");                
+                TableColumn<OrderMenu, ?> att3 = billTable.getColumns().get(2);
+                att3.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
+                att3.setText("가격");
+                
+                //정확한 계산서를 받기위해서 pos로 부터 
+                //현재테이블의 오더메뉴리스트 요청
+                send_Message("계산서///" + Integer.parseInt(this.tableNo.getText()));
+                String msg = dis.readUTF();
+                System.out.println(msg);
+
+                orderTableTotal.clear();
+                st2 = new StringTokenizer(msg, "@@");
+                while(st2.hasMoreTokens()) {
+                   st1 = new StringTokenizer(st2.nextToken(), "$$");
+                   orderTableTotal.add(new OrderMenu(st1.nextToken(), Integer.parseInt(st1.nextToken()), st1.nextToken()));
+                }
+                
+                if(orderTableTotal.size()==0){ //하나도 주문 안했으면 아무것도 안적힘
+                   billTable.setPlaceholder(new Label(""));
+                   totalPrice.setText("");
+                }else { //주문을 했다면 계산서 나옴
+                   billTable.setItems(orderTableTotal); //테이블뷰에 세팅   
+                   
+                   int totalResult = 0;
+                   DecimalFormat df = new DecimalFormat("###,###"); //단위마다 쉼표
+                   for(OrderMenu om : orderTableTotal) {
+                     totalResult += om.getTotalPrice(); //시킨 메뉴 가격을 더함
+                   }
+                   totalPrice.setText((df.format(totalResult)) + "원"); //현재까지 주문한 가격 출력                   
+                }
                 //tableBill의 X표시 누르면 창닫힘
                 billExitBtn.setOnMouseClicked(e -> dialog.close());
                 
@@ -441,5 +456,61 @@ public class TabletController implements Initializable{
                   dialog.show();       
              } catch (IOException e) { e.printStackTrace(); }      
         }         
+      
+      //'-' 버튼 동작
+      private void subtractBtnAction(ActionEvent event) {
+         //구매목록에 하나없으면 에러나니까 리턴
+         if(orderTableOl.size() == 0)
+            return;
+         //구매목록에 있어도 선택안하고 누르면 에러나니까 리턴
+         if(orderTable.getSelectionModel().getSelectedItem() == null)
+                return;
+         
+         String name = orderTable.getSelectionModel().getSelectedItem().getName();
+         
+         //구매목록에서 선택한 메뉴를 이름으로 찾는다.
+         for(OrderMenu om : orderTableOl) {
+            if(om.getName().equals(name)) {
+               if(om.getCnt() > 1)
+                  om.setCnt(om.getCnt() - 1);
+               else 
+                  orderTableOl.remove(om);
+               
+               orderTable.refresh();
+               priceUpdate();
+               break;
+            }
+         }
+         
+      }
+      //'+' 버튼 동장
+      private void plusBtnAction(ActionEvent event) {
+         if(orderTableOl.size() == 0)
+            return;
+         if(orderTable.getSelectionModel().getSelectedItem() == null)
+                return;
+         
+         String name = orderTable.getSelectionModel().getSelectedItem().getName();
+         
+         for(OrderMenu om : orderTableOl) {
+            if(om.getName().equals(name)) {
+               om.setCnt(om.getCnt() + 1);
+               orderTable.refresh();
+               priceUpdate();
+            }
+         }
+      }
+      
+      private void priceUpdate() {
+         Platform.runLater( () -> {
+            int totalPrice = 0;
+            for(OrderMenu m : orderTableOl) {
+               totalPrice += m.getTotalPrice();
+            }
+            total.setText(totalPrice + "원");
+            System.out.println(total.getText());
+         });
+      }
+      
    
 }

@@ -314,7 +314,7 @@ public class ServerController implements Initializable{
                st = new StringTokenizer(menu, "$$");
                String name = st.nextToken();
                int cnt = Integer.parseInt(st.nextToken());
-               int price = Integer.parseInt(st.nextToken());
+               int price = Integer.parseInt(st.nextToken())/cnt;
                //첫 주문이 아닐 때
                if(orderMenu_list.size() != 0) {
                   for(OrderMenu m : orderMenu_list) {
@@ -336,10 +336,13 @@ public class ServerController implements Initializable{
                   tableView.setItems(orderMenu_list);
                   tableView.refresh();
                   System.out.println(om.getName());
+                  System.out.println(om.getPrice());
                }else {
                   flag = false;
                }
+               System.out.println("price" + price);
                priceUpdate();
+               tp.priceUpdate();
             }
          }/////////주문
          //////////종료
@@ -383,6 +386,28 @@ public class ServerController implements Initializable{
                
             }
          }//////////종료
+         ///////////계산서
+         //계산서는 태블릿이 계산서를 호출할 때
+         //pos가 가지고있는 클라이언트의 오더메뉴 리스트를 보낸다.
+         //이유는 테이블 누르면 나오는 tablepayment에서 갯수를 조정했을수도
+         //있기 때문에 tablepayment에서 조정한값은 pos만 가지고있어서
+         else if(protocol.equals("계산서")) {
+            for(Client c : client_list) {
+               if(c.tableNo == Integer.parseInt(message)) {
+                  String menu = "";
+                  for(OrderMenu om : c.orderMenu_list) {
+                     menu += om.getName() + "$$" + om.getCnt() + "$$" + om.getPrice();
+                     menu += "@@";
+                  }
+                  try {
+                     c.dos.writeUTF(menu);
+                     System.out.println("보냄");
+               } catch (Exception e) {
+                  e.printStackTrace();
+               }
+               }
+            }
+         }//////////계산서
       }
       
       @SuppressWarnings("unchecked")
@@ -432,6 +457,7 @@ public class ServerController implements Initializable{
             int t = 0;
             for(OrderMenu om : orderMenu_list) {
                t += om.getTotal();
+               System.out.println(om.getTotal());
                System.out.println(tableNo  + "에서" + t);
             }
             labelPrice.setText(t + "원");
