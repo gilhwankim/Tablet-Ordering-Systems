@@ -354,31 +354,32 @@ public class ServerController implements Initializable{
                   e.printStackTrace();
                }
             }
-            System.out.println("요까지옴" + tableNo);
-            
             Iterator<Client> it = client_list.iterator();
             while(it.hasNext()) {
-               if(this.tableNo == it.next().tableNo) {
-                  client_list.remove(it);
-                  System.out.println("함");
-               }
+              Client c = it.next();
+                if(this.tableNo == c.tableNo) {
+                   client_list.remove(c);
+                   break;
+                }
             }
-            
-            System.out.println("요까지옴");
             for(int i=0; i<home.getChildren().size(); i++) {
                Parent p = (Parent)home.getChildren().get(i);
                if(p.getId() != null) {
                   if(p.getId().equals("테이블" + this.tableNo)) {
                      Platform.runLater( () -> {
-                         home.getChildren().remove(p);   
-
-                         //테이블 위치 계싼
-                        int columnMax = home.getColumnConstraints().size();
-                        int row = (tableNo-1)/columnMax;
-                        int column = (tableNo-1)%columnMax;
-                        
-                        home.add(emptyTableInfo(this.tableNo), column, row);
-                        table_list.remove(p);
+                        try {
+                           home.getChildren().remove(p);   
+                           
+//                           //테이블 위치 계싼
+//                           int columnMax = home.getColumnConstraints().size();
+//                           int row = (tableNo-1)/columnMax;
+//                           int column = (tableNo-1)%columnMax;
+//                           System.out.println(this.tableNo + "번 테이블" + row + "번 로우" + column + "번 칼럼");
+//                           home.add(emptyTableInfo(this.tableNo), column, row);
+//                           table_list.remove(p);
+                        }catch (Exception e) {
+                           e.printStackTrace();
+                  }
                      });
                      return;
                   }
@@ -442,7 +443,7 @@ public class ServerController implements Initializable{
             
             //칼럼과 로우 맞춰서 테이블정보 넣기
             Platform.runLater(() -> {
-            home.getChildren().remove(tableNo-1);
+//            home.getChildren().remove(tableNo-1);
             home.add(table, column, row);
             });
             table_list.add(table);

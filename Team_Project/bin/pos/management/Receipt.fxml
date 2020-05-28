@@ -43,7 +43,7 @@
                   <Label fx:id="currentDate" BorderPane.alignment="CENTER" />
                </right>
             </BorderPane>
-            <TableView prefHeight="560.0">
+            <TableView fx:id="receiptDetailTable" prefHeight="560.0">
               <columns>
                 <TableColumn prefWidth="160.0" text="메뉴명" />
                 <TableColumn text="단가" />
@@ -60,7 +60,7 @@
                   <Insets left="5.0" right="5.0" />
                </padding>
                <right>
-                  <Label text="100,000" BorderPane.alignment="CENTER" />
+                  <Label fx:id="totalPrice" text="100,000" BorderPane.alignment="CENTER" />
                </right>
             </BorderPane>
          </children>

@@ -130,6 +130,9 @@ public class TabletController implements Initializable{
       
       btn.setOnAction( e -> {
          String tableNo = cb.getSelectionModel().getSelectedItem();
+         if(tableNo == null) {
+            return;
+         }
          if(Integer.parseInt(tableNo)<10) { //테이블 번호 10이하면 0 + 테이블 번호
             this.tableNo.setText("0" + tableNo);             
          }else {
@@ -277,6 +280,7 @@ public class TabletController implements Initializable{
             //마우스 더블클릭 액션
             
          }catch (Exception e) {
+        	 e.printStackTrace();
          }
          return tempOl;
       }
