@@ -23,7 +23,7 @@
             </Label>
          </left>
          <right>
-            <Button alignment="CENTER" prefHeight="30.0" prefWidth="30.0" text="X" BorderPane.alignment="CENTER" />
+            <Button id="exit" alignment="CENTER" prefHeight="30.0" prefWidth="30.0" text="X" BorderPane.alignment="CENTER" />
          </right>
          <VBox.margin>
             <Insets bottom="10.0" />

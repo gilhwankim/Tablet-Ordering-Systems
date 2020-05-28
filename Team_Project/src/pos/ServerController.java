@@ -35,8 +35,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 import pos.menu.Menu;
 import pos.menu.MenuDAO;
@@ -110,7 +112,7 @@ public class ServerController implements Initializable{
       serverStage.setOnCloseRequest(e -> stopServer());
       
       //처음에 테이블 초기화
-      emptyTableInfo(99999);
+      emptyTableInfo();
    }
    
    private void startServer() {
@@ -169,26 +171,16 @@ public class ServerController implements Initializable{
       }
    }
    
-   private HBox emptyTableInfo(int tableNo) {
-      if(tableNo == 99999) {
-         for(int i=0; i<home.getRowConstraints().size(); i++) {
-            for(int j=0; j<home.getColumnConstraints().size(); j++) {
-               HBox empty = new HBox();
-               empty.setAlignment(Pos.CENTER);
-               Label emptyLabel = new Label(1+j+home.getColumnConstraints().size()*i + " 번 테이블 대기");
-               empty.getChildren().add(emptyLabel);
-               home.add(empty, j, i);
-            }
-         }
-         return null;
-      }
-      else {
-         HBox empty = new HBox();
-         empty.setAlignment(Pos.CENTER);
-         Label emptyLabel = new Label(tableNo + " 번 테이블 대기");
-         empty.getChildren().add(emptyLabel);
-         return empty;
-      }
+   private void emptyTableInfo() {
+     for(int i=0; i<home.getRowConstraints().size(); i++) {
+        for(int j=0; j<home.getColumnConstraints().size(); j++) {
+           HBox empty = new HBox();
+           empty.setAlignment(Pos.CENTER);
+           Label emptyLabel = new Label(1+j+home.getColumnConstraints().size()*i + " 번 테이블 대기");
+           empty.getChildren().add(emptyLabel);
+           home.add(empty, j, i);
+        }
+     }
    }
    
    public class Client extends Thread{
@@ -292,7 +284,6 @@ public class ServerController implements Initializable{
          threadPool.execute(runnable);
       }
       
-      @SuppressWarnings("unlikely-arg-type")
       private void msgProcess(String msg) {
          //@@@@주문이 오면 테이블 번호, 주문내역을 받아 넘겨준다.
          st = new StringTokenizer(msg, "///");
@@ -369,14 +360,6 @@ public class ServerController implements Initializable{
                      Platform.runLater( () -> {
                         try {
                            home.getChildren().remove(p);   
-                           
-//                           //테이블 위치 계싼
-//                           int columnMax = home.getColumnConstraints().size();
-//                           int row = (tableNo-1)/columnMax;
-//                           int column = (tableNo-1)%columnMax;
-//                           System.out.println(this.tableNo + "번 테이블" + row + "번 로우" + column + "번 칼럼");
-//                           home.add(emptyTableInfo(this.tableNo), column, row);
-//                           table_list.remove(p);
                         }catch (Exception e) {
                            e.printStackTrace();
                   }

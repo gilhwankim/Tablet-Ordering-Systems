@@ -16,7 +16,6 @@ import java.util.StringTokenizer;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,12 +27,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -60,25 +62,6 @@ public class TabletController implements Initializable{
    private StringTokenizer st1;
    private StringTokenizer st2;
    
-   
-   //table.fxml 카테고리 탭
-   private @FXML ListView<HBox> lvSalad;
-   private ObservableList<HBox> saladOl = FXCollections.observableArrayList();
-   private @FXML ListView<HBox> lvPasta;
-   private ObservableList<HBox> PastaOl = FXCollections.observableArrayList();
-   private @FXML ListView<HBox> lvSteak;
-   private ObservableList<HBox> SteakOl = FXCollections.observableArrayList();
-   private @FXML ListView<HBox> lvpilaf;
-   private ObservableList<HBox> PilafOl = FXCollections.observableArrayList();
-   private @FXML ListView<HBox> lvPizza;
-   private ObservableList<HBox> PizzaOl = FXCollections.observableArrayList();
-   private @FXML ListView<HBox> lvDrink;
-   private ObservableList<HBox> DrinkOl = FXCollections.observableArrayList();
-   private @FXML ListView<HBox> lvAlcohol;
-   private ObservableList<HBox> AlcoholOl = FXCollections.observableArrayList();
-   private @FXML ListView<HBox> lvetc;
-   private ObservableList<HBox> EtcOl = FXCollections.observableArrayList();
-   
    private @FXML TableView<OrderMenu> orderTable;
    private ObservableList<OrderMenu> orderTableOl = FXCollections.observableArrayList();
  //테이블에서 주문한 전체 리스트
@@ -89,7 +72,7 @@ public class TabletController implements Initializable{
    private @FXML Button billBtn; //계산서 호출 버튼
    private @FXML Button subtractBtn; // - 버튼
    private @FXML Button plusBtn; // + 버튼
-   
+   private @FXML TabPane tp;
    
    
    
@@ -175,43 +158,16 @@ public class TabletController implements Initializable{
             while(st1.hasMoreTokens()) {
                String tmp = st1.nextToken();
                st2 = new StringTokenizer(tmp, "$$");
-               
                menuList.add(new Menu(Integer.parseInt(st2.nextToken()),st2.nextToken(), st2.nextToken(), st2.nextToken()));
-              
-               }
+            }
             
          for(Menu m : menuList) {
             System.out.println("메뉴리스트 확인:"+m.getMenuNum()+","+m.getCategory()+","+m.getName()+","+m.getPrice()+",");
          }
-            //메뉴들을 각 메뉴판에 담기
-            for(Menu m : menuList) {
-               if(m.getCategory().equals("파스타")) {
-                  PastaOl = replaceMenu(PastaOl, m);
-               }else if(m.getCategory().equals("샐러드")) {
-                  saladOl = replaceMenu(saladOl, m);
-               }else if(m.getCategory().equals("스테이크")) {
-                 SteakOl = replaceMenu(SteakOl, m);
-               }else if(m.getCategory().equals("필라프")) {
-                 PilafOl = replaceMenu(PilafOl,m);
-               }else if(m.getCategory().equals("피자")) {
-                 PizzaOl = replaceMenu(PizzaOl,m);
-               }else if(m.getCategory().equals("음료")) {
-                 DrinkOl = replaceMenu(DrinkOl,m);
-               }else if(m.getCategory().equals("주류")) {
-                 AlcoholOl = replaceMenu(AlcoholOl,m);
-               }else if(m.getCategory().equals("기타")) {
-                 EtcOl = replaceMenu(EtcOl,m);
-               }
-               //리스트뷰에 observablelist 연동
-            }
-            lvSalad.setItems(saladOl);
-            lvPasta.setItems(PastaOl);
-            lvSteak.setItems(SteakOl);
-            lvpilaf.setItems(PilafOl);
-            lvPizza.setItems(PizzaOl);
-            lvDrink.setItems(DrinkOl);
-            lvAlcohol.setItems(AlcoholOl);
-            lvetc.setItems(EtcOl);
+         
+         	MakeTab mt = new MakeTab();
+         	tp = mt.make(menuList, tp);
+         	addMenu();
             orderTableSetting();
             
          }else {
@@ -243,47 +199,64 @@ public class TabletController implements Initializable{
       }
    
    //메뉴판에 메뉴를 넣는 메서드
-      private ObservableList<HBox> replaceMenu(ObservableList<HBox> ol, Menu m){
-         ObservableList<HBox> tempOl = ol;
-         try {
-            //각 메뉴 아이템
-            Parent node = FXMLLoader.load(getClass().getResource("menuItem.fxml"));
-            Label labelName = (Label)node.lookup("#labelName");
-            Label labelPrice = (Label)node.lookup("#labelPrice");
-            //menuItem.fxml에서 imageView 찾아옴
-            ImageView imageMenu = (ImageView)node.lookup("#menuImg");
-            //메뉴이름과 같은 이미지를 띄워줌
-            imageMenu.setImage(new Image(getClass().getResource(
-                    "/images/" + m.getName() + ".jpg").toString()));                 
-            labelName.setText(m.getName());
-            labelPrice.setText(m.getPrice());            
-            
-            node.setOnMouseClicked(e -> {
-               if(e.getClickCount() == 2) {
-                  System.out.println("메뉴이름 : " + labelName.getText() + "메뉴가격 : " + labelPrice.getText());
-                  addOrdertable(labelName.getText());
-               }
-            });
-            if(tempOl.size() == 0) {
-               HBox hbox = new HBox();
-               hbox.setSpacing(10);
-               hbox.getChildren().add(node);
-               tempOl.add(hbox);
-            }else if(tempOl.get(tempOl.size()-1).getChildren().size() % 3 == 0 ) {
-               HBox hbox = new HBox();
-               hbox.setSpacing(10);
-               hbox.getChildren().add(node);
-               tempOl.add(hbox);
-            }else {
-               tempOl.get(tempOl.size()-1).getChildren().add(node);
-            }
-            //마우스 더블클릭 액션
-            
-         }catch (Exception e) {
-        	 e.printStackTrace();
-         }
-         return tempOl;
+    @SuppressWarnings("unchecked")
+	private void addMenu(){
+    	  for(Menu m : menuList) {
+	         try {
+	            //각 메뉴 아이템
+	            VBox node = FXMLLoader.load(getClass().getResource("menuItem.fxml"));
+	            Label labelName = (Label)node.lookup("#labelName");
+	            Label labelPrice = (Label)node.lookup("#labelPrice");
+	            //menuItem.fxml에서 imageView 찾아옴
+	            ImageView imageMenu = (ImageView)node.lookup("#menuImg");
+	            
+	            try {
+	            	 //메뉴이름과 같은 이미지를 띄워줌
+		            imageMenu.setImage(new Image(getClass().getResource(
+		                    "/images/" + m.getName() + ".jpg").toString()));   
+	            }catch (Exception e) {
+	            	 imageMenu.setImage(new Image(getClass().getResource(
+			                    "/images/noImage.jpg").toString()));   
+				}
+	            labelName.setText(m.getName());
+	            labelPrice.setText(m.getPrice());            
+	            
+	            node.setOnMouseClicked(e -> {
+	               if(e.getClickCount() == 2) {
+	                  System.out.println("메뉴이름 : " + labelName.getText() + "메뉴가격 : " + labelPrice.getText());
+	                  addOrdertable(labelName.getText());
+	               }
+	            });
+	            
+	            for(Tab t : tp.getTabs()) {
+	            	if(t.getText().equals(m.getCategory())) {
+		            	HBox h = (HBox)t.getContent();
+		            	VBox v = (VBox)h.getChildren().get(0);
+		            	ListView<HBox> lv = (ListView<HBox>)v.getChildren().get(0);
+		            	if(lv.getItems().size() == 0) {
+		            		HBox hbox = new HBox();
+		            		hbox.setSpacing(10);
+		            		hbox.getChildren().add(node);
+		            		lv.getItems().add(hbox);
+		            		break;
+		            	}else if(lv.getItems().get(lv.getItems().size() - 1).getChildren().size() % 3 == 0 ) {
+		            		HBox hbox = new HBox();
+		            		hbox.setSpacing(10);
+		            		hbox.getChildren().add(node);
+		            		lv.getItems().add(hbox);
+		            		break;
+		            	}else {
+		            		lv.getItems().get(lv.getItems().size()-1).getChildren().add(node);
+		            		break;
+		            	}
+	            	}
+	            }
+	         }catch (Exception e) {
+	        	 e.printStackTrace();
+	         }
+    	  }
       }
+      
       //테이블뷰 초기화
       private void orderTableSetting() {
          TableColumn<OrderMenu, ?> a = orderTable.getColumns().get(0);
@@ -336,7 +309,6 @@ public class TabletController implements Initializable{
       private void orderBtnAction(ActionEvent event) {
          try {
          String msg = "";
-         System.out.println();
          
          for(OrderMenu m : orderTableOl) {
             addTableBill(m);
@@ -347,13 +319,11 @@ public class TabletController implements Initializable{
          }
          msg = msg.substring(0, msg.length() -2);
          send_Message("주문/////" + msg);
-         System.out.println(msg);
          Platform.runLater(() -> orderTableOl.clear());
          priceUpdate();
          
          
          }catch (Exception e) {
-            e.printStackTrace();
             return;
       }
          
@@ -400,66 +370,20 @@ public class TabletController implements Initializable{
          return false;
       }
       
-      //테이블별 계산서 부르는 메서드
-      private void callBill(ActionEvent event) {          
-            Stage dialog = new Stage(StageStyle.UNDECORATED);           
-               dialog.initModality(Modality.WINDOW_MODAL); //dialog를 모달(소유자 윈도우 사용불가)로 설정
-               dialog.initOwner(clientStage);        
-               
-               Parent tableBill;
-             try {
-                tableBill = FXMLLoader.load(getClass().getResource("tableBill.fxml"));
-                Button billExitBtn = (Button)tableBill.lookup("#exit");
-                Label totalPrice = (Label)tableBill.lookup("#totalPrice");
-                
-                @SuppressWarnings("unchecked")
-                TableView<OrderMenu> billTable = (TableView<OrderMenu>) tableBill.lookup("#billTable");
-                
-                TableColumn<OrderMenu, ?> att1 = billTable.getColumns().get(0);
-                att1.setCellValueFactory(new PropertyValueFactory<>("name"));
-                att1.setText("메뉴");                
-                TableColumn<OrderMenu, ?> att2 = billTable.getColumns().get(1);
-                att2.setCellValueFactory(new PropertyValueFactory<>("cnt"));
-                att2.setText("수량");                
-                TableColumn<OrderMenu, ?> att3 = billTable.getColumns().get(2);
-                att3.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
-                att3.setText("가격");
-                
-                //정확한 계산서를 받기위해서 pos로 부터 
-                //현재테이블의 오더메뉴리스트 요청
-                send_Message("계산서///" + Integer.parseInt(this.tableNo.getText()));
-                String msg = dis.readUTF();
-                System.out.println(msg);
-
-                orderTableTotal.clear();
-                st2 = new StringTokenizer(msg, "@@");
-                while(st2.hasMoreTokens()) {
-                   st1 = new StringTokenizer(st2.nextToken(), "$$");
-                   orderTableTotal.add(new OrderMenu(st1.nextToken(), Integer.parseInt(st1.nextToken()), st1.nextToken()));
-                }
-                
-                if(orderTableTotal.size()==0){ //하나도 주문 안했으면 아무것도 안적힘
-                   billTable.setPlaceholder(new Label(""));
-                   totalPrice.setText("");
-                }else { //주문을 했다면 계산서 나옴
-                   billTable.setItems(orderTableTotal); //테이블뷰에 세팅   
-                   
-                   int totalResult = 0;
-                   DecimalFormat df = new DecimalFormat("###,###"); //단위마다 쉼표
-                   for(OrderMenu om : orderTableTotal) {
-                     totalResult += om.getTotalPrice(); //시킨 메뉴 가격을 더함
-                   }
-                   totalPrice.setText((df.format(totalResult)) + "원"); //현재까지 주문한 가격 출력                   
-                }
-                //tableBill의 X표시 누르면 창닫힘
-                billExitBtn.setOnMouseClicked(e -> dialog.close());
-                
-                Scene scene = new Scene(tableBill);            
-                  dialog.setScene(scene);
-                  dialog.setResizable(false);  //사용자가 크기를 조절하지 못하게 함
-                  dialog.show();       
-             } catch (IOException e) { e.printStackTrace(); }      
-        }         
+      private void callBill(ActionEvent event) {
+    	  try {
+    		  //정확한 계산서를 받기위해서 pos로 부터 
+    		  //현재테이블의 오더메뉴리스트 요청
+    		  send_Message("계산서///" + Integer.parseInt(this.tableNo.getText()));
+    		  String msg = dis.readUTF();
+    		  Bill b = new Bill();
+    		  b.show(orderTableTotal, msg);
+    		  
+    	  }catch (Exception e) {
+    		  e.printStackTrace();
+		}
+      }
+      
       
       //'-' 버튼 동작
       private void subtractBtnAction(ActionEvent event) {
@@ -487,7 +411,7 @@ public class TabletController implements Initializable{
          }
          
       }
-      //'+' 버튼 동장
+      //'+' 버튼 동작
       private void plusBtnAction(ActionEvent event) {
          if(orderTableOl.size() == 0)
             return;

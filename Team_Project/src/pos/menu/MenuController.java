@@ -15,6 +15,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 
 public class MenuController implements Initializable{
 
@@ -72,6 +73,30 @@ public class MenuController implements Initializable{
 		btnAdd.setOnAction( e -> btnAddAction(e));
 		//삭제 버튼
 		btnDel.setOnAction( e -> btnDelAction(e));
+		
+		//del 키 누르면 삭제
+	    table.setOnKeyReleased( e -> {
+	         if(e.getCode() == KeyCode.DELETE) {
+	            btnDelAction(new ActionEvent());
+	         }
+	     });
+	   
+	    //enter키 누르면 삽입
+		tfNum.setOnKeyReleased( e -> {
+			if(e.getCode() == KeyCode.ENTER) {
+		       btnAddAction(new ActionEvent());
+			}
+		});
+		tfName.setOnKeyReleased( e -> {
+		    if(e.getCode() == KeyCode.ENTER) {
+		       btnAddAction(new ActionEvent());
+		    }
+		});
+		tfPrice.setOnKeyReleased( e -> {
+		    if(e.getCode() == KeyCode.ENTER) {
+		       btnAddAction(new ActionEvent());
+		   }
+		});
 	}
 	
 	private void updateTable() {

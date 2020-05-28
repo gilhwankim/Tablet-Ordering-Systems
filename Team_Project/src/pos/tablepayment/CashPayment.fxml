@@ -10,7 +10,7 @@
 	<top>
       <BorderPane prefHeight="30.0" BorderPane.alignment="CENTER">
          <right>
-            <Button alignment="CENTER" prefHeight="30.0" prefWidth="30.0" text="X" BorderPane.alignment="CENTER" />
+            <Button id="exit" alignment="CENTER" prefHeight="30.0" prefWidth="30.0" text="X" BorderPane.alignment="CENTER" />
          </right>
          <left>
             <Label text="현금결제" BorderPane.alignment="CENTER">

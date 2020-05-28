@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
@@ -10,6 +11,11 @@
    <children>
       <VBox layoutX="27.0" layoutY="30.0">
          <children>
+            <Label id="tableNo" alignment="CENTER" prefHeight="30.0" prefWidth="420.0" text="No">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
             <TableView id="tableView" minHeight="530.0" minWidth="420.0">
               <columns>
                 <TableColumn prefWidth="167.0" text="메뉴명" />
@@ -20,18 +26,15 @@
             </TableView>
             <HBox>
                <children>
-                  <Button id="plus" text="+" />
-                  <Button id="minus" text="-" />
+                  <Button id="plus" prefHeight="30.0" prefWidth="30.0" text="+" />
+                  <Button id="minus" prefHeight="30.0" prefWidth="30.0" text="-" />
+                  <Label id="payTotal" alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="358.0" text="총급액">
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </Label>
                </children>
             </HBox>
-            <Label id="payTotal" alignment="CENTER_RIGHT" minHeight="40.0" minWidth="420.0" text="총급액">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <padding>
-                  <Insets left="10.0" right="10.0" />
-               </padding>
-            </Label>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Button id="payCash" minHeight="150.0" minWidth="140.0" mnemonicParsing="false" text="현금" />
@@ -43,43 +46,9 @@
       </VBox>
       <VBox>
          <children>
-            <TabPane minHeight="720.0" minWidth="550.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane id="tp" minHeight="720.0" minWidth="550.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                <Tab id="mSalad" text="샐러드">
-                     <content>
-                        <FlowPane id="SaladGridPane" prefHeight="200.0" prefWidth="200.0" />
-                     </content>
-                </Tab>
-                <Tab id="mPasta" text="파스타">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                  </content>
-                </Tab>
-                  <Tab text="스테이크">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                     </content>
-                  </Tab>
-                  <Tab text="필라프">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                     </content>
-                  </Tab>
-                  <Tab text="피자">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                     </content>
-                  </Tab>
-                  <Tab text="음료">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                     </content>
-                  </Tab>
-                  <Tab text="주류">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                     </content>
-                  </Tab>
+                
               </tabs>
                <padding>
                   <Insets left="5.0" right="5.0" />

@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -35,16 +36,7 @@ public class TablePaymentController  {
    private Client c;                  //각 테이블에서 넘어오는 클라이언트
    private TableView<OrderMenu> t;         //넘어온 클라이언트들의 테이블뷰
    
-   private Button PaymentMenuBtn;
-   private Label PaymentMenuPrice;
-   private FlowPane SaladGridPane;
-   private FlowPane PastaGridPane;
-   private FlowPane SteakGridPane;
-   private FlowPane PilafGridPane;
-   private FlowPane PizzaGridPane;
-   private FlowPane AlcoholGridPane;
-   private FlowPane DrinkGridPane;
-   private FlowPane EtcGridPane;
+   private TabPane tp;
    
    
    //서버 최초 실행시 TablePaymentController생성자 호출하고 초기화한다.
@@ -59,6 +51,7 @@ public class TablePaymentController  {
          stage = new Stage();
          hbox = FXMLLoader.load(getClass().getResource("TablePayment.fxml"));
          tableView = (TableView<OrderMenu>)hbox.lookup("#tableView");
+         tp = (TabPane)hbox.lookup("#tp");
          Button plus = (Button)hbox.lookup("#plus");
          Button minus = (Button)hbox.lookup("#minus");
          Button payCash = (Button)hbox.lookup("#payCash");
@@ -85,9 +78,10 @@ public class TablePaymentController  {
          minus.setOnAction( e -> minusAction(e));
          payCash.setOnAction((event)-> callCash(event)); //현금결제 버튼 메서드
          payCard.setOnAction((event)-> callCard(event)); //카드결제 버튼 메서드
-         //메뉴 버튼
-         SaladGridPane = (FlowPane)hbox.lookup("#SaladGridPane");
-         makeBtn(SaladGridPane);
+        
+         //TabPane 셋팅
+         MakeTab mt = new MakeTab();
+         tp = mt.make(menu_list, tp);
          
          
          Scene scene = new Scene(hbox);
@@ -192,23 +186,6 @@ public class TablePaymentController  {
       });
    }
    
-   public void makeBtn(FlowPane pane) {
-	   try {
-		   for(Menu m : menu_list) {
-				   StackPane node = FXMLLoader.load(getClass().getResource("TablePaymentMenuBtn.fxml"));
-				   PaymentMenuBtn = (Button)node.lookup("#PaymentMenuBtn");
-				   PaymentMenuBtn.setText(m.getName());
-				   PaymentMenuPrice = (Label)node.lookup("#PaymentMenuPrice");
-				   PaymentMenuPrice.setText(m.getPrice());
-				   if(m.getCategory().equals("샐러드")) {
-					   pane.setHgap(4);
-					   pane.getChildren().add(node);
-				   }
-		   }
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-   }
    
    //현금결제 화면
    private void callCash(ActionEvent event) {
