@@ -42,6 +42,9 @@
                <right>
                   <Label fx:id="currentDate" BorderPane.alignment="CENTER" />
                </right>
+               <center>
+                  <DatePicker fx:id="dateChoice" BorderPane.alignment="CENTER" />
+               </center>
             </BorderPane>
             <TableView fx:id="receiptDetailTable" prefHeight="560.0">
               <columns>

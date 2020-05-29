@@ -83,10 +83,9 @@ public class PaymentInfoDao {
         }
         return re;
     }
-
-    public List<PaymentInfo> selectAll() {
-       
-       String sql = "select * from paymentinfotbl;";
+    //해당 날짜의 거래내역을 받아줌
+    public List<PaymentInfo> selectDate(String date) {       
+       String sql = "select * from paymentinfotbl where date = \"" + date + "\";";
         PreparedStatement pstmt = null; 
         List<PaymentInfo> list = new ArrayList<PaymentInfo>();
         try {
