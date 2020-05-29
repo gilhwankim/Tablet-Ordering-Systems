@@ -285,7 +285,6 @@ public class TabletController implements Initializable{
          for(OrderMenu om : orderTableOl) {
             if(om.getName().equals(mTmp.getName())) {
                om.setCnt(om.getCnt() + 1);
-               om.setTotalPrice(Integer.parseInt(om.getPrice()));
                int idx = orderTableOl.indexOf(om);
                OrderMenu om2 = om;
                orderTableOl.remove(om);
@@ -336,7 +335,6 @@ public class TabletController implements Initializable{
             for(OrderMenu om : orderTableTotal) {
                if(om.getName().equals(m.getName())) {
                   om.setCnt(om.getCnt() + m.getCnt());
-                  om.setTotalPrice(om.getTotalPrice() + m.getTotalPrice());
                   return;
                }
                orderTableTotal.add(m);

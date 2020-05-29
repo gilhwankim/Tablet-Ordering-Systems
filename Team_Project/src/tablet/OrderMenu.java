@@ -42,12 +42,10 @@ public class OrderMenu {
    }
 
    public int getTotalPrice() {
+	   this.totalPrice.set(Integer.parseInt(this.getPrice()) * this.getCnt());
       return totalPrice.get();
    }
 
-   public void setTotalPrice(int totalPrice) {
-      this.totalPrice.set(totalPrice);
-   }
    
    
 }
