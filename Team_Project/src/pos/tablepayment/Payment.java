@@ -1,7 +1,9 @@
 package pos.tablepayment;
 
-import java.io.IOException;
+import java.text.DecimalFormat;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -10,19 +12,21 @@ import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import pos.OrderMenu;
 
 public class Payment {
    
    private Stage tablePaymentStage;
+   public ObservableList<OrderMenu> orderMenu_list = FXCollections.observableArrayList();
    
-   private TextField billingAmount; //현금결제 화면 청구금액
-   private TextField amountOfPayment; //카드결제화면 결제금액
-   
+   private TextField amountOfPayment; //현금,카드결제화면 결제금액
+   private DecimalFormat df = new DecimalFormat("###,###"); //단위마다 쉼표
+
    //생성자
    public Payment() {}
    
    //현금결제
-   public void cashShow() {
+   public void cashShow(int total) {
       System.out.println("현금결제");
        Stage dialog = new Stage(StageStyle.UNDECORATED);
        dialog.initModality(Modality.WINDOW_MODAL); //dialog를 모달(소유자 윈도우 사용불가)로 설정
@@ -40,14 +44,14 @@ public class Payment {
           cashExitBtn.setOnMouseClicked(e-> dialog.close());
           
           //청구금액
-          billingAmount = (TextField)cashPayment.lookup("#billingAmount");
-          billingAmount.setText("원");
-            
-       } catch (IOException e) { e.printStackTrace(); }
+          amountOfPayment = (TextField)cashPayment.lookup("#amountOfPayment");
+          amountOfPayment.setText(df.format(total) + "원");
+          
+       } catch (Exception e) { e.printStackTrace(); }
    }
    
    //카드결제
-   public void cardShow() {
+   public void cardShow(int total) {
       System.out.println("카드결제");
        Stage dialog = new Stage(StageStyle.UNDECORATED);
        dialog.initModality(Modality.WINDOW_MODAL); //dialog를 모달(소유자 윈도우 사용불가)로 설정
@@ -62,12 +66,12 @@ public class Payment {
           //카드결제 화면 닫기
           Button cardExitBtn = (Button)cardPayment.lookup("#exit");
           cardExitBtn.setOnMouseClicked(e-> dialog.close());
+         
           
           //결제금액                                                                                                
           amountOfPayment = (TextField)cardPayment.lookup("#amountOfPayment");
-          amountOfPayment.setText( "원");
-            
-       } catch (IOException e) { e.printStackTrace(); }
+          amountOfPayment.setText(df.format(total) + "원");
+       } catch (Exception e) { e.printStackTrace(); }
    }
    
 }

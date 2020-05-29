@@ -16,18 +16,11 @@
       </TableView>
       <HBox>
          <children>
-            <HBox alignment="TOP_RIGHT" HBox.hgrow="ALWAYS">
-               <children>
-                  <Label id="labelPrice" alignment="CENTER" prefHeight="18.0" prefWidth="112.0" text="가격">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-               </children>
-               <padding>
-                  <Insets right="10.0" />
-               </padding>
-            </HBox>
+            <Label id="labelPrice" alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="287.0" text="가격">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
          </children>
       </HBox>
    </children>
