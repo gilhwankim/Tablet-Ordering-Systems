@@ -35,7 +35,6 @@ public class TablePaymentController  {
    private Label tNo; //해당 테이블 번호
    
    private Client c;                  //각 테이블에서 넘어오는 클라이언트
-   private TableView<OrderMenu> t;         //넘어온 클라이언트들의 테이블뷰
    
    private TabPane tp;
    
@@ -99,9 +98,8 @@ public class TablePaymentController  {
       }
    }
    //서버 클라리언트 단에서 show(...)를 부르면 클라이언트와 클라이언트의 테이블뷰를 받는다.
-   public void show(int tableNo, Client client, TableView<OrderMenu> tableView) {
+   public void show(int tableNo, Client client) {
      this.c = client;
-      this.t = tableView;
       //TablePayment 창의 테이블 뷰에 클라리언트의 테이블뷰를 입력시킨다.
       this.tableView.setItems(c.orderMenu_list);
       //TablePayment 창의 총 합계금액 업데이트
@@ -135,12 +133,8 @@ public class TablePaymentController  {
             System.out.println(om.getCnt());
             //각 테이블뷰를 업데이트한다.
             tableView.refresh();
-            //t는 pos의 테이블뷰
-            t.refresh();
             //pos기 각 테이블의 합계금액 업데이트
             c.priceUpdate();
-            //지금 창의 테이블 합계금액 업데이트
-            this.priceUpdate();
             break;
          }
       }
@@ -171,11 +165,8 @@ public class TablePaymentController  {
             
             //각 테이블뷰를 업데이트한다.
             tableView.refresh();
-            t.refresh();
             //pos기 각 테이블의 합계금액 업데이트
             c.priceUpdate();
-            //지금 창의 테이블 합계금액 업데이트
-            this.priceUpdate();
             
             break;
          }
@@ -186,7 +177,6 @@ public class TablePaymentController  {
    public void priceUpdate() {
      Platform.runLater( () -> {
        this.tableView.refresh();
-       this.t.refresh();
         int total = 0;
         if(this.c != null) {
             for(OrderMenu om : this.c.orderMenu_list) {

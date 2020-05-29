@@ -84,16 +84,20 @@ public class OrderBoardController implements Initializable {
 	         kitchenConnect();
 	         
 	   }catch (Exception e) {
-		   if(!socket.isClosed())
-			   try {
-				   is.close();
-				   dis.close();
-				   os.close();
-				   dos.close();
-				   socket.close();
-			   }catch (Exception e2) {
-				   e2.printStackTrace();
-			   }
+		   if(!socket.isClosed()) {
+	            try {
+	                is.close();
+	                dis.close();
+	                os.close();
+	                dos.close();
+	                socket.close();
+	             }catch (Exception e2) {
+	                e2.printStackTrace();
+	                System.exit(0);
+	             }
+	          }else {
+	             System.exit(0);
+	          }
 	   		}
 	  	}
 	  
@@ -156,8 +160,20 @@ public class OrderBoardController implements Initializable {
  							menuList.clear();
  							
 	 					} catch (IOException e) {
-	 						
-	 						e.printStackTrace();
+	 						if(!socket.isClosed()) {
+	 				            try {
+	 				                is.close();
+	 				                dis.close();
+	 				                os.close();
+	 				                dos.close();
+	 				                socket.close();
+	 				             }catch (Exception e2) {
+	 				                e2.printStackTrace();
+	 				                System.exit(0);
+	 				             }
+	 				          }else {
+	 				             System.exit(0);
+	 				          }
 	 					}	
 	 				}
 	 				

@@ -47,7 +47,7 @@ import pos.tablepayment.TablePaymentController;
 public class ServerController implements Initializable{
    
    Stage serverStage = ServerMain.serverStage;
-   Client kitchen; //주방 클라이언트
+   Client kitchen=null; //주방 클라이언트
    
    //POS FXML 멤버
    private @FXML TabPane tab;
@@ -216,10 +216,15 @@ public class ServerController implements Initializable{
          String tmp = dis.readUTF();
          //주방 연결 확인
          if(tmp.equals("주방")) {
-            System.out.println("주방 맞다");
-            kitchen = this;
-            kitchen.start();
-            return;
+        	 if(kitchen == null) {
+                 System.out.println("주방 맞다");
+                 kitchen = this;
+                 kitchen.start();
+                 return;
+              }else {
+                 this.socket.close();
+                 return;
+              }
          }
          this.start();
          if(tmp != null) {
@@ -419,7 +424,7 @@ public class ServerController implements Initializable{
             //테이블 마우스 왼쪽 클릭시 결제(주문)창 뜨기 
             tableView.setOnMouseClicked(e -> {
                if(e.getButton() == MouseButton.PRIMARY) {
-                  tp.show(this.tableNo, this, tableView);
+                  tp.show(this.tableNo, this);
                }
             });
             

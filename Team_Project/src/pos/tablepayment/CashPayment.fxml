@@ -40,19 +40,19 @@
                   <HBox alignment="CENTER_LEFT" spacing="5.0">
                      <children>
                         <Label prefWidth="70.0" text="받은금액" />
-                        <TextField prefHeight="30.0" prefWidth="175.0" />
+                        <TextField alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="175.0" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" spacing="5.0">
                      <children>
                         <Label prefWidth="70.0" text="청구금액" />
-                        <TextField id="billingAmount" prefHeight="30.0" prefWidth="175.0" />
+                        <TextField id="billingAmount" alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="175.0" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" spacing="5.0">
                      <children>
                         <Label prefWidth="70.0" text="거스름돈" />
-                        <TextField prefHeight="30.0" prefWidth="175.0" />
+                        <TextField alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="175.0" />
                      </children>
                   </HBox>
                </children>
@@ -76,13 +76,13 @@
                   <HBox alignment="CENTER_LEFT" spacing="5.0">
                      <children>
                         <Label prefWidth="70.0" text="금액" />
-                        <TextField prefHeight="30.0" prefWidth="175.0" />
+                        <TextField alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="175.0" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" spacing="5.0">
                      <children>
                         <Label prefWidth="70.0" text="고객정보" />
-                        <TextField prefHeight="30.0" prefWidth="175.0" />
+                        <TextField alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="175.0" />
                      </children>
                   </HBox>
                   <Button alignment="CENTER" prefHeight="35.0" prefWidth="250.0" text="승인요청">
