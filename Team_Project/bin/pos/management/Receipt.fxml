@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane prefHeight="740.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pos.management.ReceiptController">
+<BorderPane prefHeight="740.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="pos.management.ReceiptController">
    <top>
       <Label prefHeight="30.0" text="영수증 관리" BorderPane.alignment="CENTER">
          <font>
@@ -40,11 +40,8 @@
                   <Insets left="5.0" right="5.0" />
                </padding>
                <right>
-                  <Label fx:id="currentDate" BorderPane.alignment="CENTER" />
-               </right>
-               <center>
                   <DatePicker fx:id="dateChoice" BorderPane.alignment="CENTER" />
-               </center>
+               </right>
             </BorderPane>
             <TableView fx:id="receiptDetailTable" prefHeight="560.0">
               <columns>

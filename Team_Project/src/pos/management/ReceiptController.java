@@ -22,8 +22,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import pos.OrderMenu;
 
 public class ReceiptController implements Initializable{
-    //오늘 거래일자 라벨                           //결제 금액 라벨
-   @FXML private Label currentDate; @FXML private Label totalPrice; @FXML private DatePicker dateChoice;
+   //결제 금액 라벨
+   @FXML private Label totalPrice; @FXML private DatePicker dateChoice;
    DecimalFormat df = new DecimalFormat("###,###"); //단위마다 쉼표
    PaymentInfoDao payDao = new PaymentInfoDao(); //거래내역 DB                        
    @FXML private TableView<PaymentInfo> receiptTable; //거래일자, 결제금액, 결제방법 테이블 
@@ -36,7 +36,7 @@ public class ReceiptController implements Initializable{
    @Override
    public void initialize(URL location, ResourceBundle resources) {      
       //현재 날짜 출력 및 DB에서 오늘날짜 거래내역 가져옴
-      showDb(currentDateSetting(currentDate));
+      showDb(currentDateSetting());
       //선택한 날짜에 맞는 거래내역 가져옴
       dateChoice.valueProperty().addListener((ov, oldDate, newDate)->{
     	  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");    	  
@@ -53,10 +53,9 @@ public class ReceiptController implements Initializable{
       });
    }
    //오늘 날짜 나타내는 메서드
-   public String currentDateSetting(Label currentDateLabel) {
+   public String currentDateSetting() {
 	  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
       String today = sdf.format(new Date());
-      currentDateLabel.setText(today);
       return today;
    } 
    //거래내역 가져오는 메서드

@@ -39,7 +39,8 @@ public class TablePaymentController  {
    
    private TabPane tp;
    
-   private TextField billingAmount; //결제화면 청구금액
+   private TextField billingAmount; //현금결제 화면 청구금액
+   private TextField amountOfPayment; //카드결제화면 결제ㅂㅈ금액
    
    //서버 최초 실행시 TablePaymentController생성자 호출하고 초기화한다.
    @SuppressWarnings("unchecked")
@@ -228,6 +229,8 @@ public class TablePaymentController  {
          dialog.setScene(scene);
          dialog.setResizable(false); //사용자가 크기를 조절하지 못하게 함
          dialog.show();
+         
+         amountOfPayment = (TextField)cardPayment.lookup("#amountOfPayment");
          
          //카드결제 화면 닫기
          Button cardExitBtn = (Button)cardPayment.lookup("#exit");
