@@ -45,7 +45,7 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" spacing="5.0">
                      <children>
-                        <Label prefWidth="70.0" text="청구금액" />
+                        <Label id="billingAmount" prefWidth="70.0" text="청구금액" />
                         <TextField prefHeight="30.0" prefWidth="175.0" />
                      </children>
                   </HBox>

@@ -420,7 +420,7 @@ public class ServerController implements Initializable{
             //테이블 마우스 왼쪽 클릭시 결제(주문)창 뜨기 
             tableView.setOnMouseClicked(e -> {
                if(e.getButton() == MouseButton.PRIMARY) {
-                  tp.show(this, tableView);
+            	   tp.show(this.tableNo, this, tableView);
                }
             });
             
