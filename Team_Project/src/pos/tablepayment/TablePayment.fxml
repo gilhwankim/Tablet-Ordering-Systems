@@ -28,7 +28,7 @@
                <children>
                   <Button id="plus" prefHeight="30.0" prefWidth="30.0" text="+" />
                   <Button id="minus" prefHeight="30.0" prefWidth="30.0" text="-" />
-                  <Label id="payTotal" alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="358.0" text="총급액">
+                  <Label id="payTotal" alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="358.0" text="총금액">
                      <padding>
                         <Insets left="10.0" right="10.0" />
                      </padding>

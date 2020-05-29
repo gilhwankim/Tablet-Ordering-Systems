@@ -456,7 +456,7 @@ public class ServerController implements Initializable{
       }
       
       //테이블 번호, 주문내역전송
-      private void sendOrderInfo(String menu) {
+      public void sendOrderInfo(String menu) {
          time = new Date();
          String nowTime = format.format(time);
          //주방으로 메뉴 보냄

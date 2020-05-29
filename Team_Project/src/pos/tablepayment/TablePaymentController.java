@@ -58,6 +58,7 @@ public class TablePaymentController  {
          Button minus = (Button)hbox.lookup("#minus");
          Button payCash = (Button)hbox.lookup("#payCash");
          Button payCard = (Button)hbox.lookup("#payCard");
+         Button order = (Button)hbox.lookup("#payOrder");
          tNo = (Label)hbox.lookup("#tableNo");
          payTotal = (Label)hbox.lookup("#payTotal");
 
@@ -79,7 +80,7 @@ public class TablePaymentController  {
          //버튼들의 동작
          plus.setOnAction( e -> plusAction(e));
          minus.setOnAction( e -> minusAction(e));
-
+         
          //버튼 동작시 결제화면
          p = new Payment();
          payCash.setOnAction((event)-> p.cashShow()); //현금결제 화면 버튼
@@ -87,6 +88,22 @@ public class TablePaymentController  {
          
          //TabPane 셋팅
          mt = new MakeTab();
+         
+         //주문하기 누르면 주방으로 새로 주문한 오더 전송
+         order.setOnAction(e->{
+        	 //포스기기(TablePayment 화면)에서 주문한 메뉴 리스트
+        	 List<OrderMenu> list = mt.getOrderBoardList(e);
+        	 if(list.size()!=0) {
+        		 String msg = "";
+        		 for(OrderMenu m : list) {
+        		 msg += m.getName() + "$$" + m.getCnt() + "$$" + m.getPrice();
+        		 msg += "@@";
+              }
+        		 System.out.println("제발요"+msg);
+        		 this.c.sendOrderInfo(msg);
+        		 mt.listClearplz();
+        	 }
+         });
          tp = mt.make(menu_list, tp);
          
          Scene scene = new Scene(hbox);
@@ -186,5 +203,4 @@ public class TablePaymentController  {
         }
       });
    }
-   
 }

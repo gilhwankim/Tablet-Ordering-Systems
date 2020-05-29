@@ -1,5 +1,6 @@
 package pos.tablepayment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.event.ActionEvent;
@@ -24,6 +25,7 @@ public class MakeTab {
    private boolean flag = false;
    
    private List<Menu> menuList;
+   private List<OrderMenu> toOrderBoard = new ArrayList<OrderMenu>();
    private Client client;
    
    public MakeTab() {}
@@ -117,12 +119,14 @@ public class MakeTab {
 	            if(client.orderMenu_list.size() == 0) {
 	               OrderMenu orderMenu = new OrderMenu(m.getName(), 1, Integer.parseInt(m.getPrice()));
 	               client.orderMenu_list.add(orderMenu);
+	               addOrderBoardList(orderMenu);
 	               return;
 	            }else {
 	               //비어있지 않을 때는 내가 클릭한 버튼의 이름과 같은게 있는지 찾는다.
 	               for(OrderMenu om : client.orderMenu_list) {
 	                  //있으면 그 오더메뉴의 개수 +1
 	                  if(Name.equals(om.getName())) {
+	                	 addOrderBoardList(om);
 	                     om.setCnt(om.getCnt() + 1);
 	                     flag = true;
 	                     return;
@@ -132,10 +136,49 @@ public class MakeTab {
 	               if(flag == false) {
 	                  OrderMenu orderMenu = new OrderMenu(m.getName(), 1, Integer.parseInt(m.getPrice()));
 	                  client.orderMenu_list.add(orderMenu);
+	                  addOrderBoardList(orderMenu);
 	               }
 	               flag = false;
+	               return;
 	            }
 	         }
 	      }
 	   }
+	   //주방으로 보낼 리스트에 메뉴 추가
+	   public void addOrderBoardList(OrderMenu orderMenu) {
+		   boolean kitchenFlag = false;
+		   //주방으로 보낼 리스트 목록 검사
+		   for(OrderMenu om : toOrderBoard) {
+			   //이미 주문한 메뉴인 경우
+			   if(om.getName().equals(orderMenu.getName())) {
+				   om.setCnt(om.getCnt()+1);
+				   for(OrderMenu dd : toOrderBoard) {
+					   System.out.println(dd.getName()+","+ dd.getCnt());
+				   }
+				   kitchenFlag = true;
+				   return;
+			   }
+		   }
+		   
+		   //새로 추가한 메뉴인 경우
+		   if(kitchenFlag==false) {
+			   //
+			   OrderMenu omm = new OrderMenu(orderMenu.getName(), 1, orderMenu.getPrice());
+			   toOrderBoard.add(omm);
+			   for(OrderMenu dd : toOrderBoard) {
+				   System.out.println(dd.getName()+","+ dd.getCnt());
+			   }
+		   }
+		   kitchenFlag=false;
+		   return;
+	   }
+	   
+	   public List<OrderMenu> getOrderBoardList(ActionEvent e){
+		   return toOrderBoard;
+	   }
+	   
+	   public void listClearplz() {
+		   toOrderBoard.clear(); 
+	   }
+	   
 	}
