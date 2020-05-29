@@ -31,7 +31,7 @@ public class ReceiptController implements Initializable{
    List<PaymentInfo> payList; //결제내역 리스트   
    ObservableList<PaymentInfo> obPayList; //결제내역 테이블 리스트
    List<OrderMenu> omList = new ArrayList<OrderMenu>(); //각 결제내역의 세부메뉴 리스트
-   ObservableList<OrderMenu> obOmList; //세부메뉴 테이블 리스트   
+   ObservableList<OrderMenu> obOmList = FXCollections.observableArrayList(); //세부메뉴 테이블 리스트   
   
    @Override
    public void initialize(URL location, ResourceBundle resources) {      
@@ -39,14 +39,11 @@ public class ReceiptController implements Initializable{
       showDb(currentDateSetting());
       //선택한 날짜에 맞는 거래내역 가져옴
       dateChoice.valueProperty().addListener((ov, oldDate, newDate)->{
-    	  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");    	  
-    	  showDb(newDate.format(formatter));   	
-    	  try {
-    		  obOmList.clear();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-    	  
+         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");         
+         showDb(newDate.format(formatter));        
+         obOmList.clear();
+       
+         
       });      
       //큰 테이블에서 선택하면 세부테이블에 내용이 출력되게 함
       receiptTable.getSelectionModel().selectedItemProperty().addListener((p, old, news) ->{
@@ -54,17 +51,17 @@ public class ReceiptController implements Initializable{
          try {
          totalPrice.setText(df.format(showDetailDB(news)) + "원"); //세부내용 보여주는 동시에 총결제 가격을 리턴받아 라벨에 보여줌
          }catch (Exception e) {
-		}
+      }
       });
    }
    //오늘 날짜 나타내는 메서드
    public String currentDateSetting() {
-	  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
       String today = sdf.format(new Date());
       return today;
    } 
    //거래내역 가져오는 메서드
-   public void showDb(String date) {	 
+   public void showDb(String date) {    
       payList = payDao.selectDate(date); //DB에서 가져옴           
       //테이블에 내용 세팅
       TableColumn<PaymentInfo, ?> dateTc = receiptTable.getColumns().get(0);
@@ -78,9 +75,9 @@ public class ReceiptController implements Initializable{
       //해당 날짜에 가져올 내역이 없으면 없다고 출력
       if(payList.size() == 0)
       try {
-   	  obOmList.clear();
+        obOmList.clear();
       }catch (Exception e) {
-	}
+   }
       receiptDetailTable.setItems(obOmList);
       receiptTable.setPlaceholder(new Label("내역이 없습니다.")); 
       receiptDetailTable.setPlaceholder(new Label("내역이 없습니다."));
