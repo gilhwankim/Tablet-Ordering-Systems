@@ -39,8 +39,8 @@ public class TablePaymentController  {
    
    private TabPane tp;
    
-   private TextField billingAmount; //현금결제 화면 청구금액
-   private TextField amountOfPayment; //카드결제화면 결제ㅂㅈ금액
+   private  MakeTab mt;
+   private Payment p; //결제화면
    
    //서버 최초 실행시 TablePaymentController생성자 호출하고 초기화한다.
    @SuppressWarnings("unchecked")
@@ -80,11 +80,14 @@ public class TablePaymentController  {
          //버튼들의 동작
          plus.setOnAction( e -> plusAction(e));
          minus.setOnAction( e -> minusAction(e));
-         payCash.setOnAction((event)-> callCash(event)); //현금결제 버튼 메서드
-         payCard.setOnAction((event)-> callCard(event)); //카드결제 버튼 메서드
+
+         //버튼 동작시 결제화면
+         p = new Payment();
+         payCash.setOnAction((event)-> p.cashShow()); //현금결제 화면 버튼
+         payCard.setOnAction((event)-> p.cardShow()); //카드결제 화면 버튼
          
          //TabPane 셋팅
-         MakeTab mt = new MakeTab();
+         mt = new MakeTab();
          tp = mt.make(menu_list, tp);
          
          Scene scene = new Scene(hbox);
@@ -97,7 +100,7 @@ public class TablePaymentController  {
    }
    //서버 클라리언트 단에서 show(...)를 부르면 클라이언트와 클라이언트의 테이블뷰를 받는다.
    public void show(int tableNo, Client client, TableView<OrderMenu> tableView) {
-	  this.c = client;
+     this.c = client;
       this.t = tableView;
       //TablePayment 창의 테이블 뷰에 클라리언트의 테이블뷰를 입력시킨다.
       this.tableView.setItems(c.orderMenu_list);
@@ -110,7 +113,7 @@ public class TablePaymentController  {
       
       //stage.show()
       Platform.runLater( () -> stage.show());
-      
+      mt.setOrderListAndTable(c);
    }
    
    private void plusAction(ActionEvent event) {
@@ -181,8 +184,9 @@ public class TablePaymentController  {
    
    //합계금액을 다시 계산해서 업데이트한다.
    public void priceUpdate() {
-     this.tableView.refresh();
      Platform.runLater( () -> {
+       this.tableView.refresh();
+       this.t.refresh();
         int total = 0;
         if(this.c != null) {
             for(OrderMenu om : this.c.orderMenu_list) {
@@ -191,53 +195,6 @@ public class TablePaymentController  {
              payTotal.setText("총금액 : " + total + "원");
         }
       });
-   }
-   
-   //현금결제 화면
-   private void callCash(ActionEvent event) {
-      System.out.println("현금결제");
-      Stage dialog = new Stage(StageStyle.UNDECORATED);
-      dialog.initModality(Modality.WINDOW_MODAL); //dialog를 모달(소유자 윈도우 사용불가)로 설정
-      dialog.initOwner(stage);
-      
-      try {
-         Parent cashPayment = FXMLLoader.load(getClass().getResource("CashPayment.fxml"));
-         Scene scene = new Scene(cashPayment);
-         dialog.setScene(scene);
-         dialog.setResizable(false); //사용자가 크기를 조절하지 못하게 함
-         dialog.show();
-         
-         billingAmount = (TextField)cashPayment.lookup("#billingAmount");
-
-         //현금결제 화면 닫기
-         Button cashExitBtn = (Button)cashPayment.lookup("#exit");
-         cashExitBtn.setOnMouseClicked(e-> dialog.close());
-         
-      } catch (IOException e) { e.printStackTrace(); }
-   }
-   
-   //카드결제 화면
-   private void callCard(ActionEvent event) {
-      System.out.println("카드결제");
-      Stage dialog = new Stage(StageStyle.UNDECORATED);
-      dialog.initModality(Modality.WINDOW_MODAL); //dialog를 모달(소유자 윈도우 사용불가)로 설정
-      dialog.initOwner(stage);
-      
-      try {
-         Parent cardPayment = FXMLLoader.load(getClass().getResource("PayingCreditCard.fxml"));
-         Scene scene = new Scene(cardPayment);
-         dialog.setScene(scene);
-         dialog.setResizable(false); //사용자가 크기를 조절하지 못하게 함
-         dialog.show();
-         
-         amountOfPayment = (TextField)cardPayment.lookup("#amountOfPayment");
-         
-         //카드결제 화면 닫기
-         Button cardExitBtn = (Button)cardPayment.lookup("#exit");
-         cardExitBtn.setOnMouseClicked(e-> dialog.close());
-         
-      } catch (IOException e) { e.printStackTrace(); }
-      
    }
    
 }

@@ -46,13 +46,16 @@
       </VBox>
       <VBox>
          <children>
-            <TabPane id="tp" minHeight="720.0" minWidth="550.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane id="tp" minHeight="720.0" minWidth="548.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
                 
               </tabs>
                <padding>
-                  <Insets left="5.0" right="5.0" />
+                  <Insets left="5.0" />
                </padding>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </TabPane>
          </children>
       </VBox>

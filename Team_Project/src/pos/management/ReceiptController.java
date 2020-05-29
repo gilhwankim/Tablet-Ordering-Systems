@@ -41,7 +41,7 @@ public class ReceiptController implements Initializable{
       dateChoice.valueProperty().addListener((ov, oldDate, newDate)->{
     	  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");    	  
     	  showDb(newDate.format(formatter));   	   
-          
+    	  obOmList.clear();
       });      
       //큰 테이블에서 선택하면 세부테이블에 내용이 출력되게 함
       receiptTable.getSelectionModel().selectedItemProperty().addListener((p, old, news) ->{

@@ -28,11 +28,11 @@ public class PaymentInfoDao {
     //DB에 데이터를 저장하는 메서드
     public void insertBoard(PaymentInfo paymentInfo) {
        String sql = "insert into paymentinfotbl values(?,?,?,?,?,?);";
-       PreparedStatement pstmt = null;       
+       PreparedStatement pstmt = null;
         try {
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, paymentInfo.getDate());  
-            pstmt.setString(2, paymentInfo.getAllMenu()); 
+            pstmt.setString(1, paymentInfo.getDate());
+            pstmt.setString(2, paymentInfo.getAllMenu());
             pstmt.setString(3, paymentInfo.getTotalPrice());
             pstmt.setString(4, paymentInfo.getCardNum());
             pstmt.setString(5, paymentInfo.getCash());
@@ -40,14 +40,14 @@ public class PaymentInfoDao {
             
             pstmt.executeUpdate();
             System.out.println("paymentInfo데이터 삽입 성공!");
-        } catch (SQLException e) {            
+        } catch (SQLException e) {
            System.out.println("paymentInfo데이터 삽입 실패!");
             e.printStackTrace();
         } finally {
             try {
                 if (pstmt != null && !pstmt.isClosed())
                     pstmt.close();
-            } catch (SQLException e) {                
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }

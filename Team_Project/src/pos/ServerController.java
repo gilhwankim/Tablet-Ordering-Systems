@@ -333,7 +333,6 @@ public class ServerController implements Initializable{
                }
                System.out.println("price" + price);
                priceUpdate();
-               tp.priceUpdate();
             }
          }/////////주문
          //////////종료
@@ -420,7 +419,7 @@ public class ServerController implements Initializable{
             //테이블 마우스 왼쪽 클릭시 결제(주문)창 뜨기 
             tableView.setOnMouseClicked(e -> {
                if(e.getButton() == MouseButton.PRIMARY) {
-            	   tp.show(this.tableNo, this, tableView);
+                  tp.show(this.tableNo, this, tableView);
                }
             });
             
@@ -438,6 +437,7 @@ public class ServerController implements Initializable{
       
       public void priceUpdate() {
          Platform.runLater( () -> {
+           tableView.refresh();
             int t = 0;
             for(OrderMenu om : orderMenu_list) {
                t += om.getTotal();
@@ -445,6 +445,8 @@ public class ServerController implements Initializable{
                System.out.println(tableNo  + "에서" + t);
             }
             labelPrice.setText(t + "원");
+            tp.priceUpdate();
+            tableView.setItems(orderMenu_list);
          });
       }
       
