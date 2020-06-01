@@ -13,7 +13,7 @@ public class MenuDAO {
 	private static final String ID = "root";
 	private static final String PW = "1234";
 	private static final String URL = "jdbc:mysql://localhost:3306/posdb";
-	private Connection conn;
+	private static Connection conn;
 	
 	public static MenuDAO instance;
 	
@@ -32,9 +32,12 @@ public class MenuDAO {
 	    		instance = new MenuDAO();
 	    	}
 	    	return instance;
-	    }
+	    }	 
 	
-	  public void insert(Menu menu) {
+	  public static Connection getConn() {
+		return conn;
+	}
+	public void insert(Menu menu) {
 	       String sql = "insert into menutbl values(?,?,?,?);";
 	       PreparedStatement pstmt = null;
 	        try {

@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
+import java.util.stream.Collectors;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,33 +24,44 @@ import pos.OrderMenu;
 
 public class ReceiptController implements Initializable{
    //결제 금액 라벨
-   @FXML private Label totalPrice; @FXML private DatePicker dateChoice;
-   DecimalFormat df = new DecimalFormat("###,###"); //단위마다 쉼표
-   PaymentInfoDao payDao = new PaymentInfoDao(); //거래내역 DB                        
-   @FXML private TableView<PaymentInfo> receiptTable; //거래일자, 결제금액, 결제방법 테이블 
-   @FXML private TableView<OrderMenu> receiptDetailTable; //메뉴명, 단가, 수량, 금액 테이블   
-   List<PaymentInfo> payList; //결제내역 리스트   
-   ObservableList<PaymentInfo> obPayList; //결제내역 테이블 리스트
-   List<OrderMenu> omList = new ArrayList<OrderMenu>(); //각 결제내역의 세부메뉴 리스트
-   ObservableList<OrderMenu> obOmList = FXCollections.observableArrayList(); //세부메뉴 테이블 리스트   
+   @FXML private Label totalPrice;
+   //날짜 선택
+   @FXML private DatePicker dateChoice;
+   //단위마다 쉼표
+   DecimalFormat df = new DecimalFormat("###,###");
+   //거래내역 DB
+   PaymentInfoDao payDao = new PaymentInfoDao();      
+   //거래일자, 결제금액, 결제방법 테이블
+   @FXML private TableView<PaymentInfo> receiptTable;  
+   //메뉴명, 단가, 수량, 금액 테이블
+   @FXML private TableView<OrderMenu> receiptDetailTable;
+   //결제내역 리스트
+   List<PaymentInfo> payList;   
+   //결제내역 테이블 리스트
+   ObservableList<PaymentInfo> obPayList;
+   //각 결제내역의 세부메뉴 리스트
+   List<OrderMenu> omList = new ArrayList<OrderMenu>();
+   //세부메뉴 테이블 리스트
+   ObservableList<OrderMenu> obOmList = FXCollections.observableArrayList();   
   
    @Override
    public void initialize(URL location, ResourceBundle resources) {      
       //현재 날짜 출력 및 DB에서 오늘날짜 거래내역 가져옴
       showDb(currentDateSetting());
       //선택한 날짜에 맞는 거래내역 가져옴
-      dateChoice.valueProperty().addListener((ov, oldDate, newDate)->{
+      dateChoice.valueProperty().addListener((localDate, oldDate, newDate)->{
          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");         
-         showDb(newDate.format(formatter));        
-         obOmList.clear();
-       
-         
+         showDb(newDate.format(formatter));
+         //새로운 날짜를 선택하면 세부내역 테이블 리셋
+         obOmList.clear();         
       });      
       //큰 테이블에서 선택하면 세부테이블에 내용이 출력되게 함
-      receiptTable.getSelectionModel().selectedItemProperty().addListener((p, old, news) ->{
-         omList.clear(); //전에 있던 내용은 없앰
+      receiptTable.getSelectionModel().selectedItemProperty().addListener((payInfo, oldPayInfo, newPayInfo) ->{
+    	 //전에 있던 내용은 없앰
+         omList.clear(); 
          try {
-         totalPrice.setText(df.format(showDetailDB(news)) + "원"); //세부내용 보여주는 동시에 총결제 가격을 리턴받아 라벨에 보여줌
+         //세부내용 보여주는 동시에 총결제 가격을 리턴받아 라벨에 보여줌
+         totalPrice.setText(df.format(showDetailDB(newPayInfo)) + "원"); 
          }catch (Exception e) {
       }
       });
@@ -81,15 +93,16 @@ public class ReceiptController implements Initializable{
       receiptDetailTable.setItems(obOmList);
       receiptTable.setPlaceholder(new Label("내역이 없습니다.")); 
       receiptDetailTable.setPlaceholder(new Label("내역이 없습니다."));
-      totalPrice.setText(""); //받은게 없으니 결제 금액 안보임
+      //받은게 없으니 결제 금액 안보임
+      totalPrice.setText(""); 
       
    }      
    //테이블에 클릭된 결제내역을 받아와서 세부테이블에 보여주는 메서드
-   public int showDetailDB(PaymentInfo paymentInfo) {
+   public long showDetailDB(PaymentInfo paymentInfo) {
       //PaymentInfo의 정보를 정제해서 넣기
       OrderMenu omTmp;
       //총 결제액 담을 변수
-      int totalTmp = 0;      
+      long  totalTmp = 0L;      
       //메뉴별로 나눔
       StringTokenizer allSt = new StringTokenizer(paymentInfo.getAllMenu(), "@");
       int stSize = allSt.countTokens(); //메뉴수    
@@ -114,11 +127,12 @@ public class ReceiptController implements Initializable{
       TableColumn<OrderMenu, ?> totalPriceTc = receiptDetailTable.getColumns().get(3);
       totalPriceTc.setCellValueFactory(new PropertyValueFactory<>("total"));
       obOmList = FXCollections.observableArrayList(omList);
-      receiptDetailTable.setItems(obOmList);  
-      
-      for(OrderMenu om : omList) {
-         totalTmp += om.getTotal();
-      }
+      receiptDetailTable.setItems(obOmList);      
+      //각각의 가격을 합침
+      totalTmp = omList.stream().collect(Collectors.summarizingInt(OrderMenu::getTotal)).getSum();
+//      for(OrderMenu om : omList) {
+//         totalTmp += om.getTotal();
+//      }
       return totalTmp; //총결제 금액 리턴      
    }
 }

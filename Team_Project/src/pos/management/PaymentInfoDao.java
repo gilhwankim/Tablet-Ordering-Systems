@@ -1,29 +1,20 @@
 package pos.management;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PaymentInfoDao {
-   private Connection conn;   
-    private static final String USERNAME = "root";   
-    private static final String PASSWORD = "1234";   
-    private static final String URL = "jdbc:mysql://localhost:3306/posdb";
+import pos.menu.MenuDAO;
 
+public class PaymentInfoDao {  
+	
+	private Connection conn;
+	
     public PaymentInfoDao() {
-        try {
-            System.out.println("생성자"); 
-            Class.forName("com.mysql.jdbc.Driver"); 
-            conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            System.out.println("드라이버 로딩 성공!!");            
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("드라이버 로드 실패!!");
-        }
+    	conn = MenuDAO.getConn();
     }    
     //DB에 데이터를 저장하는 메서드
     public void insertBoard(PaymentInfo paymentInfo) {
